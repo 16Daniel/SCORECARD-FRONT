@@ -1,0 +1,114 @@
+<div class="pt-5">
+
+    <h3 class="text-center mt-5 mb-3">DIFERENCIAS DE INVENTARIO</h3>    
+    
+    <div class="row m-0 mb-5">
+        <div class="col-md-6">
+           <div class="row m-0">
+            <div class="col-md-6">
+                <p>FECHA INICIAL</p>
+                <p-calendar 
+                [(ngModel)]="fechaini" 
+                [iconDisplay]="'input'" 
+                [showIcon]="true" 
+                inputId="icondisplay"
+                [style]="{'width':'100%'}"
+                />
+            </div>
+            <div class="col-md-6">
+                <p>FECHA FINAL</p>
+                <p-calendar 
+                [(ngModel)]="fechafin" 
+                [iconDisplay]="'input'" 
+                [showIcon]="true" 
+                inputId="icondisplay"
+                [style]="{'width':'100%'}"
+                />
+            </div>
+           </div>
+        </div>
+        <div class="col-md-4">
+            <p>&nbsp;</p>
+            <p-multiSelect 
+            [options]="catsucursales" 
+            [(ngModel)]="sucursalesSel" 
+            optionLabel="name" 
+            placeholder="SUCURSALES" 
+            [style]="{'width':'100%'}"
+            (onChange)="limpiardata()"
+            />
+        </div>
+        <div class="col-md-2">
+            <p>&nbsp;</p>
+            <button class="btn btn-grad rounded-3 bx-burst-hover" (click)="getdata()"><i class='bx bx-search'></i></button>
+        </div>
+    </div>
+    
+    
+    <div class="mb-5"></div>
+    <app-loader *ngIf="loading"></app-loader>
+
+    <div class="mt-5 p-3" *ngIf="arr_data.length>0">
+     
+        <div class="mt-3 mb-3">
+            <h4 class="text-center mt-3">ALA DE POLLO</h4>
+            <div [style]="{'min-height':'300px'}">
+                <ngx-charts-bar-vertical
+                [scheme]="colorScheme"
+                [results]="dataga"
+                [gradient]="gradient"
+                [xAxis]="showXAxis"
+                [yAxis]="showYAxis"
+                [legend]="showLegend"
+                [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel"
+                [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="'SUCURSAL'">
+              </ngx-charts-bar-vertical>
+              
+            </div>
+    
+            <h4 class="text-center mt-3">BONELESS</h4>
+            <div [style]="{'min-height':'300px'}">
+                <ngx-charts-bar-vertical
+                [scheme]="colorScheme"
+                [results]="datagb"
+                [gradient]="gradient"
+                [xAxis]="showXAxis"
+                [yAxis]="showYAxis"
+                [legend]="showLegend"
+                [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel"
+                [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="'SUCURSAL'">
+              </ngx-charts-bar-vertical>
+              
+            </div>
+    
+            <h4 class="text-center mt-3">PAPAS</h4>
+            <div [style]="{'min-height':'300px'}">
+                <ngx-charts-bar-vertical
+                [scheme]="colorScheme"
+                [results]="datagp"
+                [gradient]="gradient"
+                [xAxis]="showXAxis"
+                [yAxis]="showYAxis"
+                [legend]="showLegend"
+                [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel"
+                [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="'SUCURSAL'">
+              </ngx-charts-bar-vertical>
+              
+            </div>
+        
+        </div>
+
+        <div *ngFor="let item of sucursalesSel">
+            <app-diferencias-suc [data]="getDataSuc(item.cod)">
+            </app-diferencias-suc>
+        </div>
+        
+    </div>
+
+</div>

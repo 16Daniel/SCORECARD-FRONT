@@ -1,0 +1,80 @@
+<div class="pt-5">
+
+    <h3 class="text-center mt-5 mb-3">MIX DE VENTAS: ALIMENTOS VS BEBIDAS</h3>    
+    
+    <div class="row m-0 mb-5">
+        <div class="col-md-6">
+           <div class="row m-0">
+            <div class="col-md-6">
+                <p>FECHA INICIAL</p>
+                <p-calendar 
+                [(ngModel)]="fechaini" 
+                [iconDisplay]="'input'" 
+                [showIcon]="true" 
+                inputId="icondisplay"
+                [style]="{'width':'100%'}"
+                />
+            </div>
+            <div class="col-md-6">
+                <p>FECHA FINAL</p>
+                <p-calendar 
+                [(ngModel)]="fechafin" 
+                [iconDisplay]="'input'" 
+                [showIcon]="true" 
+                inputId="icondisplay"
+                [style]="{'width':'100%'}"
+                />
+            </div>
+           </div>
+        </div>
+        <div class="col-md-4">
+            <p>&nbsp;</p>
+            <p-multiSelect 
+            [options]="catsucursales" 
+            [(ngModel)]="sucursalesSel" 
+            optionLabel="name" 
+            placeholder="SUCURSALES" 
+            [style]="{'width':'100%'}"
+            (onChange)="limpiardata()"
+            />
+        </div>
+        <div class="col-md-2">
+            <p>&nbsp;</p>
+            <button class="btn btn-grad rounded-3 bx-burst-hover" (click)="getMixData()"><i class='bx bx-search'></i></button>
+        </div>
+    </div>
+    
+    <app-loader *ngIf="loading"></app-loader>
+
+    <div *ngIf="arr_data.length>0">
+
+    <h3 class="text-center">GLOBAL</h3>
+
+    <div style="height: 300px;">
+        <ngx-charts-bar-horizontal-normalized
+        [scheme]="colorScheme"
+        [results]="datag"
+        [gradient]="gradient"
+        [xAxis]="showXAxis"
+        [yAxis]="showYAxis"
+        [legend]="showLegend"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showYAxisLabel"
+        [xAxisLabel]="xAxisLabel"
+        [yAxisLabel]="yAxisLabel"
+        [animations]="animations">
+        </ngx-charts-bar-horizontal-normalized>
+    </div>
+
+
+    <div class="mt-5 p-3">
+     
+        <div *ngFor="let item of sucursalesSel">
+            <app-mix-suc [data]="getDataSuc(item.cod)">
+            </app-mix-suc>
+        </div>
+        
+    </div>
+
+    </div>
+</div>

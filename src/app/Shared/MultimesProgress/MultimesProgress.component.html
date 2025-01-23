@@ -1,0 +1,58 @@
+
+<div class="w-100 p-3">
+  <div  class="bg-cont rounded-3" style="padding-top: 20px;">
+    <div class="fw-bold fs-4 text-center">{{ventas[0].nombreSucursal}}</div>
+
+    <div style="height: 15rem; width: 100%; overflow: auto;">
+      <ngx-charts-bar-vertical
+      [scheme]="colorScheme"
+      [customColors]="customColors"
+      [results]="single"
+      [gradient]="false"
+      [legend]="false"
+      [showDataLabel]="true"
+      [showXAxisLabel]="true"
+      [xAxisLabel]="'VENTAS'"
+      [xAxis]="true"
+      [yAxis]="false"
+      [showGridLines]="false"
+      >
+    </ngx-charts-bar-vertical>
+  </div>
+  
+  <div style="overflow: auto; width: 100%;" data-bs-theme="dark">
+    <table class="table-c rounded-3">
+        <thead>
+          <tr>
+            <th scope="col">MES</th>
+            <th scope="col">META</th>
+            <th scope="col">TOTAL VENTAS</th>
+            <th scope="col">% META</th>
+            <th scope="col">FALTANTE</th>
+            <th scope="col">SUPERIOR</th>
+            <th>DETALLES</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of ventas" [ngClass]="{'bg-danger':item.cumplimiento<75,'bg-warning':item.cumplimiento>=75 && item.cumplimiento<100,'bg-success':item.cumplimiento>=100}" class="bg-opacity-50">
+            <td>{{this.getNameMonth(item.month)+' '+item.year}}</td>
+            <td>${{item.meta | number : '1.2-2'}}</td>
+            <td>${{item.ventaTotal | number : '1.2-2'}}</td>
+            <td>{{item.cumplimiento | number : '1.2-2'}}%</td>
+            <td>@if (item.ventaTotal<item.meta)
+                {
+                    <span>${{(item.meta-item.ventaTotal)| number : '1.2-2'}}</span>
+                }@else {  <span>$0</span> }</td>
+             <td>@if (item.ventaTotal>=item.meta)
+                {
+                    <span>${{(item.ventaTotal-item.meta)| number : '1.2-2'}}</span>
+                }@else {  <span>$0</span> }</td>
+                <td><button class="btn bx-sm" (click)="verdetalles(item)"><i class='bx bx-show'></i></button></td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+  
+
+  </div>
+</div> 

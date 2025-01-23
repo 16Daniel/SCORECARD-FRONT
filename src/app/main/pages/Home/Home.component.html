@@ -1,0 +1,519 @@
+<div style="margin-top: 80px;">
+  <!-- <h1 class="text-center">DASHBOARD</h1> -->
+  <h3 class="text-center texto-animado">{{'BIENVENID@'}}</h3>
+
+<P class="text-center p-3">SELECCIONE UNA FECHA Y UNA O MAS SUCURSALES</P>
+
+<div class="d-flex flex-wrap m-0 mt-3 justify-content-center mb-5 gap-3 p-3">
+
+  <div class="d-flex justify-content-center gap-3 flex-wrap">
+    @for (item of fechas; track $index) {
+      <div class="p-2 rounded-4 bg-cont">{{item}}  <button class="btn btn-danger p-1" (click)="deleteF($index)"><i class='bx bx-x'></i></button></div>
+    }
+  </div>
+  <button class="btn btn-grad rounded-3" (click)="addfecha()"><i class='bx bxs-calendar-plus bx-sm'></i></button>
+  <div>
+    <p-multiSelect 
+    [options]="catsucursales" 
+    [(ngModel)]="selectedSuc" 
+    optionLabel="name" 
+    placeholder="Seleccione una o mas sucursales"  [disabled]="catsucursales.length==0"
+   [classList]="'form-control p-0'"
+   [style]="{'width':'20rem'}"
+    />
+  </div>
+  <button class="btn btn-grad rounded-3 bx-burst-hover" (click)="consultarDash()"><i class='bx bx-search'></i></button>
+  </div>
+
+    <app-loader *ngIf="loading" class="mt-5"></app-loader>
+
+
+  <div class="d-flex justify-content-center align-items-center flex-column" *ngIf="tipoconsulta == 1">
+  
+    <div class="p-3 rounded-3 bg-opacity-25" style="min-width: 50%;" *ngIf="loading == false && ventasmetas.length>0 && fechas.length==1">
+      <h3 class="text-center w-100" >VENTAS</h3>
+      <h5 class="text-center"><span style="color: rgb(201, 214, 255);">META GLOBAL:</span> ${{metageneral | number : '1.2-2'}}</h5>
+      <h5 class="text-center"><span style="color: rgb(201, 214, 255);">VENTA GLOBAL:</span> ${{ventatotal | number : '1.2-2'}}</h5>
+      @if(ventatotal>=metageneral)
+      {
+        <h5 class="text-center"><span style="color: #4aff4a;">SUPERIOR TOTAL: </span>${{(ventatotal - metageneral) | number : '1.2-2'}}</h5>
+      }@else 
+      {
+        <h5 class="text-center"><span class="text-danger fw-bold">FALTANTE TOTAL: </span>${{(metageneral - ventatotal) | number : '1.2-2'}}</h5>
+      }
+
+      <h5 class="text-center"><span style="color: rgb(201, 214, 255);">PROYECCIÓN GLOBAL:</span> ${{((metageneral * ventasmetas[0].cumplimientoesperado)/100) | number : '1.2-2'}}</h5>
+      <h5 class="text-center mt-0 mb-0" *ngIf="ventatotal>=((metageneral * ventasmetas[0].cumplimientoesperado)/100)"><i class='bx bx-up-arrow-alt text-success bx-sm'></i> ${{(ventatotal-((metageneral * ventasmetas[0].cumplimientoesperado)/100)) | number : '1.2-2'}}</h5>
+      <h5 class="text-center mt-0 mb-0" *ngIf="ventatotal<((metageneral * ventasmetas[0].cumplimientoesperado)/100)"><i class='bx bx-down-arrow-alt text-danger bx-sm'></i> ${{(((metageneral * ventasmetas[0].cumplimientoesperado)/100)-ventatotal) | number : '1.2-2'}}</h5>
+
+      <h4 class="text-center m-3">{{porcentajegeneralv | number : '1.2-2'}}%</h4>
+      <div class="progress m-3" role="progressbar" style="height: 35px; background-color: #575658;">
+        <div class="fw-bold" [style]="{'width':'100%','background':getbgGeneral()}"></div>
+        <div class="reference-line-25" [style]="{'color':getcolorPB()}">25%</div>
+        <div class="reference-line-50" [style]="{'color':getcolorPB()}">50%</div>
+        <div class="reference-line-75" [style]="{'color':getcolorPB()}">75%</div>
+        <div class="reference-line-100" [style]="{'color':getcolorPB()}">100%</div>
+      </div>
+
+     <div class="d-flex justify-content-center gap-3 mt-3">
+      <div style="border-bottom: rgb(209, 23, 23) solid 3px; color: white;" class="p-3 rounded-3 fw-bold shadow bg-cont">
+        <p>{{'<75%'}}</p>
+        <p class="text-center fs-5 m-0">Total: {{sucursalesRojo}}</p>
+        <p class="text-center fs-5 m-0">{{getPorcentajeSucR() | number : '1.2-2'}}%</p>
+      </div>
+
+      <div style="border-bottom: rgb(231, 216, 4) solid 3px; color: white;" class="p-3 rounded-3 fw-bold shadow bg-cont">
+        <p>{{'75% - 99%'}}</p>
+        <p class="text-center fs-5 m-0">Total: {{sucursalesAmarillo}}</p>
+        <p class="text-center fs-5 m-0">{{getPorcentajeSucA() | number : '1.2-2'}}%</p>
+      </div>
+
+      <div style="border-bottom: rgb(2, 206, 63) solid 3px; color: white;" class="p-3 rounded-3 fw-bold shadow bg-cont">
+        <p>{{'>=100%'}}</p>
+        <p class="text-center fs-5 m-0">Total: {{sucursalesVerde}}</p>
+        <p class="text-center fs-5 m-0">{{getPorcentajeSucV() | number : '1.2-2'}}%</p>
+      </div>
+     </div>
+
+    </div>
+
+    <div class=" p-3 m-3 rounded-3 d-flex justify-content-center flex-wrap align-items-center" *ngIf="loading == false && ventasmetas.length>0 && fechas.length==1">
+
+      <div class="w-100 d-flex justify-content-center">
+        <div class="d-flex justify-content-center " style="height: 300px; min-width: 80%;">
+          <ngx-charts-advanced-pie-chart
+          [results]="single"
+          [gradient]="false"
+          [customColors]="customColors"
+          (select)="onSelect($event)">
+          </ngx-charts-advanced-pie-chart>
+        </div>
+      
+      </div>
+
+      <h4 class="w-100 text-center">Proyección: <span class="fw-bold text-p">{{ventasmetas[0].cumplimientoesperado | number : '1.2-2' }}%</span></h4>
+
+  <div class="d-flex justify-content-center gap-3 p-3 flex-wrap">
+    @for (item of ventasmetas; track $index) {
+      <app-progress-bar-c [nombresuc]="item.nombreSucursal" 
+      [idpbc]="'cpb-'+$index" [progressEndValue]="item.cumplimiento" 
+      [metav]="item.meta"
+      [totalv]="item.ventaTotal"
+      [cumplimientoesp]="item.cumplimientoesperado"
+      [proyeccion]="item.proyeccion"
+      (click)="verdetalles(item)"
+      />
+    }
+  </div>
+
+    </div>
+
+
+    <div *ngIf="sucursalesdistintas.length>0 && fechas.length>1 && loading==false" style="max-width: 50rem; width: 100%; margin: auto;">
+  
+      @for (item of sucursalesdistintas; track $index) 
+      {
+        <app-multimes-progress [ventas]="filtrardata(item)" (eventodetalles)="verdetalles($event)"></app-multimes-progress>
+      }
+    
+    </div>
+
+
+  </div>
+
+<!-- -------------------------------- COMENSALES --------------------->
+
+
+
+
+
+
+
+
+
+  <div style="overflow: hidden; position: fixed; bottom: 0; left: 0; width: calc(100% + 10px); z-index: -1; margin: 0;">
+    <svg
+      preserveAspectRatio="none"
+      viewBox="0 0 1200 120"
+      xmlns="http://www.w3.org/2000/svg"
+      style="fill: #090313; width: 100%; height: 500px; transform: rotate(180deg);"
+    >
+      <path
+      d="M0 0v46.29c47.79 22.2 103.59 32.17 158 28 70.36-5.37 136.33-33.31 206.8-37.5 73.84-4.36 147.54 16.88 218.2 35.26 69.27 18 138.3 24.88 209.4 13.08 36.15-6 69.85-17.84 104.45-29.34C989.49 25 1113-14.29 1200 52.47V0z"
+      opacity=".25"
+    />
+      <path
+        d="M0 0v15.81c13 21.11 27.64 41.05 47.69 56.24C99.41 111.27 165 111 224.58 91.58c31.15-10.15 60.09-26.07 89.67-39.8 40.92-19 84.73-46 130.83-49.67 36.26-2.85 70.9 9.42 98.6 31.56 31.77 25.39 62.32 62 103.63 73 40.44 10.79 81.35-6.69 119.13-24.28s75.16-39 116.92-43.05c59.73-5.85 113.28 22.88 168.9 38.84 30.2 8.66 59 6.17 87.09-7.5 22.43-10.89 48-26.93 60.65-49.24V0z"
+        opacity=".5"
+      />
+      <path d="M0 0v5.63C149.93 59 314.09 71.32 475.83 42.57c43-7.64 84.23-20.12 127.61-26.46 59-8.63 112.48 12.24 165.56 35.4C827.93 77.22 886 95.24 951.2 90c86.53-7 172.46-45.71 248.8-84.81V0z" />
+    </svg>
+  </div>
+
+</div>
+
+<p-dialog 
+    #myDialog
+    [modal]="true"
+    [(visible)]="modalDetalles" 
+    [style]="{ width: '70rem'}" 
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+    (onHide)="onDialogHide()">
+
+       <div *ngIf="itemdetalles!=undefined" style="position: relative;">
+        <h3 class="text-center mb-5">{{itemdetalles.nombreSucursal }} <span class="text-p fw-bold">{{this.getNameMonth(itemdetalles.month)+' '+itemdetalles.year}}</span></h3>
+        <app-loader *ngIf="loadingdet"></app-loader>
+
+        @if(loadingdetv2)
+        {
+        <div class="d-flex justify-content-center">
+         <app-loader></app-loader>
+        </div>
+        }@else 
+        {
+        
+         <div  *ngIf="detallesventas2 != undefined && detallesventa2G.length>0">
+
+          <div class="progress-stacked mt-1 mb-3">
+            <div class="progress" role="progressbar" aria-label="Segment one" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" [style]="{'width': compararvstotal(detallesventas2!.descuentos)+'%'}">
+              <div class="progress-bar" style="background-color: #f13800;"></div>
+            </div>
+            <div class="progress" role="progressbar" aria-label="Segment two" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" [style]="{'width': compararvstotal(detallesventas2!.mermas)+'%'}">
+              <div class="progress-bar" style="background-color: #00c5a4 ;"></div>
+            </div>
+            <div class="progress" role="progressbar" aria-label="Segment three" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" [style]="{'width': compararvstotal(detallesventas2!.cancelaciones)+'%'}">
+              <div class="progress-bar" style="background-color: #0650da ;"></div>
+            </div>
+            <div class="progress" role="progressbar" aria-label="Segment three" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" [style]="{'width': compararvstotal(detallesventas2!.invitaciones)+'%'}">
+              <div class="progress-bar" style="background-color: #ff3ee5"></div>
+            </div>
+            <div class="progress" role="progressbar" aria-label="Segment three" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" [style]="{'width': compararvstotal(detallesventas2!.consumoInterno)+'%'}">
+              <div class="progress-bar" style="background-color: #9068ff;"></div>
+            </div>
+          </div>
+
+          <div class=" d-flex justify-content-evenly flex-wrap gap-3">
+            <div class="p-3 rounded-3 shadow" style="border-bottom: #f13800 solid 2px;">
+              <p class="text-center">DESCUENTOS</p>
+              <p class="text-center">${{detallesventas2!.descuentos | number : '1.2-2'}}</p>
+              <p class="text-center">{{compararvsventas(detallesventas2!.descuentos) | number : '1.2-2' }}%</p>
+              <div class="p-1">
+                <button class="btn text-light w-100 p-1" (click)="getDetallesDescuentos(itemdetalles)"><i class='bx bx-show bx-sm'></i></button>
+              </div>
+            </div>
+            <div class="p-3 rounded-3 shadow" style="border-bottom: #00c5a4 solid 2px;">
+              <p class="text-center">MERMAS</p>
+              <p class="text-center">${{detallesventas2!.mermas | number : '1.2-2'}}</p>
+              <p class="text-center">{{compararvsventas(detallesventas2!.mermas) | number : '1.2-2' }}%</p>
+              <div class="p-1">
+                <button class="btn text-light w-100 p-1" (click)="getDetallesMermas(itemdetalles)"><i class='bx bx-show bx-sm'></i></button>
+              </div>
+            </div>
+            <div class="p-3 rounded-3 shadow" style="border-bottom: #0650da solid 2px;">
+              <p class="text-center">CANCELACIONES</p>
+              <p class="text-center">${{detallesventas2!.cancelaciones | number : '1.2-2'}}</p>
+              <p class="text-center">{{compararvsventas(detallesventas2!.cancelaciones) | number : '1.2-2' }}%</p>
+              <div class="p-1">
+                <button class="btn text-light w-100 p-1" (click)="getDetallesCancelaciones(itemdetalles)"><i class='bx bx-show bx-sm'></i></button>
+              </div>
+            </div>
+            <div class="p-3 rounded-3 shadow" style="border-bottom: #ff3ee5 solid 2px;">
+              <p class="text-center">INVITACIONES</p>
+              <p class="text-center">${{detallesventas2!.invitaciones | number : '1.2-2'}}</p>
+              <p class="text-center">{{compararvsventas(detallesventas2!.invitaciones) | number : '1.2-2' }}%</p>
+              <div class="p-1">
+                <button class="btn text-light w-100 p-1" (click)="getDetallesInvitaciones(itemdetalles)"><i class='bx bx-show bx-sm'></i></button>
+              </div>
+            </div>
+            <div class="p-3 rounded-3 shadow"  style="border-bottom: #9068ff solid 2px;">
+              <p class="text-center">CONSUMOS INTERNOS</p>
+              <p class="text-center">${{detallesventas2!.consumoInterno | number : '1.2-2'}}</p>
+              <p class="text-center">{{compararvsventas(detallesventas2!.consumoInterno) | number : '1.2-2' }}%</p>
+              <div class="p-1">
+                <button class="btn text-light w-100 p-1" (click)="getDetallesConsumeInterno(itemdetalles)"><i class='bx bx-show bx-sm'></i></button>
+              </div>
+            </div>
+                  <!-- <div class="p-3 rounded-3 shadow" style="border-bottom: #f13800 solid 2px;">
+              <p>DESCUENTOS</p>
+              <p>${{detallesventas2!.descuentos | number : '1.2-2'}}</p>
+              <p>{{compararvstotal(detallesventas2!.descuentos) | number : '1.2-2' }}%</p>
+            </div>
+            <div class="p-3 rounded-3 shadow" style="border-bottom: #00c5a4 solid 2px;">
+              <p>MERMAS</p>
+              <p>${{detallesventas2!.mermas | number : '1.2-2'}}</p>
+              <p>{{compararvstotal(detallesventas2!.mermas) | number : '1.2-2' }}%</p>
+            </div>
+            <div class="p-3 rounded-3 shadow" style="border-bottom: #0650da solid 2px;">
+              <p>CANCELACIONES</p>
+              <p>${{detallesventas2!.cancelaciones | number : '1.2-2'}}</p>
+              <p>{{compararvstotal(detallesventas2!.cancelaciones) | number : '1.2-2' }}%</p>
+            </div>
+            <div class="p-3 rounded-3 shadow" style="border-bottom: #ff3ee5 solid 2px;">
+              <p>INVITACIONES</p>
+              <p>${{detallesventas2!.invitaciones | number : '1.2-2'}}</p>
+              <p>{{compararvstotal(detallesventas2!.invitaciones) | number : '1.2-2' }}%</p>
+            </div>
+            <div class="p-3 rounded-3 shadow"  style="border-bottom: #9068ff solid 2px;">
+              <p>CONSUMOS INTERNOS</p>
+              <p>${{detallesventas2!.consumoInterno | number : '1.2-2'}}</p>
+              <p>{{compararvstotal(detallesventas2!.consumoInterno) | number : '1.2-2' }}%</p>
+            </div> -->
+
+            </div>
+
+         </div>
+        }   
+
+        <div *ngIf="arrdetalles.length>0" class="mt-3">
+          <div class="rounded-3 p-3" style="min-width: 90%; min-height: 10rem;">
+            <p class="fw-bold fs-5">VENTA TOTAL</p>
+            <ngx-charts-advanced-pie-chart
+            [scheme]="colorSchemedet"
+            [results]="arrdetalles">
+          </ngx-charts-advanced-pie-chart>
+          </div>
+          <div style="overflow: hidden; position: relative; bottom: 0; z-index: 2;">
+            <svg
+              preserveAspectRatio="none"
+              viewBox="0 0 1200 120"
+              xmlns="http://www.w3.org/2000/svg"
+              style="fill: #000000; width: 100%; height: 10rem; transform: rotate(180deg) scaleX(-1);"
+            >
+              <path
+              d="M0 0v46.29c47.79 22.2 103.59 32.17 158 28 70.36-5.37 136.33-33.31 206.8-37.5 73.84-4.36 147.54 16.88 218.2 35.26 69.27 18 138.3 24.88 209.4 13.08 36.15-6 69.85-17.84 104.45-29.34C989.49 25 1113-14.29 1200 52.47V0z"
+              opacity=".25"
+            />
+              <path
+                d="M0 0v15.81c13 21.11 27.64 41.05 47.69 56.24C99.41 111.27 165 111 224.58 91.58c31.15-10.15 60.09-26.07 89.67-39.8 40.92-19 84.73-46 130.83-49.67 36.26-2.85 70.9 9.42 98.6 31.56 31.77 25.39 62.32 62 103.63 73 40.44 10.79 81.35-6.69 119.13-24.28s75.16-39 116.92-43.05c59.73-5.85 113.28 22.88 168.9 38.84 30.2 8.66 59 6.17 87.09-7.5 22.43-10.89 48-26.93 60.65-49.24V0z"
+                opacity=".5"
+              />
+              <path d="M0 0v5.63C149.93 59 314.09 71.32 475.83 42.57c43-7.64 84.23-20.12 127.61-26.46 59-8.63 112.48 12.24 165.56 35.4C827.93 77.22 886 95.24 951.2 90c86.53-7 172.46-45.71 248.8-84.81V0z" />
+            </svg>
+          </div>
+        </div>
+
+       <div *ngIf="arrdetalles.length>0">
+        <div class="mt-3 rounded-3 p-3" style="min-width: 90%; min-height: 10rem; background-color: #00000078;">
+          <p class="fw-bold fs-5" style="color: #c7ffbc;">UBER</p>
+          <ngx-charts-advanced-pie-chart
+              [scheme]="colorSchemedetApp"
+              [results]="arrdetallesUber"
+              *ngIf="arrdetallesUber.length>0"
+              >
+            </ngx-charts-advanced-pie-chart>
+        </div>
+
+        <div class="mt-3 rounded-3 p-3" style="min-width: 90%; min-height: 10rem; background-color: #00000078;">
+          <p class="fw-bold fs-5" style="color: #aff0ff;">RAPPI</p>
+          <ngx-charts-advanced-pie-chart
+          [scheme]="colorSchemedetApp"
+          [results]="arrdetallesRappi"
+          *ngIf="arrdetallesRappi.length>0">
+        </ngx-charts-advanced-pie-chart>
+        </div>
+        <div class="mt-3 rounded-3 p-3" style="min-width: 90%; min-height: 10rem; background-color: #00000078;">
+          <p class="fw-bold fs-5" style="color: #ffd6b4;">DIDI</p>
+          <ngx-charts-advanced-pie-chart
+          [scheme]="colorSchemedetApp"
+          [results]="arrdetallesDidi"
+          *ngIf="arrdetallesDidi.length>0"
+          >
+        </ngx-charts-advanced-pie-chart>
+        </div>
+        <P></P>
+       </div>
+
+
+       @if(loadingdetv3)
+       {
+        <div class="d-flex justify-content-center mt-3">
+          <app-loader></app-loader>
+         </div>
+       }@else 
+       {
+          <div class="w-100" *ngIf="detalles3 != undefined">
+              <div class="mt-3 rounded-3 p-3" style="min-width: 90%; min-height: 10rem; background-color: #00000078;">
+                <p class="fw-bold fs-5 text-center">VENTA PROMEDIO DIARIA</p>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="bg-cont p-3">
+                      <p class="text-center">PRESUPUESTADA</p>
+                      <p class="text-center">${{(itemdetalles.meta/detalles3.diasdelmes) | number : '1.2-2'}}</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="bg-cont p-3">
+                      <p class="text-center">REAL</p>
+                      <p class="text-center" >${{(detalles3.ventareal/detalles3.diaactual) | number : '1.2-2'}}</p>
+                    </div>
+                  </div>
+                  <p class="text-center m-0 mt-3">{{((detalles3.ventareal/detalles3.diaactual) / (itemdetalles.meta/detalles3.diasdelmes) * 100) | number : '1.2-2'}}%</p>
+                </div>
+
+                <div class="progress text-light mt-3" role="progressbar" style="height: 35px; background-color: #575658;">
+                  <div class="fw-bold"  [style]="{'width':((detalles3.ventareal/detalles3.diaactual) / (itemdetalles.meta/detalles3.diasdelmes) * 100)+'%','background-color':getbgdet(((detalles3.ventareal/detalles3.diaactual) / (itemdetalles.meta/detalles3.diasdelmes) * 100))}"></div>
+                  <div class="reference-line-25">25%</div>
+                  <div class="reference-line-50">50%</div>
+                  <div class="reference-line-75">75%</div>
+                  <div class="reference-line-100">100%</div>
+                </div>
+
+              </div>
+
+              <div class="mt-3 rounded-3 p-3" style="min-width: 90%; min-height: 10rem; background-color: #00000078;">
+                <p class="fw-bold fs-5 text-center">COSTO</p>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="bg-cont p-3">
+                      <p class="text-center">PRESUPUESTADO</p>
+                      <p class="text-center">${{ ((detalles3.ventareal)*(detalles3.costopresupuestado/100)) | number : '1.2-2'}}</p>
+                      <p class="text-center">{{detalles3.costopresupuestado | number : '1.2-2'}}%</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="bg-cont p-3">
+                      <p class="text-center">REAL</p>
+                      <p class="text-center" >${{ ((detalles3.ventareal)*(detalles3.costoreal/100)) | number : '1.2-2'}}</p>
+                      <p class="text-center">{{detalles3.costoreal | number : '1.2-2'}}%</p>
+                    </div>
+                  </div>
+                  <p class="text-center m-0 mt-3">{{((detalles3.costoreal) / (detalles3.costopresupuestado) * 100) | number : '1.2-2'}}%</p>
+                </div>
+
+                <div class="progress text-light mt-3" role="progressbar" style="height: 35px; background-color: #575658;">
+                  <div class="fw-bold progress-bar-p"  [style]="{'width':((detalles3.costoreal) / (detalles3.costopresupuestado) * 100)+'%','background-color':getbgdeti(((detalles3.costoreal) / (detalles3.costopresupuestado) * 100))}"></div>
+                  <div class="reference-line-25">25%</div>
+                  <div class="reference-line-50">50%</div>
+                  <div class="reference-line-75">75%</div>
+                  <div class="reference-line-100">100%</div>
+                </div>
+
+              </div>
+
+
+              <div class="mt-3 rounded-3 p-3" style="min-width: 90%; min-height: 10rem; background-color: #00000078;">
+                <p class="fw-bold fs-5 text-center">TICKET PROMEDIO</p>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="bg-cont p-3">
+                      <p class="text-center">PRESUPUESTADO</p>
+                      <p class="text-center">${{ detalles3.ticketpromediopresupuestado | number : '1.2-2'}}</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="bg-cont p-3">
+                      <p class="text-center">REAL</p>
+                      <p class="text-center" >${{ detalles3.ticketpromedioreal | number : '1.2-2'}}</p>
+                    </div>
+                  </div>
+                  <p class="text-center m-0 mt-3">{{((detalles3.ticketpromedioreal) / (detalles3.ticketpromediopresupuestado) * 100) | number : '1.2-2'}}%</p>
+                </div>
+
+                <div class="progress text-light mt-3" role="progressbar" style="height: 35px; background-color: #575658;">
+                  <div class="fw-bold progress-bar-p"  [style]="{'width':((detalles3.ticketpromedioreal) / (detalles3.ticketpromediopresupuestado) * 100)+'%','background-color':getbgdet(((detalles3.ticketpromedioreal) / (detalles3.ticketpromediopresupuestado) * 100))}"></div>
+                  <div class="reference-line-25">25%</div>
+                  <div class="reference-line-50">50%</div>
+                  <div class="reference-line-75">75%</div>
+                  <div class="reference-line-100">100%</div>
+                </div>
+
+              </div>
+
+              <div class="mt-3 rounded-3 p-3" style="min-width: 90%; min-height: 10rem; background-color: #00000078;">
+                <p class="fw-bold fs-5 text-center">ROTACIÓN</p>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="bg-cont p-3">
+                      <p class="text-center">PRESUPUESTADA</p>
+                      <p class="text-center">{{ detalles3.rotacionpresupuestada | number : '1.2-2'}}</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="bg-cont p-3">
+                      <p class="text-center">REAL</p>
+                      <p class="text-center" >{{ detalles3.rotacionreal | number : '1.2-2'}}</p>
+                    </div>
+                  </div>
+                  <p class="text-center m-0 mt-3">{{((detalles3.rotacionreal) / (detalles3.rotacionpresupuestada) * 100) | number : '1.2-2'}}%</p>
+                </div>
+
+                <div class="progress text-light mt-3" role="progressbar" style="height: 35px; background-color: #575658;">
+                  <div class="fw-bold progress-bar-p"  [style]="{'width':((detalles3.rotacionreal) / (detalles3.rotacionpresupuestada)  * 100)+'%','background-color':getbgdet(((detalles3.rotacionreal) / (detalles3.rotacionpresupuestada)  * 100))}"></div>
+                  <div class="reference-line-25">25%</div>
+                  <div class="reference-line-50">50%</div>
+                  <div class="reference-line-75">75%</div>
+                  <div class="reference-line-100">100%</div>
+                </div>
+
+              </div>
+
+              <div class="mt-3 rounded-3 p-3" style="min-width: 90%; min-height: 10rem; background-color: #00000078;">
+                <p class="fw-bold fs-5 text-center">COMPRAS DEL PERIODO</p>
+                <div class="bg-cont p-3">
+                  <p class="text-center" >${{ detalles3.comprasdelperiodo | number : '1.2-2'}}</p>
+                </div>
+              </div>
+
+
+          </div>
+       }
+
+       </div>
+</p-dialog>
+
+<p-dialog header="Agregar mes" [modal]="true" [(visible)]="modalfecha" [style]="{ width: '25rem' }">
+  <input type="month" [(ngModel)]="mesSel" class="form-control">
+ <div class="d-flex justify-content-end mt-3">
+  <button class="btn bg-p-b p-3" (click)="addf()">AGREGAR</button>
+ </div>
+</p-dialog>
+
+
+<p-dialog header="DETALLES" [modal]="true" [(visible)]="modaldetallesart" 
+[style]="{ width: '70rem'}" 
+[breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+  @if(loadingdetarts)
+  {
+    <div class="d-flex justify-content-center mt-3">
+      <app-loader *ngIf="loadingdetarts"></app-loader>
+     </div>
+  }@else 
+  {
+    <h4 class="text-center mb-5" *ngIf="itemdetalles != undefined">{{ titulodetalles+itemdetalles!.nombreSucursal }} <span class="text-p fw-bold">{{this.getNameMonth(itemdetalles!.month)+' '+itemdetalles!.year}}</span></h4>
+    <div *ngIf="graficaDetArt.length>0" class="w-100" style="height:auto;">
+      <ngx-charts-bar-horizontal
+  [scheme]="colorSchemedetApp"
+  [results]="graficaDetArt"
+  [xAxis]="true"
+  [yAxis]="true"
+  [legend]="false"
+  [showXAxisLabel]="true"
+  [showYAxisLabel]="true"
+  [xAxisLabel]="'IMPORTE'"
+  [yAxisLabel]="'DESCRIPCIÓN'"
+  [animations]="false">
+</ngx-charts-bar-horizontal>
+</div>
+
+    <div class="p-3" style="overflow: auto;" *ngIf="detallesarts.length>0">
+      <table class="table-c rounded-3">
+        <thead>
+          <tr>
+            <th scope="col">DESCRIPCIÓN</th>
+            <th scope="col">UNIDADES</th>
+            <th scope="col">IMPORTE</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of detallesarts">
+            <td>{{item.descripcion}}</td>
+            <td>{{item.unidades | number : '1.2-2'}}</td>
+            <td>${{item.importe | number : '1.2-2'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  }
+</p-dialog>
+
+<p-toast [breakpoints]="{'920px': {width: '100%', right: '0', left: '0'}}" [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'500ms'" [hideTransitionOptions]="'500ms'" [showTransformOptions]="'translateX(100%)'"></p-toast>

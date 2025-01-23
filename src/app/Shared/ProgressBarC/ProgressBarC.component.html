@@ -1,0 +1,17 @@
+<div class="bg-cont p-3 rounded-3 heartbeat" (mouseenter)="onHover()">
+  <p *ngIf="totalv>metav && metav>=0"><span style="color: #4aff4a;">Superior: </span>${{(totalv-metav) | number : '1.2-2'}}</p>
+  <p *ngIf="totalv==metav && metav>=0"><span style="color: #4aff4a;">Superior: </span>Meta cumplida</p>
+  <p *ngIf="progressEndValue<100 && progressEndValue>=75 && metav>=0"><span class="text-warning">Faltante: </span>${{(metav-totalv) | number : '1.2-2'}}</p>
+    <p *ngIf="progressEndValue<75 && metav>=0"><span class="text-danger">Faltante: </span>${{(metav-totalv) | number : '1.2-2'}}</p>
+      <p *ngIf="metav<0"><span class="text-danger">Sin meta</span></p>
+    <div class="circular-progress" id="{{idpbc}}">
+        <div class="value-container text-center p-1" id="{{idpbc+'container'}}">0%</div>
+      </div>
+      <p class="text-center mt-2 mb-0" *ngIf="metav<0">Meta: sin registro</p>
+      <p class="text-center mt-2 mb-0" *ngIf="metav>=0">Meta: ${{metav | number : '1.2-2'}}</p>
+      <p class="text-center mt-0 mb-0">Proyección: ${{proyeccion | number : '1.2-2'}}</p>
+      <p class="text-center mt-0 mb-0" *ngIf="totalv>=proyeccion"><i class='bx bx-up-arrow-alt text-success bx-sm'></i> ${{(totalv-proyeccion) | number : '1.2-2'}}</p>
+      <p class="text-center mt-0 mb-0" *ngIf="totalv<proyeccion"><i class='bx bx-down-arrow-alt text-danger bx-sm'></i> ${{(proyeccion-totalv) | number : '1.2-2'}}</p>
+      <p class="text-center mt-0">Venta: ${{totalv | number : '1.2-2'}}</p>
+</div>
+   

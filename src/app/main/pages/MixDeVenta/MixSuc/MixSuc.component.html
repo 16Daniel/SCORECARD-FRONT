@@ -1,0 +1,56 @@
+<div class="bg-cont p-3 rounded-3 mb-3">
+<h3 class="text-center">{{data[0].sucursal}}</h3>
+
+    <h4 class="text-center mt-3">SALÓN</h4>
+    <div [style]="{'height':(datagd.length*40)+'px', 'min-height':'200px'}">
+        <ngx-charts-bar-horizontal-stacked
+        [scheme]="colorScheme"
+        [results]="datags"
+        [gradient]="gradient"
+        [xAxis]="showXAxis"
+        [yAxis]="showYAxis"
+        [legend]="showLegend"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showYAxisLabel"
+        [xAxisLabel]="xAxisLabel"
+        [yAxisLabel]="yAxisLabel">
+      </ngx-charts-bar-horizontal-stacked>
+      
+    </div>
+    
+    <h4 class="text-center mt-3">DELIVERY</h4>
+    <div [style]="{'height':(datagd.length*40)+'px', 'min-height':'200px'}">
+        <ngx-charts-bar-horizontal-stacked
+        [scheme]="colorScheme"
+        [results]="datagd"
+        [gradient]="gradient"
+        [xAxis]="showXAxis"
+        [yAxis]="showYAxis"
+        [legend]="showLegend"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showYAxisLabel"
+        [xAxisLabel]="xAxisLabel"
+        [yAxisLabel]="yAxisLabel">
+      </ngx-charts-bar-horizontal-stacked>
+      
+    </div>
+    
+    <h4 class="text-center mt-3">PICK UP</h4>
+    <div [style]="{'height':(datagd.length*40)+'px', 'min-height':'200px'}">
+        <ngx-charts-bar-horizontal-stacked
+        [scheme]="colorScheme"
+        [results]="datagp"
+        [gradient]="gradient"
+        [xAxis]="showXAxis"
+        [yAxis]="showYAxis"
+        [legend]="showLegend"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showYAxisLabel"
+        [xAxisLabel]="xAxisLabel"
+        [yAxisLabel]="yAxisLabel">
+      </ngx-charts-bar-horizontal-stacked>
+      
+    </div>
+    
+
+</div>

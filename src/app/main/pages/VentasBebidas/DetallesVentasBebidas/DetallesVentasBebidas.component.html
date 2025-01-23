@@ -1,0 +1,47 @@
+
+    <div class="p-3 bg-cont mb-3 rounded-3" *ngIf="data != undefined">
+    <h3 class="text-center mt-3">{{data[0].nombresuc}}</h3>
+
+    <h5 class="text-center">CERVEZAS</h5>
+
+    <div [style]="{'height':(data.length*40)+'px', 'min-height':'200px'}">
+        <ngx-charts-bar-horizontal
+        [scheme]="colorScheme"
+        [results]="datag"
+        [gradient]="gradient"
+        [xAxis]="showXAxis"
+        [yAxis]="showYAxis"
+        [legend]="showLegend"
+        [legendTitle]="'SEMANA'"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showYAxisLabel"
+        [xAxisLabel]="''"
+        [yAxisLabel]="yAxisLabel"
+        [showDataLabel]="true"
+        [customColors]="customColorsc"
+        [dataLabelFormatting]="formatDataLabel"
+        >
+      </ngx-charts-bar-horizontal>  
+    </div>
+
+    <h5 class="text-center">REBELITROS</h5>
+    <div class="mt-3" [style]="{'height':(data.length*40)+'px', 'min-height':'200px'}">
+        <ngx-charts-bar-horizontal
+        [scheme]="colorScheme"
+        [results]="datag2"
+        [gradient]="gradient"
+        [xAxis]="showXAxis"
+        [yAxis]="showYAxis"
+        [legend]="true"
+        [legendTitle]="'SEMANA'"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showYAxisLabel"
+        [xAxisLabel]="''"
+        [yAxisLabel]="'SEMANA'"
+        [showDataLabel]="true"
+        [customColors]="customColorsrl"
+        [dataLabelFormatting]="formatDataLabel"
+        >
+        </ngx-charts-bar-horizontal>
+    </div>
+</div>

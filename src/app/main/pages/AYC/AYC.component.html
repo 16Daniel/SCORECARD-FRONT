@@ -1,0 +1,58 @@
+<div class="pt-5">
+
+<h3 class="text-center mt-5 mb-3">INICIOS AYC</h3>    
+
+<div class="row m-0 mb-5">
+    <div class="col-md-6">
+       <div class="row m-0">
+        <div class="col-md-6">
+            <p>FECHA INICIAL</p>
+            <p-calendar 
+            [(ngModel)]="fechaini" 
+            [iconDisplay]="'input'" 
+            [showIcon]="true" 
+            inputId="icondisplay"
+            [style]="{'width':'100%'}"
+            />
+        </div>
+        <div class="col-md-6">
+            <p>FECHA FINAL</p>
+            <p-calendar 
+            [(ngModel)]="fechafin" 
+            [iconDisplay]="'input'" 
+            [showIcon]="true" 
+            inputId="icondisplay"
+            [style]="{'width':'100%'}"
+            />
+        </div>
+       </div>
+    </div>
+    <div class="col-md-4">
+        <p>&nbsp;</p>
+        <p-multiSelect 
+        [options]="catsucursales" 
+        [(ngModel)]="sucursalesSel" 
+        optionLabel="name" 
+        placeholder="SUCURSALES" 
+        [style]="{'width':'100%'}"
+        />
+    </div>
+    <div class="col-md-2">
+        <p>&nbsp;</p>
+        <button class="btn btn-grad rounded-3 bx-burst-hover" (click)="getparametros()"><i class='bx bx-search'></i></button>
+    </div>
+</div>
+
+<app-loader *ngIf="loading"></app-loader>
+
+<div *ngIf="arr_inicioayc.length>0">
+<div *ngFor="let item of sucursalesSel" class="p-3">
+    <app-sucursal-inicio-ayc [arr_iniciosayc]="getDataSuc(item.cod)" [parametrosjdata]="parametrosjdata"></app-sucursal-inicio-ayc>
+</div>
+</div>
+
+</div>
+
+
+
+<p-toast [breakpoints]="{'920px': {width: '100%', right: '0', left: '0'}}" [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'500ms'" [hideTransitionOptions]="'500ms'" [showTransformOptions]="'translateX(100%)'"></p-toast>

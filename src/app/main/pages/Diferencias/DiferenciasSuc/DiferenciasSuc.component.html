@@ -1,0 +1,59 @@
+<div class="bg-cont p-3 rounded-3 mb-3">
+    <h3 *ngIf="dataSemana == false" class="text-center">{{data[0].sucursal}}</h3>
+    
+        <h4 class="text-center mt-3">ALA DE POLLO</h4>
+        <div [style]="{'height':(dataga.length*40)+'px', 'min-height':'200px'}">
+            <ngx-charts-bar-horizontal
+            [scheme]="colorScheme"
+            [results]="dataga"
+            [gradient]="gradient"
+            [xAxis]="showXAxis"
+            [yAxis]="showYAxis"
+            [legend]="showLegend"
+            [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel"
+            [xAxisLabel]="xAxisLabel"
+            [yAxisLabel]="yAxisLabel"
+            [customColors]="customColorsa">
+          </ngx-charts-bar-horizontal>
+          
+        </div>
+
+        <h4 class="text-center mt-3">BONELESS</h4>
+        <div [style]="{'height':(dataga.length*40)+'px', 'min-height':'200px'}">
+            <ngx-charts-bar-horizontal
+            [scheme]="colorScheme"
+            [results]="datagb"
+            [gradient]="gradient"
+            [xAxis]="showXAxis"
+            [yAxis]="showYAxis"
+            [legend]="showLegend"
+            [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel"
+            [xAxisLabel]="xAxisLabel"
+            [yAxisLabel]="yAxisLabel"
+            [customColors]="customColorsb">
+          </ngx-charts-bar-horizontal>
+          
+        </div>
+
+        <h4 class="text-center mt-3">PAPAS</h4>
+        <div [style]="{'height':(dataga.length*40)+'px', 'min-height':'200px'}">
+            <ngx-charts-bar-horizontal
+            [scheme]="colorScheme"
+            [results]="datagp"
+            [gradient]="gradient"
+            [xAxis]="showXAxis"
+            [yAxis]="showYAxis"
+            [legend]="showLegend"
+            [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel"
+            [xAxisLabel]="xAxisLabel"
+            [yAxisLabel]="yAxisLabel"
+            [customColors]="customColorsp">
+          </ngx-charts-bar-horizontal>
+          
+        </div>
+    
+    
+    </div>

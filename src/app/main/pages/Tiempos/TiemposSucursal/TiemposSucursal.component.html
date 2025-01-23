@@ -1,0 +1,45 @@
+<div class="p-3 bg-cont mb-3 rounded-3" *ngIf="data != undefined">
+    <h3 class="text-center">{{data.sucursal}}: TIEMPOS EN COCINA</h3>
+
+    <p class="h5 text-center mt-3">TIEMPO PROMEDIO</p>
+    <div class="text-center p-3 mt-3 fs-3">
+        {{data.promedio}} MINUTOS
+    </div>
+
+<!-- <div  [style]="{'height':(semanas*40)+'px', 'min-height':'200px'}">
+    <ngx-charts-bar-horizontal-stacked
+    [scheme]="colorScheme"
+    [results]="multi"
+    [gradient]="gradient"
+    [xAxis]="showXAxis"
+    [yAxis]="showYAxis"
+    [legend]="showLegend"
+    [legendTitle]="'RANGOS'"
+    [showXAxisLabel]="showXAxisLabel"
+    [showYAxisLabel]="showYAxisLabel"
+    [xAxisLabel]="xAxisLabel"
+    [yAxisLabel]="yAxisLabel"
+    [showDataLabel]="true"
+    >
+  </ngx-charts-bar-horizontal-stacked>  
+</div> -->
+
+<div [style]="{'height':(semanas*40)+'px', 'min-height':'200px'}">
+    <ngx-charts-bar-horizontal-normalized
+    [scheme]="colorScheme"
+    [results]="multi"
+    [gradient]="gradient"
+    [xAxis]="showXAxis"
+    [yAxis]="showYAxis"
+    [legend]="showLegend"
+    [legendTitle]="'RANGOS'"
+    [showXAxisLabel]="showXAxisLabel"
+    [showYAxisLabel]="showYAxisLabel"
+    [xAxisLabel]="xAxisLabel"
+    [yAxisLabel]="yAxisLabel"
+    >
+  </ngx-charts-bar-horizontal-normalized>  
+</div>
+
+
+</div>

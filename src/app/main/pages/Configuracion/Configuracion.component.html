@@ -1,0 +1,29 @@
+<div class="mt-5 pt-5">
+<h1 class="text-center">CONFIGURACIÓN</h1>
+
+<app-loader *ngIf="loading" class="m-3"></app-loader>
+
+<div class="m-3 bg-cont p-3 rounded-3" *ngIf="loading==false">
+<p class="">COSTO PRESUPUESTADO</p>
+<input type="number" class="form-control" [(ngModel)]="costoPresupuestado">
+
+<p class="mt-5">INICIOS AYC</p>
+<p>WINGS</p>
+<input type="number" class="form-control mb-3" [(ngModel)]="iniwings">
+<p>BONELESS</p>
+<input type="number" class="form-control mb-3" [(ngModel)]="iniboneless">
+<p>BURGER</p>
+<input type="number" class="form-control mb-3" [(ngModel)]="iniburger">
+<p>HOT-DOG</p>
+<input type="number" class="form-control mb-3" [(ngModel)]="inihotdog">
+
+<div class="d-flex justify-content-end mt-3">
+    <button class="btn bg-p-b p-3" (click)="saveparametros()"><i class='bx bx-save' ></i> GUARDAR</button>
+</div>
+
+</div>
+
+</div>
+
+
+<p-toast [breakpoints]="{'920px': {width: '100%', right: '0', left: '0'}}" [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'500ms'" [hideTransitionOptions]="'500ms'" [showTransformOptions]="'translateX(100%)'"></p-toast>
