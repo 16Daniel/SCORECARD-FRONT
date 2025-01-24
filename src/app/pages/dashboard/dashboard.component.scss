@@ -1,0 +1,85 @@
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  background-color: #f8f9fa;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.sidebar.collapsed {
+  width: 70px; /* Menú colapsado */
+}
+
+.sidebar .nav-item {
+  list-style: none; /* Elimina los puntos de las listas */
+}
+
+.sidebar .nav-link {
+  color: #333;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border-radius: 4px; /* Bordes redondeados */
+  cursor: pointer; /* Cambia el cursor a "puntero" */
+  width: 100%; /* Asegura que ocupe todo el ancho del elemento padre */
+}
+
+/* Hover Effect en toda el área del enlace */
+.sidebar .nav-item:hover .nav-link {
+  background-color: #007bff; /* Fondo azul */
+  color: #fff; /* Texto blanco */
+  transform: scale(1.05); /* Ampliación */
+}
+
+/* Icono y texto */
+.sidebar .nav-link i {
+  font-size: 1.2rem;
+  margin-right: 15px;
+  transition: margin-right 0.3s ease, color 0.3s ease;
+}
+
+.sidebar.collapsed .nav-link i {
+  margin-right: 0; /* Ajustar margen del ícono */
+}
+
+/* Ocultar texto en estado colapsado */
+.sidebar .menu-text {
+  display: inline-block;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.sidebar.collapsed .menu-text {
+  visibility: hidden;
+  opacity: 0;
+}
+
+/* Estilo activo (click) */
+.sidebar .nav-link.active {
+  background-color: #0056b3; /* Fondo más oscuro */
+  color: #fff; /* Texto blanco */
+  font-weight: bold; /* Negrita para destacar */
+}
+
+/* Contenido Principal */
+.content {
+  margin-left: 250px;
+  width: calc(100% - 250px);
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.sidebar.collapsed + .content {
+  margin-left: 70px;
+  width: calc(100% - 70px);
+}
+
+.sidebar .nav {
+  margin-top: 60px; /* Espacio de 50px en la parte superior */
+}
