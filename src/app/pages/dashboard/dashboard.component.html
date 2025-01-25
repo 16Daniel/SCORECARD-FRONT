@@ -1,0 +1,20 @@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+
+<div class="d-flex">
+    <div class="sidebar" [class.collapsed]="isCollapsed">
+        <ul class="nav flex-column">
+            <li class="nav-item" *ngFor="let menu of menus">
+                <a class="nav-link" routerLink="/" routerLinkActive="active">
+                    <i [class]="menu.icon"></i>
+                    <span class="menu-text">{{ menu.text }}</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="content" [class.expanded]="isCollapsed">
+        <!-- app-diferencias -->
+         <app-background-iamge></app-background-iamge>
+    </div>
+</div>
