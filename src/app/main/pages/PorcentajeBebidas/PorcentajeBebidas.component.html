@@ -1,0 +1,67 @@
+<div class="pt-5">
+
+    <h3 class="text-center mt-5 mb-3">VENTA DE BEBIDAS SALÓN VS ALIMENTOS SALÓN</h3>    
+    
+    <div class="row m-0 mb-5">
+        <div class="col-md-6">
+           <div class="row m-0">
+            <div class="col-md-6">
+                <p>FECHA INICIAL</p>
+                <p-calendar 
+                [(ngModel)]="fechaini" 
+                [iconDisplay]="'input'" 
+                [showIcon]="true" 
+                inputId="icondisplay"
+                [style]="{'width':'100%'}"
+                />
+            </div>
+            <div class="col-md-6">
+                <p>FECHA FINAL</p>
+                <p-calendar 
+                [(ngModel)]="fechafin" 
+                [iconDisplay]="'input'" 
+                [showIcon]="true" 
+                inputId="icondisplay"
+                [style]="{'width':'100%'}"
+                />
+            </div>
+           </div>
+        </div>
+        <div class="col-md-4">
+            <p>&nbsp;</p>
+            <p-multiSelect 
+            [options]="catsucursales" 
+            [(ngModel)]="sucursalesSel" 
+            optionLabel="name" 
+            placeholder="SUCURSALES" 
+            [style]="{'width':'100%'}"
+            (onChange)="changeSuc()"
+            />
+        </div>
+        <div class="col-md-2">
+            <p>&nbsp;</p>
+            <button class="btn btn-grad rounded-3 bx-burst-hover" (click)="consultarVentasBebidas()"><i class='bx bx-search'></i></button>
+        </div>
+    </div>
+    
+    <app-loader *ngIf="loading"></app-loader>
+
+   
+    <div *ngIf="arr_data.length>0">
+        <h3 class="text-center">%BEBIDAS</h3>
+
+        <div class="d-flex justify-content-center gap-3 mt-3 mb-3" *ngIf="arr_data.length>0">
+            <button class="btn btn-outline-success p-2" style="min-width: 10rem;" [disabled]="loading" (click)="exportarExcel()"><img width="48" height="48" src="https://img.icons8.com/fluency/40/microsoft-excel-2019.png" alt="microsoft-excel-2019"/> EXCEL</button>    
+        </div>
+    
+        <div *ngFor="let item of sucursalesSel" class="m-3">
+          <app-detalles-porcentaje-bebidas [sucursal]="item" [data]="getdataSuc(item.cod)"></app-detalles-porcentaje-bebidas>
+        </div>
+    </div>
+    
+    </div>
+    
+    
+    
+    <p-toast [breakpoints]="{'920px': {width: '100%', right: '0', left: '0'}}" [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'500ms'" [hideTransitionOptions]="'500ms'" [showTransformOptions]="'translateX(100%)'"></p-toast>
+    

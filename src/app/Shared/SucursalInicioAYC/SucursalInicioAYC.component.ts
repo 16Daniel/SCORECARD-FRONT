@@ -290,8 +290,8 @@ public semanas:number=0;
   }
 
   formatDataLabel(value: number): string {
-    value = Math.round(value);
-    return `${value}%`;
+    //value = Math.round(value);
+    return `${value.toFixed(2)}%`;
   }
 
 }

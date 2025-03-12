@@ -1,3 +1,5 @@
+import { It25ptsSuc } from "./25Pts";
+
 export interface Dashboardsuc 
 {
     data25pts:any[],
@@ -9,4 +11,5 @@ export interface Dashboardsuc
     numsemanau:number[]; 
     datadiferencias:any[];
     ids:number;
+    totalesayc:It25ptsSuc[];
  }

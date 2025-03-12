@@ -12,7 +12,8 @@ import { LoaderComponent } from '../../../Shared/Loader/Loader.component';
 import { DetallesArt, DetallesVenta2, DetallesVentas3, VentaMeta } from '../../../Interfaces/Venta';
 import { Dialog, DialogModule } from 'primeng/dialog';
 import { MultimesProgressComponent } from '../../../Shared/MultimesProgress/MultimesProgress.component';
-import { withDebugTracing } from '@angular/router';
+import { Router, withDebugTracing } from '@angular/router';
+import { CalendarModule } from 'primeng/calendar';
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -25,7 +26,8 @@ import { withDebugTracing } from '@angular/router';
     ProgressBarCComponent,
     LoaderComponent,
     DialogModule,
-    MultimesProgressComponent
+    MultimesProgressComponent,
+    CalendarModule
 ],
   providers:[MessageService],
   templateUrl: './Home.component.html',
@@ -69,6 +71,7 @@ export default class HomeComponent {
 
   public tipoconsulta:number = 1; 
   public fechas:string[] =[]; 
+  selectedMonths:Date[] = []; 
   public modalfecha:boolean = false; 
   public sucursalesdistintas:number[] = [];
   public colorScale:any[] = [
@@ -133,9 +136,12 @@ export default class HomeComponent {
       return color;
   };
 
-  constructor(private messageService: MessageService,public cdr:ChangeDetectorRef, public apiserv:ApiService)
+  constructor(private messageService: MessageService,public cdr:ChangeDetectorRef, public apiserv:ApiService,private router: Router)
   {
-      
+    if(localStorage.getItem("rwuserdataDash") == null)
+      {
+        this.router.navigate(["/auth"]);
+      }
   }
 
   ngOnInit(): void 
@@ -487,29 +493,17 @@ export default class HomeComponent {
   {
       this.modalfecha = true;
       this.mesSel = ''; 
-
   }
 
   addf()
   {
-    if(this.mesSel == '')
-      {
-        this.showMessage('info',"Info","Seleccione un mes");
-      } else {
-        let filtro = this.fechas.filter(x=>x == this.mesSel);
-        if(filtro.length==0)
-          {
-            this.fechas.push(this.mesSel);
-          }
-        this.mesSel = ''; 
-        this.modalfecha = false;
-        this.cdr.detectChanges();
-      }
+    this.modalfecha = false; 
   }
 
   deleteF(index:number)
   {
     this.fechas.splice(index, 1);
+    this.selectedMonths.splice(index, 1);
     this.ventasmetas = []; 
     this.cdr.detectChanges(); 
 
@@ -799,6 +793,14 @@ getbgdeti(porcentaje:number)
         color ='#d9003e';  
       }
     return color; 
+}
+
+formatDates() {
+  this.fechas = this.selectedMonths.map(date => {
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${year}-${month}`;
+  });
 }
 
  }

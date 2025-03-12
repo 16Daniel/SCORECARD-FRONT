@@ -9,6 +9,7 @@ import { TiemposSuc } from '../Interfaces/Tiempos.';
 import { VentaBebida } from '../Interfaces/VentaBebida.';
 import { Diferencia } from '../Interfaces/Diferencia';
 import { It25pts } from '../Interfaces/25Pts';
+import { Usuario, UsuarioLogin } from '../Interfaces/Usuario';
 
 @Injectable({
   providedIn: 'root'
@@ -146,11 +147,16 @@ export class ApiService {
     return this.http.get<VentaBebida[]>(this.url+`Dashboard/getVentasBebidas/${sucursales}/${fechaini}/${fechafin}`,{headers:this.headers})
    }
 
+   getPBebidas(sucursales:string, fechaini:string, fechafin:string):Observable<VentaBebida[]>
+   {
+    return this.http.get<VentaBebida[]>(this.url+`Dashboard/getPBebidas/${sucursales}/${fechaini}/${fechafin}`,{headers:this.headers})
+   }
+
    ExcelVentasBebidas(data:any):Observable<any>
    {
     let formdata = new FormData();
     formdata.append("data",data);
-    return this.http.post<any>(this.url+'Dashboard/getExcelVentaBebidas',formdata,{headers:this.headers})
+    return this.http.post<any>(this.url+'Dashboard/getExcelPBebidas',formdata,{headers:this.headers})
    }
 
 
@@ -174,5 +180,52 @@ export class ApiService {
     return this.http.get<any>(this.url+`Dashboard/getPdfSuc`,{headers:this.headers})
    }
 
+   getusuarios():Observable<Usuario[]>
+   {
+      return this.http.get<Usuario[]>(this.url+`Usuarios/getusUarios`,{headers:this.headers})
+   }
+
+   createUser(data:any):Observable<any>
+   {
+      return this.http.post<any>(this.url+'Usuarios/createUser',data,{headers:this.headers})
+   }
+
+   deleteUser(id:number):Observable<any>
+   {
+      return this.http.get<any>(this.url+`Usuarios/deleteUser/${id}`,{headers:this.headers})
+   }
+
+   updateUser(data:any):Observable<any>
+   {
+      return this.http.post<any>(this.url+'Usuarios/updateUser',data,{headers:this.headers})
+   }
+
+   login(data:any):Observable<UsuarioLogin>
+   {
+      return this.http.post<UsuarioLogin>(this.url+`Usuarios/Login`,data,{headers:this.headers})
+   }
+
+   get25ptsSucursales(sucursales:string, fechafin:string):Observable<any>
+   {
+    return this.http.get<any>(this.url+`Dashboard/get25ptsSucursales/${sucursales}/${fechafin}`,{headers:this.headers})
+   }
+
+   getMermas(sucursales:string, fechafin:string):Observable<any>
+   {
+    return this.http.get<any>(this.url+`Dashboard/getMermas/${sucursales}/${fechafin}`,{headers:this.headers})
+   }
+
+   getIniciosAYCSucursales(sucursales:string, fechafin:string):Observable<any>
+   {
+    return this.http.get<any>(this.url+`Dashboard/getPorcentajeInicioAYC/${sucursales}/${fechafin}`,{headers:this.headers})
+   }
+  
+   getBonosData(sucursales:string,mes:Date):Observable<any>
+   {
+    let formdata = new FormData();
+    formdata.append("jdsucursales",sucursales);
+    formdata.append("fecha",mes.toISOString());
+    return this.http.post<any>(this.url+'Bonos/getBonosData',formdata,{headers:this.headers})
+   }
 }
 

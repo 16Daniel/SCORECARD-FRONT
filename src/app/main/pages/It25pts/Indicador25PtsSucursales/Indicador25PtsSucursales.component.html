@@ -1,0 +1,33 @@
+<div style="overflow: auto;">
+    <table class="table-c">
+        <thead>
+            <tr>
+                <th scope="col" colspan="9" class="text-center"  style="background-color: #000000; color: white;"><h4>25 PUNTOS</h4></th>
+              </tr>
+          <tr>
+            <th scope="col" style="background-color: #232c3d; color: white;">SUCURSAL</th>
+            <th scope="col"  style="background-color: #232c3d; color: white;">W{{data!.semanas[7]}}</th>
+            <th scope="col"  style="background-color: #232c3d; color: white;">W{{data!.semanas[6]}}</th>
+            <th scope="col"  style="background-color: #232c3d; color: white;">W{{data!.semanas[5]}}</th>
+            <th scope="col"  style="background-color: #232c3d; color: white;">W{{data!.semanas[4]}}</th>
+            <th scope="col"  style="background-color: #232c3d; color: white;">W{{data!.semanas[3]}}</th>
+            <th scope="col"  style="background-color: #232c3d; color: white;">W{{data!.semanas[2]}}</th>
+            <th scope="col"  style="background-color: #232c3d; color: white;">W{{data!.semanas[1]}}</th>
+            <th scope="col"  style="background-color: #232c3d; color: white;">W{{data!.semanas[0]}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of dataTable">
+            <th scope="row" style="background-color:#232c3d; color: white">{{item.nombresuc}}</th>
+            <th scope="row" class="text-light" [style]="{'background-color':item.s8>=1.5?'red':'green'}">{{item.s8 | number : '1.2-2'}}%</th>
+            <th scope="row" class="text-light" [style]="{'background-color':item.s7>=1.5?'red':'green'}">{{item.s7 | number : '1.2-2'}}%</th>
+            <th scope="row" class="text-light" [style]="{'background-color':item.s6>=1.5?'red':'green'}">{{item.s6 | number : '1.2-2'}}%</th>
+            <th scope="row" class="text-light" [style]="{'background-color':item.s5>=1.5?'red':'green'}">{{item.s5 | number : '1.2-2'}}%</th>
+            <th scope="row" class="text-light" [style]="{'background-color':item.s4>=1.5?'red':'green'}">{{item.s4 | number : '1.2-2'}}%</th>
+            <th scope="row" class="text-light" [style]="{'background-color':item.s3>=1.5?'red':'green'}">{{item.s3 | number : '1.2-2'}}%</th>
+            <th scope="row" class="text-light" [style]="{'background-color':item.s2>=1.5?'red':'green'}">{{item.s2 | number : '1.2-2'}}%</th>
+            <th scope="row" class="text-light" [style]="{'background-color':item.s1>=1.5?'red':'green'}">{{item.s1 | number : '1.2-2'}}%</th>
+          </tr>
+        </tbody>
+      </table>
+</div>

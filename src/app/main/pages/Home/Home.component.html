@@ -461,10 +461,28 @@
        </div>
 </p-dialog>
 
-<p-dialog header="Agregar mes" [modal]="true" [(visible)]="modalfecha" [style]="{ width: '25rem' }">
-  <input type="month" [(ngModel)]="mesSel" class="form-control">
- <div class="d-flex justify-content-end mt-3">
-  <button class="btn bg-p-b p-3" (click)="addf()">AGREGAR</button>
+<p-dialog header="Agregar mes" [modal]="true" [(visible)]="modalfecha" [style]="{ width: '50rem' }">
+  
+  <div class="d-flex justify-content-center gap-3 flex-wrap">
+    @for (item of fechas; track $index) {
+      <div class="p-2 rounded-4 bg-cont">{{item}}  <button class="btn btn-danger p-1" (click)="deleteF($index)"><i class='bx bx-x'></i></button></div>
+    }
+  </div>
+  
+  <div>
+    <p-calendar 
+  [(ngModel)]="selectedMonths" 
+  (onSelect)="formatDates()" 
+  selectionMode="multiple" 
+  view="month"
+  dateFormat="mm/yy" 
+  [inline]="true" 
+  [readonlyInput]="true"
+  [style]="{width:'100%'}"
+  />
+  </div>
+  <div class="d-flex justify-content-end mt-3">
+  <button class="btn bg-p-b p-3" (click)="addf()">CERRAR</button>
  </div>
 </p-dialog>
 

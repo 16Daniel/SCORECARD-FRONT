@@ -12,9 +12,10 @@
         <!-- <i class='bx bxs-user' ></i> -->
       </div>
       <div class="menu-items" style="overflow: auto;">
-        <i class='bx bxs-dashboard bx-lg' style="color: rgb(128, 0, 255);"></i>
-        <div class="fw-bold fs-3 mb-4" style="color: rgb(128, 0, 255);">DASHBOARD V1.0</div>
-        <li (click)="closemenu()"><a [routerLink]="'/main/home'"><i class='bx bxs-dashboard' ></i>Inicio</a></li>
+        <!-- <i class='bx bxs-dashboard bx-lg' style="color: rgb(128, 0, 255);"></i> -->
+        <div class="fw-bold fs-3 mb-4" style="color: rgb(128, 0, 255);">MENÚ</div> 
+        
+        <!-- <li (click)="closemenu()"><a [routerLink]="'/main/home'"><i class='bx bxs-dashboard' ></i>Inicio</a></li>
         <li (click)="closemenu()"><a  [routerLink]="'/main/ayc-data'"><i class='bx bx-infinite'></i> AYC</a></li>
         <li (click)="closemenu()"><a  [routerLink]="'/main/tiempos'"><i class='bx bx-timer'></i> Tiempos</a></li>
         <li (click)="closemenu()"><a  [routerLink]="'/main/ventas-bebidas'"><i class='bx bx-beer'></i> Bebidas</a></li>
@@ -22,18 +23,46 @@
         <li (click)="closemenu()"><a  [routerLink]="'/main/diferencias'"><i class='bx bx-expand-horizontal'></i> Diferencias</a></li>
         <li (click)="closemenu()"><a  [routerLink]="'/main/25pts'"><i class='bx bx-food-menu'></i> Dashboard Sucursal</a></li>
         <li (click)="closemenu()"><a  [routerLink]="'/main/metas'"><i class='bx bx-bullseye'></i> Metas</a></li>
-        <li (click)="closemenu()"><a  [routerLink]="'/main/config'"><i class='bx bx-cog' ></i> Configuración</a></li>
+        <li (click)="closemenu()"><a  [routerLink]="'/main/config'"><i class='bx bx-cog' ></i> Configuración</a></li> -->
+       
 
+      <div class="d-flex justify-content-center">
+        <div style="width: 100%; max-width: 30rem;"> 
+           <p-panelMenu [model]="items" styleClass="w-full">
+          <ng-template pTemplate="item" let-item>
+              <ng-container *ngIf="item.route; else urlRef">
+                  <a [routerLink]="item.route" class="flex align-items-center 
+                      cursor-pointer text-color px-3 py-2" (click)="closemenu()">
+                      <span [class]="item.icon"></span>
+                      <span class="ml-2 text-color">&nbsp;{{item.label}}&nbsp;</span>
+                  </a>
+              </ng-container>
+              <ng-template #urlRef>
+                  <a *ngIf="item.url; else noLink" [href]="item.url" class="flex align-items-center 
+                      cursor-pointer text-color px-3 py-2" (click)="closemenu()">
+                      <span [class]="item.icon"></span>
+                      <span class="ml-2">&nbsp;{{item.label }}&nbsp;</span>
+                  </a>
+                  <ng-template #noLink>
+                      <span class="flex align-items-center cursor-pointer text-color px-3 py-2">
+                          <span [class]="item.icon"></span>
+                          <span class="ml-2">&nbsp;{{ item.label }}&nbsp;</span>
+                          <i *ngIf="item.items" class="pi pi-angle-down text-primary ml-auto"></i>
+                      </span>
+                  </ng-template>
+              </ng-template>
+          </ng-template>
+      </p-panelMenu>
+      </div>
+      </div>
         <i class='bx bx-user-circle bx-md'></i>
-        <div class="">ADMIN</div>
-        <div class="d-flex justify-content-center mt-3 mb-3"><button class="btn bg-p-b" style="width: 90%; max-width: 10rem;">CERRAR SESIÓN</button></div>
+        <div class=""> <span class="fw-bold" *ngIf="userdata!=undefined">{{userdata.nombre + ' '+userdata.apellidoP}}</span></div>
+        <div class="text-warning"> <span class="fw-bold" *ngIf="userdata!=undefined">{{getrolname(userdata.idRol)}}</span></div>
+        <div class="d-flex justify-content-center mt-3 mb-3">
+          <button class="btn bg-p-b" style="width: 90%; max-width: 10rem;" (click)="logout()">CERRAR SESIÓN</button></div>
       </div>
     </div>
   </div>
 </nav>
-<p-overlayPanel #op>
-  <div class="justify-content-center">
-      <button class="btn bg-p-b p-3" (click)="logout()"> <i class='bx bx-log-out'></i>&nbsp;CERRAR SESIÓN</button>
-  </div>
-</p-overlayPanel>
+
 

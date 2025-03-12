@@ -13,3 +13,18 @@ export interface It25pts {
     vendedor: string;
     numsemana: number; 
   }
+
+  export interface It25ptsSuc
+  {
+    idf:number;
+    nombresuc:string; 
+    numsemana:number; 
+    incidencias:number; 
+    totalayc:number; 
+  }
+
+  export interface generaldata25ptssuc
+  {
+    semanas:number[]; 
+    data:It25ptsSuc[];
+  }

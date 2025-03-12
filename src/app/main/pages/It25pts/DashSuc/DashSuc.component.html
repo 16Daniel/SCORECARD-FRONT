@@ -1,9 +1,9 @@
-<div class="row">
-    <div class="col-md-3">
-     <img src="/front/dashboard/assets/img/RW_LogoWEB.png" style="width: 90%;">
-      <!-- <img src="/assets/img/RW_LogoWEB.png" style="width: 90%;"> -->
+<div class="row justify-content-center">
+    <div class="col-md-auto">
+     <img src="/front/dashboard/assets/img/RW_LogoWEB.png" style="width: 200px;">
+      <!-- <img src="/assets/img/RW_LogoWEB.png" style="width: 200px;"> -->
     </div>
-    <div class="col-md-9">
+    <div class="col-md-auto">
       <p></p>
       <h2>DASHBOARD SUPERVISORES</h2>
       <p class="fs-3" style="color: #ffee00;" *ngIf="datasuc != undefined">{{datasuc.name}}</p>
@@ -76,7 +76,41 @@
           </table>
     </div>
 
-    <h5 class="m-3" style="color: #ff9d2d;">25 PTS POR SEMANA</h5>
+
+    <div style="overflow: auto;" class="p-3 mb-3">
+      <h5 class="m-3" style="color: #ff9d2d;">25 PTS POR VENDEDOR</h5>
+        <table class="table table-bordered text-center" data-bs-theme="dark">
+            <thead>
+              <tr>
+                <th scope="col" rowspan="2"  style="background-color: black; color: white;">VENDEDOR</th>
+                <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[7]}}</th>
+                <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[6]}}</th>
+                <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[5]}}</th>
+                <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[4]}}</th>
+                <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[3]}}</th>
+                <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[2]}}</th>
+                <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[1]}}</th>
+                <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[0]}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of dataT">
+                <th>{{item.name}}</th>
+                <th [style]="{'background-color':getPorcentajeV(item.s8,item.totalaycv[7])>=1.5?'red':'green'}"><span>{{getPorcentajeV(item.s8,item.totalaycv[7]) | number : '1.2-2'}}</span>%</th>
+                <th [style]="{'background-color':getPorcentajeV(item.s7,item.totalaycv[6])>=1.5?'red':'green'}"><span>{{getPorcentajeV(item.s7,item.totalaycv[6]) | number : '1.2-2'}}</span>%</th>
+                <th [style]="{'background-color':getPorcentajeV(item.s6,item.totalaycv[5])>=1.5?'red':'green'}"><span>{{getPorcentajeV(item.s6,item.totalaycv[5]) | number : '1.2-2'}}</span>%</th>
+                <th [style]="{'background-color':getPorcentajeV(item.s5,item.totalaycv[4])>=1.5?'red':'green'}"><span>{{getPorcentajeV(item.s5,item.totalaycv[4]) | number : '1.2-2'}}</span>%</th>
+                <th [style]="{'background-color':getPorcentajeV(item.s4,item.totalaycv[3])>=1.5?'red':'green'}"><span>{{getPorcentajeV(item.s4,item.totalaycv[3]) | number : '1.2-2'}}</span>%</th>
+                <th [style]="{'background-color':getPorcentajeV(item.s3,item.totalaycv[2])>=1.5?'red':'green'}"><span>{{getPorcentajeV(item.s3,item.totalaycv[2]) | number : '1.2-2'}}</span>%</th>
+                <th [style]="{'background-color':getPorcentajeV(item.s2,item.totalaycv[1])>=1.5?'red':'green'}"><span>{{getPorcentajeV(item.s2,item.totalaycv[1]) | number : '1.2-2'}}</span>%</th>
+                <th [style]="{'background-color':getPorcentajeV(item.s1,item.totalaycv[0])>=1.5?'red':'green'}"><span>{{getPorcentajeV(item.s1,item.totalaycv[0]) | number : '1.2-2'}}</span>%</th>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+
+
+    <!-- <h5 class="m-3" style="color: #ff9d2d;">25 PTS POR SEMANA</h5>
     
       <div [style]="{'height':(8*40)+'px', 'min-height':'200px'}">
         <ngx-charts-bar-horizontal-stacked
@@ -94,7 +128,7 @@
         [showDataLabel]="true"
         >
       </ngx-charts-bar-horizontal-stacked>  
-    </div>
+    </div> -->
 </div>
 
 <h5 class="m-3" style="color: #ff9d2d;" *ngIf="arr_data.length >0">25 PTS POR VENDEDOR</h5>
@@ -157,10 +191,10 @@
               <tr>
                 <th scope="col" rowspan="2"  style="background-color: black; color: white;">MERMA</th>
                 
-                <th scope="col"  style="background-color: black; color: white;">{{data!.numsemanau[4]}} Y {{data!.numsemanau[3]}}</th>
-                <th scope="col"  style="background-color: black; color: white;">{{data!.numsemanau[3]}} Y {{data!.numsemanau[2]}}</th>
-                <th scope="col"  style="background-color: black; color: white;">{{data!.numsemanau[2]}} Y {{data!.numsemanau[1]}}</th>
-                <th scope="col"  style="background-color: black; color: white;">{{data!.numsemanau[1]}} Y {{data!.numsemanau[0]}}</th>
+                <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[4]}} Y W{{data!.numsemanau[3]}}</th>
+                <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[3]}} Y W{{data!.numsemanau[2]}}</th>
+                <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[2]}} Y W{{data!.numsemanau[1]}}</th>
+                <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[1]}} Y W{{data!.numsemanau[0]}}</th>
                 
               </tr>
         </thead>
@@ -220,10 +254,10 @@
             </tr>
         <tr>
           <th scope="col" rowspan="2"  style="background-color: black; color: white;">MERMA</th>
-          <th scope="col"  style="background-color: black; color: white;">{{data!.numsemanau[4]}} Y {{data!.numsemanau[3]}}</th>
-          <th scope="col"  style="background-color: black; color: white;">{{data!.numsemanau[3]}} Y {{data!.numsemanau[2]}}</th>
-          <th scope="col"  style="background-color: black; color: white;">{{data!.numsemanau[2]}} Y {{data!.numsemanau[1]}}</th>
-          <th scope="col"  style="background-color: black; color: white;">{{data!.numsemanau[1]}} Y {{data!.numsemanau[0]}}</th>
+          <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[4]}} Y W{{data!.numsemanau[3]}}</th>
+          <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[3]}} Y W{{data!.numsemanau[2]}}</th>
+          <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[2]}} Y W{{data!.numsemanau[1]}}</th>
+          <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[1]}} Y W{{data!.numsemanau[0]}}</th>
         </tr>
       </thead>
       <tbody>

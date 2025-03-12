@@ -1,0 +1,23 @@
+
+<div class="bg-cont p-3">
+  <h5 *ngIf="sucursal != undefined" class="text-center">{{sucursal.name}}</h5>  
+    <div>
+        <ngx-charts-bar-horizontal
+        [scheme]="colorScheme"
+        [results]="datag"
+        [gradient]="gradient"
+        [xAxis]="showXAxis"
+        [yAxis]="showYAxis"
+        [legend]="showLegend"
+        [legendTitle]="'SEMANAS'"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showYAxisLabel"
+        [xAxisLabel]="xAxisLabel"
+        [yAxisLabel]="yAxisLabel"
+        [showDataLabel]="true"
+        [customColors]="customColorsc"
+        [dataLabelFormatting]="formatDataLabel"
+        >
+      </ngx-charts-bar-horizontal>  
+    </div>
+</div>

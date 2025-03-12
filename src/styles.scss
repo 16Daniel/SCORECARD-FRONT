@@ -391,7 +391,7 @@ ul {
     display: block;
     position: fixed;
     top: 0;
-    z-index: 2;
+    z-index: 99;
     height: 60px;
     background-color: #000000;
   }
@@ -460,9 +460,8 @@ ul {
   }
   
   .navbar-c .menu-items li {
-    margin-bottom: 1.2rem;
-    font-size: 1.5rem;
-    font-weight: 500;
+    margin-bottom: 0.5rem;
+    font-size: medium;
   }
   
   .logo {
@@ -548,4 +547,26 @@ ul {
 
   .ngx-charts .grid-panel.odd rect {
     fill: #0000003b !important;
+}
+
+ul
+{
+  padding: 0px;
+}
+
+.p-panelmenu-header-content
+{
+font-size:large;
+}
+
+.p-panelmenu-header-content
+{
+  padding: 10px;
+}
+
+.text-color
+{
+  color: white;
+  text-decoration: none;
+  font-size: large;
 }

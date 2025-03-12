@@ -126,7 +126,7 @@ export class DashSucComponent implements OnInit {
 
            let totali:number= regv1+regv2+regv3+regv4+regv5+regv6+regv7+regv8; 
             let prop = item.venta * 0.05; 
-              this.dataT.push({name:item.vendedor,s1:regv1,s2:regv2,s3:regv3,s4:regv4,s5:regv5,s6:regv6,s7:regv7,s8:regv8,total:totali,totalv:item.venta,propina: prop,aycsc: item.aycsc});
+              this.dataT.push({name:item.vendedor,s1:regv1,s2:regv2,s3:regv3,s4:regv4,s5:regv5,s6:regv6,s7:regv7,s8:regv8,total:totali,totalv:item.venta,propina: prop,aycsc: item.aycsc, totalaycv: item.totalaycv});
         }  
 
         let s1 = this.dataT.reduce((acumulador:number, elemento) => {
@@ -206,9 +206,13 @@ export class DashSucComponent implements OnInit {
             this.datagmermasB.push({name:item.lblsemana, series:seriesdgm});
           }
 
+          this.datagmermasA.reverse(); 
+          this.datagmermasB.reverse(); 
       this.datamermalisto = true; 
       this.diferenciaslisto = true; 
 
+
+      console.log(this.dataT);
    }
 
    formatDataLabel(value: any, label: string, series: any) {
@@ -234,17 +238,27 @@ getdataGv(vendedor:string):any[]
   let temp = this.dataT.filter(x => x.name == vendedor);
   let datav = temp[0]; 
 
-  datag.push({name:"W "+this.data!.numsemanau[0],value:datav.s1});
-  datag.push({name:"W "+this.data!.numsemanau[1],value:datav.s2});
-  datag.push({name:"W "+this.data!.numsemanau[2],value:datav.s3});
-  datag.push({name:"W "+this.data!.numsemanau[3],value:datav.s4});
-  datag.push({name:"W "+this.data!.numsemanau[4],value:datav.s5});
-  datag.push({name:"W "+this.data!.numsemanau[5],value:datav.s6});
-  datag.push({name:"W "+this.data!.numsemanau[6],value:datav.s7});
   datag.push({name:"W "+this.data!.numsemanau[7],value:datav.s8});
+  datag.push({name:"W "+this.data!.numsemanau[6],value:datav.s7});
+  datag.push({name:"W "+this.data!.numsemanau[5],value:datav.s6});
+  datag.push({name:"W "+this.data!.numsemanau[4],value:datav.s5});
+  datag.push({name:"W "+this.data!.numsemanau[3],value:datav.s4});
+  datag.push({name:"W "+this.data!.numsemanau[2],value:datav.s3});
+  datag.push({name:"W "+this.data!.numsemanau[1],value:datav.s2});
+  datag.push({name:"W "+this.data!.numsemanau[0],value:datav.s1});
   return datag; 
 }
 
 
+
+getPorcentajeV(incidencias:number, totalayc:number):number
+{
+  let porcentaje = 0; 
+   if(totalayc > 0)
+    {
+      porcentaje = (incidencias / totalayc)*100; 
+    }
+  return porcentaje;
+}
 
 }

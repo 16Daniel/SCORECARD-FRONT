@@ -1,0 +1,184 @@
+<div class="pt-5">
+
+    <div class="mt-5"></div>
+  
+      <div class="row m-0 mb-5">
+          <div class="col-md-6">
+             <div class="row m-0">
+              <!-- <div class="col-md-6">
+                  <p>FECHA INICIAL</p>
+                  <p-calendar 
+                  [(ngModel)]="fechaini" 
+                  [iconDisplay]="'input'" 
+                  [showIcon]="true" 
+                  inputId="icondisplay"
+                  [style]="{'width':'100%'}"
+                  />
+              </div> -->
+              <div class="col-md-12">
+                  <p>FECHA FINAL</p>
+                  <p-calendar 
+                  [(ngModel)]="fechafin" 
+                  [iconDisplay]="'input'" 
+                  [showIcon]="true" 
+                  inputId="icondisplay"
+                  [style]="{'width':'100%'}"
+                  />
+              </div>
+             </div>
+          </div>
+          <div class="col-md-4">
+            <p>&nbsp;</p>
+            <p-dropdown 
+            [options]="catsucursales" 
+            [(ngModel)]="sucursalSel" 
+            optionLabel="name" 
+            placeholder="SUCURSALES" 
+            [style]="{'width':'100%'}"
+            (onChange)="changesuc()"
+            />
+        </div>
+          <div class="col-md-2">
+              <p>&nbsp;</p>
+              <button class="btn btn-grad rounded-3 bx-burst-hover" (click)="consultarMermas()"><i class='bx bx-search'></i></button>
+          </div>
+      </div>
+      
+      <app-loader *ngIf="loading" class="mt-3 mb-3" ></app-loader>
+
+  
+      <div *ngIf="datamermas.length>0 && numsemanau.length>0" class="pt-5">
+        <h3 class="text-center mt-5 mb-3">MERMAS</h3>   
+        
+        <h5 class="m-3" style="color: #ff9d2d;">ALA DE POLLO</h5>
+  
+        <table class="table table-bordered text-center" data-bs-theme="dark">
+          <thead>
+              <tr>
+                  <th style="background-color: black; color: white;"></th>
+                  <th scope="col" colspan="4"  style="background-color: black; color: white;">SEMANAS</th>
+                </tr>
+                <tr>
+                  <th scope="col" rowspan="2"  style="background-color: black; color: white;">MERMA</th>
+                  
+                  <th scope="col"  style="background-color: black; color: white;">W{{numsemanau[4]}} Y W{{numsemanau[3]}}</th>
+                  <th scope="col"  style="background-color: black; color: white;">W{{numsemanau[3]}} Y W{{numsemanau[2]}}</th>
+                  <th scope="col"  style="background-color: black; color: white;">W{{numsemanau[2]}} Y W{{numsemanau[1]}}</th>
+                  <th scope="col"  style="background-color: black; color: white;">W{{numsemanau[1]}} Y W{{numsemanau[0]}}</th>
+                  
+                </tr>
+          </thead>
+          <tbody>
+            <tr>
+            <th>OPERATIVA</th>
+            <td>{{datamermas[6].mermaAla | number : '1.2-2'}}&nbsp;KG</td>
+            <td>{{datamermas[4].mermaAla | number : '1.2-2'}}&nbsp;KG</td>
+            <td>{{datamermas[2].mermaAla | number : '1.2-2'}}&nbsp;KG</td>
+            <td>{{datamermas[0].mermaAla | number : '1.2-2'}}&nbsp;KG</td>
+            
+            </tr>
+            <tr>
+              <th>PROVEEDOR</th>
+              <td>{{datamermas[7].mermaAla | number : '1.2-2'}}&nbsp;KG</td>
+              <td>{{datamermas[5].mermaAla | number : '1.2-2'}}&nbsp;KG</td>
+              <td>{{datamermas[3].mermaAla | number : '1.2-2'}}&nbsp;KG</td>
+              <td>{{datamermas[1].mermaAla | number : '1.2-2'}}&nbsp;KG</td>
+              </tr>
+              <tr>
+                <th>TOTAL</th>
+                <td>{{(datamermas[6].mermaAla + datamermas[7].mermaAla) | number : '1.2-2'}}&nbsp;KG</td>
+                <td>{{(datamermas[4].mermaAla + datamermas[5].mermaAla) | number : '1.2-2'}}&nbsp;KG</td>
+                <td>{{(datamermas[2].mermaAla + datamermas[3].mermaAla) | number : '1.2-2'}}&nbsp;KG</td>
+                <td>{{(datamermas[0].mermaAla + datamermas[1].mermaAla) | number : '1.2-2'}}&nbsp;KG</td>
+                </tr>
+          </tbody>
+        </table>
+  
+        <div [style]="{'height':(8*40)+'px', 'min-height':'200px'}">
+          <ngx-charts-bar-horizontal-2d
+          [scheme]="colorSchemeGM"
+          [results]="datagmermasA"
+          [gradient]="gradient"
+          [xAxis]="showXAxis"
+          [yAxis]="showYAxis"
+          [legend]="true"
+          [legendTitle]="'SEMANAS'"
+          [showXAxisLabel]="showXAxisLabel"
+          [showYAxisLabel]="showYAxisLabel"
+          [xAxisLabel]="xAxisLabel"
+          [yAxisLabel]="yAxisLabel"
+          [showDataLabel]="true"
+          [dataLabelFormatting]="formatDataLabel"
+          [legendPosition]="legendPosition"
+          >
+        </ngx-charts-bar-horizontal-2d>  
+      </div>
+     <div style="margin-top: 50px;">&nbsp;</div>
+      <h5 class="m-3" style="color: #ff9d2d;">BONELESS</h5>
+  
+      <table class="table table-bordered text-center" data-bs-theme="dark">
+        <thead>
+            <tr>
+                <th style="background-color: black; color: white;"></th>
+                <th scope="col" colspan="4"  style="background-color: black; color: white;">SEMANAS</th>
+              </tr>
+          <tr>
+            <th scope="col" rowspan="2"  style="background-color: black; color: white;">MERMA</th>
+            <th scope="col"  style="background-color: black; color: white;">W{{numsemanau[4]}} Y W{{numsemanau[3]}}</th>
+            <th scope="col"  style="background-color: black; color: white;">W{{numsemanau[3]}} Y W{{numsemanau[2]}}</th>
+            <th scope="col"  style="background-color: black; color: white;">W{{numsemanau[2]}} Y W{{numsemanau[1]}}</th>
+            <th scope="col"  style="background-color: black; color: white;">W{{numsemanau[1]}} Y W{{numsemanau[0]}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+          <th>OPERATIVA</th>
+          <td>{{datamermas[6].mermaBoneless | number : '1.2-2'}}&nbsp;KG</td>
+          <td>{{datamermas[4].mermaBoneless | number : '1.2-2'}}&nbsp;KG</td>
+          <td>{{datamermas[2].mermaBoneless | number : '1.2-2'}}&nbsp;KG</td>
+          <td>{{datamermas[0].mermaBoneless | number : '1.2-2'}}&nbsp;KG</td>
+          </tr>
+          <tr>
+            <th>PROVEEDOR</th>
+            <td>{{datamermas[7].mermaBoneless | number : '1.2-2'}}&nbsp;KG</td>
+            <td>{{datamermas[5].mermaBoneless | number : '1.2-2'}}&nbsp;KG</td> 
+            <td>{{datamermas[3].mermaBoneless | number : '1.2-2'}}&nbsp;KG</td>
+            <td>{{datamermas[1].mermaBoneless | number : '1.2-2'}}&nbsp;KG</td>
+            </tr>
+            <tr>
+              <th>TOTAL</th>
+              <td>{{(datamermas[6].mermaBoneless + datamermas[7].mermaBoneless) | number : '1.2-2'}}&nbsp;KG</td>
+              <td>{{(datamermas[4].mermaBoneless + datamermas[5].mermaBoneless) | number : '1.2-2'}}&nbsp;KG</td>
+              <td>{{(datamermas[2].mermaBoneless + datamermas[3].mermaBoneless) | number : '1.2-2'}}&nbsp;KG</td>
+              <td>{{(datamermas[0].mermaBoneless + datamermas[1].mermaBoneless) | number : '1.2-2'}}&nbsp;KG</td>
+              </tr>
+        </tbody>
+      </table>
+  
+      <div [style]="{'height':(8*40)+'px', 'min-height':'200px'}">
+        <ngx-charts-bar-horizontal-2d
+        [scheme]="colorSchemeGM"
+        [results]="datagmermasB"
+        [gradient]="gradient"
+        [xAxis]="showXAxis"
+        [yAxis]="showYAxis"
+        [legend]="true"
+        [legendTitle]="'SEMANAS'"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showYAxisLabel"
+        [xAxisLabel]="xAxisLabel"
+        [yAxisLabel]="yAxisLabel"
+        [showDataLabel]="true"
+        [dataLabelFormatting]="formatDataLabel"
+        [legendPosition]="legendPosition"
+        >
+      </ngx-charts-bar-horizontal-2d>  
+    </div>
+      </div>
+     
+  
+      </div>
+      
+
+      <p-toast [breakpoints]="{'920px': {width: '100%', right: '0', left: '0'}}" [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'500ms'" [hideTransitionOptions]="'500ms'" [showTransformOptions]="'translateX(100%)'"></p-toast>
+      

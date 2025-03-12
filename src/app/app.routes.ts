@@ -40,8 +40,16 @@ export const routes: Routes = [
         path: 'ventas-bebidas',
         title: 'Ventas bebidas',
         loadComponent: () =>
-          import('./main/pages/VentasBebidas/VentasBebidas.component'),
+          import('./main/pages/PorcentajeBebidas/PorcentajeBebidas.component'),
       },
+
+      {
+        path: 'porcentaje-bebidas',
+        title: 'Ventas bebidas',
+        loadComponent: () =>
+          import('./main/pages/PorcentajeBebidas/PorcentajeBebidas.component'),
+      },
+
       {
         path: 'mix-ventas',
         title: 'Mix de ventas',
@@ -60,8 +68,33 @@ export const routes: Routes = [
         loadComponent: () => import('./main/pages/It25pts/It25pts.component'),
       },
       {
+        path: 'usuarios',
+        title: 'Usuarios',
+        loadComponent: () => import('./main/pages/Users/Users.component'),
+      },
+      {
+        path: 'ev25pts-sucursales',
+        title: '25 PUNTOS SUCURSALES',
+        loadComponent: () => import('./main/pages/Evaluacion/Ev25ptsSuc/Ev25ptsSuc.component'),
+      },
+      {
+        path: 'inicio',
+        title: 'Inicio',
+        loadComponent: () => import('./main/Inicio/Inicio.component'),
+      },
+      {
+        path: 'mermas',
+        title: 'Mermas',
+        loadComponent: () => import('./main/pages/ReporteMermas/ReporteMermas.component'),
+      },
+      {
+        path: 'reporte-bonos',
+        title: 'Bonos',
+        loadComponent: () => import('./main/pages/Reporte-Bonos/Reporte-Bonos.component'),
+      },
+      {
         path: '',
-        redirectTo: '/main/home',
+        redirectTo: '/main/inicio',
         pathMatch: 'full',
       },
     ],
