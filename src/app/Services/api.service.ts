@@ -227,5 +227,14 @@ export class ApiService {
     formdata.append("fecha",mes.toISOString());
     return this.http.post<any>(this.url+'Bonos/getBonosData',formdata,{headers:this.headers})
    }
+   
+   ExcelBonos(encabezado:string, data:string):Observable<any>
+   {
+    let formdata = new FormData();
+    formdata.append("data",data);
+    formdata.append('headers',encabezado); 
+    return this.http.post<any>(this.url+'Bonos/getExcelBonos',formdata,{headers:this.headers})
+   }
+
 }
 

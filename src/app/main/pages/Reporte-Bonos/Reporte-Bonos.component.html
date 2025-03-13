@@ -37,64 +37,141 @@
     <app-loader></app-loader>
 </div>  
 
-<div class="mt-3 p-3" *ngIf="bonodata.length>0">
+<div class="p-3" *ngIf="bonodata.length>0">
 
-    <div class="d-flex justify-content-center gap-3 mt-3 mb-3">
-        <button class="btn btn-outline-success p-2" style="min-width: 10rem;" [disabled]="loading"><img width="48" height="48" src="https://img.icons8.com/fluency/40/microsoft-excel-2019.png" alt="microsoft-excel-2019"/> EXCEL</button>    
+    <div class="d-flex gap-3 mt-3 mb-3 align-items-end justify-content-between">
+        <div class="d-flex align-items-center gap-3"><span>SIMPLIFICADO</span><p-inputSwitch [(ngModel)]="simplificado"/></div>
+        <button class="btn btn-outline-success p-2" style="min-width: 10rem;" [disabled]="loading" (click)="exportToExcel()">
+            <img width="48" height="48" src="https://img.icons8.com/fluency/40/microsoft-excel-2019.png" alt="microsoft-excel-2019"/> EXCEL</button>    
     </div>
 
-    <p-table [value]="matrizBono" 
+    <p-table 
+    #myTable
+    [value]="matrizBono" 
     [scrollable]="true" 
-    scrollHeight="50vh" 
-    styleClass="p-datatable-gridlines"
+    scrollHeight="60vh" 
+    styleClass="p-datatable-gridlines" 
+    class="p-datatable-gridlines"
     [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header">
-            <tr class="text-center">
-                <th pSortableColumn="sucursal" style="background-color: black;" pFrozenColumn>
+            <tr id="encabezadotabla">
+                <th class="text-center" pSortableColumn="sucursal" style="background-color: black;" pFrozenColumn>
                     Sucursal
                     <p-sortIcon field="sucursal"/>
                 </th>
-                <th pSortableColumn="metaVenta" style="background-color: black;">$ Meta
+                <th class="text-center" pSortableColumn="metaVenta" style="background-color: black;">$ Meta
                     <p-sortIcon field="metaVenta"/>
                 </th>
-                <th pSortableColumn="ventaReal" style="background-color: black;">$ Venta
+                <th class="text-center" pSortableColumn="ventaReal" style="background-color: black;">$ Venta
                     <p-sortIcon field="ventaReal"/>
                 </th>
-                <th pSortableColumn="alcance" style="background-color: black;">Alcance
+                <th class="text-center" pSortableColumn="alcance" style="background-color: black;">Alcance
                     <p-sortIcon field="alcance"/>
                 </th>
-                <th pSortableColumn="compras" style="background-color: black;">$ Compras
+                <th class="text-center" pSortableColumn="compras" style="background-color: black;" *ngIf="!simplificado">$ Compras
                     <p-sortIcon field="compras"/>
                 </th>
-                <th pSortableColumn="costo" style="background-color: black;">Costo
+                <th class="text-center" pSortableColumn="costo" style="background-color: black;">Costo
                     <p-sortIcon field="costo"/>
                 </th>
-                <th pSortableColumn="ventaAlimentosSalon" style="background-color: black;">$ Alimentos Salón
+                <th class="text-center" class="text-center" pSortableColumn="ventaAlimentosSalon" style="background-color: black;" *ngIf="!simplificado">$ Alimentos Salón
                     <p-sortIcon field="ventaAlimentosSalon"/>
                 </th>
-                <th pSortableColumn="ventaBebidasSalon" style="background-color: black;">$ Bebidas Salón
+                <th class="text-center" pSortableColumn="ventaBebidasSalon" style="background-color: black;" *ngIf="!simplificado">$ Bebidas Salón
                     <p-sortIcon field="ventaBebidasSalon"/>
                 </th>
-                <th pSortableColumn="porcentajeBebidas" style="background-color: black;">% Bebidas
+                <th class="text-center" pSortableColumn="porcentajeBebidas" style="background-color: black;">% Bebidas
                     <p-sortIcon field="porcentajeBebidas"/>
                 </th>
-                <th pSortableColumn="porcentajehdb" style="background-color: black;">AYC HOT-DOG / BURGUER
+                <th class="text-center" pSortableColumn="totalayc" style="background-color: black;" *ngIf="!simplificado">Total AYC
+                    <p-sortIcon field="totalayc"/>
+                </th>
+                <th class="text-center" pSortableColumn="inicioaychdb" style="background-color: black;"*ngIf="!simplificado">AYC Hot-Dor / Burguer
+                    <p-sortIcon field="inicioaychdb"/>
+                </th>
+                <th class="text-center" pSortableColumn="porcentajehdb" style="background-color: black;">% AYC Hot-Dog / Burguer
                     <p-sortIcon field="porcentajehdb"/>
+                </th>
+                <th *ngIf="!simplificado" class="text-center" class="text-center" pSortableColumn="difAla" style="background-color: black;">Diferencias Ala
+                    <p-sortIcon field="difAla"/>
+                </th>
+                <th *ngIf="!simplificado" class="text-center" class="text-center" pSortableColumn="pdifAla" style="background-color: black;">Compras Ala
+                    <p-sortIcon field="comprasAla"/>
+                </th>
+                <th class="text-center" class="text-center" pSortableColumn="pdifAla" style="background-color: black;">% Diferencias Ala
+                    <p-sortIcon field="pdifAla"/>
+                </th>
+                <th *ngIf="!simplificado" class="text-center" pSortableColumn="difBoneless" style="background-color: black;">Diferencias Boneless
+                    <p-sortIcon field="difBoneless"/>
+                </th>
+                <th *ngIf="!simplificado" class="text-center" pSortableColumn="comprasBoneless" style="background-color: black;">Compras Boneless
+                    <p-sortIcon field="comprasBoneless"/>
+                </th>
+                <th class="text-center" pSortableColumn="pdifBoneless" style="background-color: black;">% Diferencias Boneless
+                    <p-sortIcon field="pdifBoneless"/>
+                </th>
+                <th *ngIf="!simplificado" class="text-center" pSortableColumn="difPapa" style="background-color: black;">Diferencias Papa
+                    <p-sortIcon field="difPapa"/>
+                </th>
+                <th *ngIf="!simplificado" class="text-center" pSortableColumn="comprasPapa" style="background-color: black;">Compras Papa
+                    <p-sortIcon field="comprasPapa"/>
+                </th>
+                <th class="text-center" pSortableColumn="pdifPapa" style="background-color: black;">% Diferencias Papa
+                    <p-sortIcon field="pdifPapa"/>
+                </th>
+                <th *ngIf="!simplificado" class="text-center" pSortableColumn="mermasAla" style="background-color: black;">Mermas Ala
+                    <p-sortIcon field="mermasAla"/>
+                </th>
+                <th class="text-center" pSortableColumn="pmermasAla" style="background-color: black;">% Mermas Ala
+                    <p-sortIcon field="pmermasAla"/>
+                </th>
+                <th *ngIf="!simplificado" class="text-center" pSortableColumn="mermasBoneless" style="background-color: black;">Mermas Boneless
+                    <p-sortIcon field="mermasBoneless"/>
+                </th>
+                <th class="text-center" pSortableColumn="pmermasBoneless" style="background-color: black;">% Mermas Boneless
+                    <p-sortIcon field="pmermasBoneless"/>
+                </th>
+                <th *ngIf="!simplificado" class="text-center" pSortableColumn="mermasPapa" style="background-color: black;">Mermas Papa
+                    <p-sortIcon field="mermasPapa"/>
+                </th>
+                <th class="text-center" pSortableColumn="pmermasPapa" style="background-color: black;">% Mermas Papa
+                    <p-sortIcon field="pmermasPapa"/>
+                </th>
+                <th class="text-center" pSortableColumn="porcentajeTareas" style="background-color: black;">% Tareas
+                    <p-sortIcon field="porcentajeTareas"/>
                 </th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-item>
-            <tr class="text-center">
-                <td pFrozenColumn>{{item.sucursal}}</td>
-                <td>${{item.metaVenta | number : '1.2-2'}}</td>
-                <td>${{item.ventaReal | number : '1.2-2'}}</td>
-                <td [ngClass]="{'bg-success': item.alcance>=100,'bg-warning text-dark':item.alcance>=75 && item.alcance<100,'bg-danger':item.alcance<75}">{{item.alcance | number : '1.2-2'}}%</td>
-                <td>${{item.compras | number : '1.2-2'}}</td>
-                <td>{{item.costo | number : '1.2-2'}}%</td> 
-                <td>${{item.ventaAlimentosSalon | number : '1.2-2'}}</td>
-                <td>${{item.ventaBebidasSalon | number : '1.2-2'}}</td>
-                <td [ngClass]="{'bg-danger':item.porcentajeBebidas<40,'bg-success':item.porcentajeBebidas>=40}">{{item.porcentajeBebidas | number : '1.2-2'}}%</td>
-                <td [ngClass]="{'bg-danger':item.porcentajehdb<=25,'bg-success':item.porcentajehdb>25}">{{item.porcentajehdb | number : '1.2-2'}}%</td>
+            <tr>
+                <td pFrozenColumn class="text-center" style="border: 1px solid black; background-color: blueviolet; color: white;">{{item.sucursal}}</td>
+                <td class="text-center" style="border: 1px solid black;">${{item.metaVenta | number : '1.2-2'}}</td>
+                <td class="text-center" style="border: 1px solid black;">${{item.ventaReal | number : '1.2-2'}}</td>
+                <td class="text-center" [ngClass]="{'bg-success': item.alcance>=100,'bg-warning text-dark':item.alcance>=75 && item.alcance<100,'bg-danger':item.alcance<75}" style="border: 1px solid black;">{{item.alcance | number : '1.2-2'}}%</td>
+                <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">${{item.compras | number : '1.2-2'}}</td>
+                <td class="text-center" style="border: 1px solid black;">{{item.costo | number : '1.2-2'}}%</td> 
+                <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">${{item.ventaAlimentosSalon | number : '1.2-2'}}</td>
+                <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">${{item.ventaBebidasSalon | number : '1.2-2'}}</td>
+                <td class="text-center" [ngClass]="{'bg-danger':item.porcentajeBebidas<40,'bg-success':item.porcentajeBebidas>=40}" style="border: 1px solid black;">{{item.porcentajeBebidas | number : '1.2-2'}}%</td>
+                <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">{{item.totalayc | number : '1.2-2'}}</td>
+                <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">{{item.inicioaychdb| number : '1.2-2'}}</td>
+                <td class="text-center" [ngClass]="{'bg-danger':item.porcentajehdb<=25,'bg-success':item.porcentajehdb>25}" style="border: 1px solid black;">{{item.porcentajehdb | number : '1.2-2'}}%</td>
+                <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">{{item.difAla | number : '1.2-2'}}KG</td>
+                <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">{{item.comprasAla | number : '1.2-2'}}&nbsp;KG</td>
+                <td class="text-center" [ngClass]="getClassColor(item.pdifAla)" style="border: 1px solid black;">{{item.pdifAla | number : '1.2-2'}}%</td>
+                <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">{{item.difBoneless | number : '1.2-2'}}&nbsp;KG</td>
+                <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">{{item.comprasBoneless | number : '1.2-2'}}&nbsp;KG</td>
+                <td class="text-center" [ngClass]="getClassColor(item.pdifBoneless)" style="border: 1px solid black;">{{item.pdifBoneless | number : '1.2-2'}}%</td>
+                <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">{{item.difPapa | number : '1.2-2'}}&nbsp;KG</td>
+                <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">{{item.comprasPapa | number : '1.2-2'}}&nbsp;KG</td>
+                <td class="text-center" [ngClass]="getClassColor(item.pdifPapa)" style="border: 1px solid black;">{{item.pdifPapa | number : '1.2-2'}}%</td>
+                <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">{{item.mermasAla | number : '1.2-2'}}&nbsp;KG</td>
+                <td class="text-center" [ngClass]="getClassColor(item.pmermasAla)" style="border: 1px solid black;">{{item.pmermasAla | number : '1.2-2'}}%</td>
+                <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">{{item.mermasBoneless | number : '1.2-2'}}&nbsp;KG</td>
+                <td class="text-center" [ngClass]="getClassColor(item.pmermasBoneless)" style="border: 1px solid black;">{{item.pmermasBoneless | number : '1.2-2'}}%</td>
+                <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">{{item.mermasPapa | number : '1.2-2'}}&nbsp;KG</td>
+                <td class="text-center" [ngClass]="getClassColor(item.pmermasPapa)" style="border: 1px solid black;">{{item.pmermasPapa | number : '1.2-2'}}%</td>
+                <td class="text-center" [ngClass]="getClassColoApps(item.porcentajeTareas)" style="border: 1px solid black;">{{item.porcentajeTareas | number : '1.2-2'}}%</td>
             </tr>
         </ng-template>
     </p-table>

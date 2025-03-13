@@ -6,7 +6,9 @@ export interface BonoData
     costosSucursales:Costoucursal;
     pBebidas:PBebidas;
     inicioayc:InicioAYCHDB;
-    diferenciasData:PdiferenciasModel
+    diferenciasData:PdiferenciasModel;
+    mermasdata:PmermasModel;
+    porcentajeTareas:number; 
  }
 
 
@@ -39,6 +41,22 @@ export interface BonoData
     totalayc:number;
     inicioaychdb:number; 
     porcentajehdb:number; 
+    difAla:number;
+    comprasAla:number; 
+    pdifAla:number;
+    difBoneless:number;
+    comprasBoneless:number; 
+    pdifBoneless:number;
+    difPapa:number;  
+    comprasPapa:number;
+    pdifPapa:number; 
+    mermasAla:number;
+    pmermasAla:number; 
+    mermasBoneless:number; 
+    pmermasBoneless:number;
+    mermasPapa:number; 
+    pmermasPapa:number; 
+    porcentajeTareas:number; 
  }
 
  export interface InicioAYCHDB
@@ -58,4 +76,13 @@ export interface BonoData
    pdifAla: number;
    pdifBoneless: number;
    pdifPapas: number;
+ }
+
+ export interface PmermasModel {
+   mermasAla: number;
+   mermasBoneless: number;
+   mermasPapa: number;
+   pmermasAla: number;
+   pmermasBoneless: number;
+   pmermasPapas: number;
  }
