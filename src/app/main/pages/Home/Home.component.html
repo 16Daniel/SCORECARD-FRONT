@@ -22,6 +22,18 @@
    [style]="{'width':'20rem'}"
     />
   </div>
+  <div>
+    <p-dropdown 
+    [options]="agrupadores" 
+    [(ngModel)]="groupSel" 
+    [filter]="true"
+    filterBy="nombre"
+    optionLabel="nombre" 
+    placeholder="GRUPO" 
+    [style]="{'width':'20rem'}"
+    (onChange)="changeGroup()"
+    />
+</div>
   <button class="btn btn-grad rounded-3 bx-burst-hover" (click)="consultarDash()"><i class='bx bx-search'></i></button>
   </div>
 

@@ -3,7 +3,7 @@
     <h3 class="text-center mt-5 mb-3">DIFERENCIAS DE INVENTARIO</h3>    
     
     <div class="row m-0 mb-5">
-        <div class="col-md-6">
+        <div class="col-md-4">
            <div class="row m-0">
             <div class="col-md-6">
                 <p>FECHA INICIAL</p>
@@ -27,7 +27,7 @@
             </div>
            </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <p>&nbsp;</p>
             <p-multiSelect 
             [options]="catsucursales" 
@@ -35,7 +35,20 @@
             optionLabel="name" 
             placeholder="SUCURSALES" 
             [style]="{'width':'100%'}"
-            (onChange)="limpiardata()"
+            (onChange)="changeSuc()"
+            />
+        </div>
+        <div class="col-md-3">
+            <p>&nbsp;</p>
+            <p-dropdown 
+            [options]="agrupadores" 
+            [(ngModel)]="groupSel" 
+            [filter]="true"
+            filterBy="nombre"
+            optionLabel="nombre" 
+            placeholder="GRUPO" 
+            [style]="{'width':'100%'}"
+            (onChange)="changeGroup()"
             />
         </div>
         <div class="col-md-2">
@@ -50,11 +63,17 @@
 
     <div class="mt-5 p-3" *ngIf="arr_data.length>0">
      
+        <div class="d-flex justify-content-center">
+            <button class="btn btn-outline-success p-2" style="min-width: 10rem;" [disabled]="loading" (click)="exportToExcel()">
+                <img width="48" height="48" src="https://img.icons8.com/fluency/40/microsoft-excel-2019.png" alt="microsoft-excel-2019"/> EXCEL</button> 
+                    
+        </div>
+
         <div class="mt-3 mb-3">
             <h4 class="text-center mt-3">ALA DE POLLO</h4>
             <div [style]="{'min-height':'300px'}">
                 <ngx-charts-bar-vertical
-                [scheme]="colorScheme"
+                [scheme]="customColors()"
                 [results]="dataga"
                 [gradient]="gradient"
                 [xAxis]="showXAxis"
@@ -71,7 +90,7 @@
             <h4 class="text-center mt-3">BONELESS</h4>
             <div [style]="{'min-height':'300px'}">
                 <ngx-charts-bar-vertical
-                [scheme]="colorScheme"
+                [scheme]="customColors()"
                 [results]="datagb"
                 [gradient]="gradient"
                 [xAxis]="showXAxis"
@@ -88,7 +107,7 @@
             <h4 class="text-center mt-3">PAPAS</h4>
             <div [style]="{'min-height':'300px'}">
                 <ngx-charts-bar-vertical
-                [scheme]="colorScheme"
+                [scheme]="customColors()"
                 [results]="datagp"
                 [gradient]="gradient"
                 [xAxis]="showXAxis"
@@ -98,6 +117,7 @@
                 [showYAxisLabel]="showYAxisLabel"
                 [xAxisLabel]="xAxisLabel"
                 [yAxisLabel]="'SUCURSAL'">
+
               </ngx-charts-bar-vertical>
               
             </div>
@@ -105,7 +125,9 @@
         </div>
 
         <div *ngFor="let item of sucursalesSel">
-            <app-diferencias-suc [data]="getDataSuc(item.cod)">
+            <app-diferencias-suc [data]="getDataSuc(item.cod)"
+            [promAla]="promedioAla" [promBoneless]="promedioBoneless" [promPapa]="promedioPapa"
+            >
             </app-diferencias-suc>
         </div>
         

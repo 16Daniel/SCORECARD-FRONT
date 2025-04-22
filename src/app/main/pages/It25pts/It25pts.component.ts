@@ -10,7 +10,7 @@ import { LoaderComponent } from '../../../Shared/Loader/Loader.component';
 import { CalendarModule } from 'primeng/calendar';
 import { LegendPosition, NgxChartsModule } from '@swimlane/ngx-charts';
 import { Sucursal } from '../../../Interfaces/Sucursal';
-import { It25pts } from '../../../Interfaces/25Pts';
+import { It25pts, PbebidasSucRegionalGeneral } from '../../../Interfaces/25Pts';
 import { DropdownModule } from 'primeng/dropdown';
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
@@ -18,6 +18,7 @@ import { CompraArt, MermasDS } from '../../../Interfaces/Merma';
 import { Dashboardsuc } from '../../../Interfaces/Dashboardsuc';
 import { DashSucComponent } from './DashSuc/DashSuc.component';
 import { debounceTime, fromEvent, Subscription } from 'rxjs';
+import { Agrupador } from '../../../Interfaces/Agrupador';
 
 @Component({
   selector: 'app-it25pts',
@@ -32,7 +33,8 @@ import { debounceTime, fromEvent, Subscription } from 'rxjs';
     NgxChartsModule,
     DropdownModule,
     RouterModule,
-    DashSucComponent
+    DashSucComponent,
+    DropdownModule
 ],
   providers:[MessageService],
   templateUrl: './It25pts.component.html',
@@ -47,7 +49,11 @@ export default class It25ptsComponent implements OnInit {
   public fechaini:Date = new Date(); 
   public fechafin:Date = new Date(); 
 
+    public groupSel:Agrupador|undefined; 
+    public agrupadores:Agrupador[] = [];
+
   datadash:Dashboardsuc[] = []; 
+  public dataPbebidas:PbebidasSucRegionalGeneral|undefined;  
   
   constructor(private messageService: MessageService,public cdr:ChangeDetectorRef, public apiserv:ApiService,private router: Router)
   {
@@ -70,6 +76,7 @@ getSucursales()
     next: data => {
        this.catsucursales=data;
        this.loading = false;
+       this.getAgrupadores(); 
        this.cdr.detectChanges();
     },
     error: error => {
@@ -79,6 +86,23 @@ getSucursales()
     }
 });
 
+}
+
+getAgrupadores()
+{
+  this.loading= true;
+  this.apiserv.getAgrupadores().subscribe({
+   next: data => {
+      this.agrupadores=data;
+      this.loading = false;
+      this.cdr.detectChanges();
+   },
+   error: error => {
+      console.log(error);
+      this.loading = false;
+      this.showMessage('error',"Error","Error al procesar la solicitud");
+   }
+});
 }
 
 
@@ -94,9 +118,7 @@ consultar25pts()
   this.loading= true;
   this.apiserv.getDataDashSuc(JSON.stringify(sucursales),this.formatDate(this.getPreviousSunday(this.fechaini)),this.formatDate(this.fechafin)).subscribe({
    next: data => {
-  
-    console.log(data); 
-      this.datadash = data; 
+      this.datadash = data;
       this.loading = false;
       this.cdr.detectChanges();
    },
@@ -204,5 +226,24 @@ getdatasuc(idsuc:number):Dashboardsuc
   let data:Dashboardsuc[] = this.datadash.filter(x => x.ids == idsuc);
   return data[0]
 }
+
+changeGroup()
+{  
+
+   if(this.groupSel != undefined)
+     {
+       this.sucursalesSel = []; 
+       let obj = JSON.parse(this.groupSel.jdata); 
+
+       for(let item of obj)
+         {
+           let suc = this.catsucursales.filter(x=>x.cod == item); 
+           if(suc.length>0){ this.sucursalesSel.push(suc[0]); }
+         }
+         
+     }
+}
+
+
 
 }

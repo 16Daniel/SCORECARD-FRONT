@@ -1,9 +1,11 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './auth.guard';
 
 export const routes: Routes = [
   {
     path: 'main',
     loadComponent: () => import('./main/main.component'),
+    canActivateChild:[authGuard],
     children: [
       {
         path: 'home',
@@ -91,6 +93,16 @@ export const routes: Routes = [
         path: 'reporte-bonos',
         title: 'Bonos',
         loadComponent: () => import('./main/pages/Reporte-Bonos/Reporte-Bonos.component'),
+      },
+      {
+        path: 'agrupadores',
+        title: 'Agrupadores',
+        loadComponent: () => import('./main/pages/GruposSucursales/GruposSucursales.component'),
+      },
+      {
+        path: 'roles',
+        title: 'Roles',
+        loadComponent: () => import('./main/pages/Roles/Roles.component'),
       },
       {
         path: '',

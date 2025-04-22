@@ -3,7 +3,7 @@
   <div class="mt-5"></div>
 
     <div class="row m-0 mb-5">
-        <div class="col-md-6">
+        <div class="col-md-3">
            <div class="row m-0">
             <!-- <div class="col-md-6">
                 <p>FECHA INICIAL</p>
@@ -38,6 +38,19 @@
           (onChange)="changesuc()"
           />
       </div>
+      <div class="col-md-3">
+        <p>&nbsp;</p>
+        <p-dropdown 
+        [options]="agrupadores" 
+        [(ngModel)]="groupSel" 
+        [filter]="true"
+        filterBy="nombre"
+        optionLabel="nombre" 
+        placeholder="GRUPO" 
+        [style]="{'width':'100%'}"
+        (onChange)="changeGroup()"
+        />
+    </div>
         <div class="col-md-2">
             <p>&nbsp;</p>
             <button class="btn btn-grad rounded-3 bx-burst-hover" (click)="consultar25pts()"><i class='bx bx-search'></i></button>
@@ -55,7 +68,7 @@
     
       <div class="d-flex justify-content-center gap-3 flex-wrap" *ngIf="datadash.length>0">
         <div *ngFor="let item of sucursalesSel">
-          <app-dash-suc [data]="getdatasuc(item.cod)" [datasuc]="item"></app-dash-suc>
+          <app-dash-suc [data]="getdatasuc(item.cod)" [datasuc]="item" ></app-dash-suc>
           
           <div style="overflow: hidden;" class="m-3">
             <svg

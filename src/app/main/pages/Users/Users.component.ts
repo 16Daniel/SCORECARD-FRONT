@@ -37,7 +37,7 @@ export default class UsersComponent {
   public actualizar:boolean = false; 
   public catusuarios:Usuario[] = []; 
   public usuariosel:Usuario|undefined;  
-  public catroles:Rol[] = [{id:1,descripcion:'DIRECCIÓN'},{id:2,descripcion:'REGIONAL'},{id:3,descripcion:'SUPERVISOR'},{id:4,descripcion:'ADMINISTRADOR'}];
+  public catroles:Rol[] = [];
   public formrolsel:number | undefined;
   public formnombre:string | undefined;
   public formapellidop:string | undefined;
@@ -49,6 +49,7 @@ export default class UsersComponent {
   constructor(public apiserv:ApiService,private messageService: MessageService,public cdr:ChangeDetectorRef, private config: PrimeNGConfig,
     private confirmationService: ConfirmationService)
   {
+    this.getRoles();
     this.getusuarios(); 
   }
   showMessage(sev:string,summ:string,det:string) {
@@ -60,6 +61,26 @@ export default class UsersComponent {
 {
   this.actualizar=false;
   this.modalAgregar = true; 
+}
+
+getRoles()
+{
+  this.apiserv.getRoles().subscribe({
+    next: data => {
+       this.catroles =data;
+       this.loading = false;
+       if(data.length==0)
+       {
+        this.foundData = false; 
+       }
+     this.cdr.detectChanges();
+    },
+    error: error => {
+       console.log(error);
+       this.showMessage('error',"Error","Error al procesar la solicitud");
+    }
+});
+
 }
 
 getusuarios()

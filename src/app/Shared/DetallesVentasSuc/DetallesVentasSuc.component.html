@@ -1,0 +1,258 @@
+<div *ngIf="itemdetalles!=undefined" style="width: calc(100% - 40px);">
+    <h3 class="text-center mb-5">{{dataSuc?.name }} <span class="text-p fw-bold">{{this.getNameMonth(fechaSel!.getMonth()+1)+' '+fechaSel.getFullYear()}}</span></h3>
+    <app-loader *ngIf="loadingdet"></app-loader>
+
+    @if(loadingdetv2)
+    {
+    <div class="d-flex justify-content-center">
+     <app-loader></app-loader>
+    </div>
+    }@else 
+    {
+    
+     <div  *ngIf="detallesventas2 != undefined && detallesventa2G.length>0">
+
+      <div class="progress-stacked mt-1 mb-3">
+        <div class="progress" role="progressbar" aria-label="Segment one" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" [style]="{'width': compararvstotal(detallesventas2!.descuentos)+'%'}">
+          <div class="progress-bar" style="background-color: #f13800;"></div>
+        </div>
+        <div class="progress" role="progressbar" aria-label="Segment two" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" [style]="{'width': compararvstotal(detallesventas2!.mermas)+'%'}">
+          <div class="progress-bar" style="background-color: #00c5a4 ;"></div>
+        </div>
+        <div class="progress" role="progressbar" aria-label="Segment three" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" [style]="{'width': compararvstotal(detallesventas2!.cancelaciones)+'%'}">
+          <div class="progress-bar" style="background-color: #0650da ;"></div>
+        </div>
+        <div class="progress" role="progressbar" aria-label="Segment three" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" [style]="{'width': compararvstotal(detallesventas2!.invitaciones)+'%'}">
+          <div class="progress-bar" style="background-color: #ff3ee5"></div>
+        </div>
+        <div class="progress" role="progressbar" aria-label="Segment three" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" [style]="{'width': compararvstotal(detallesventas2!.consumoInterno)+'%'}">
+          <div class="progress-bar" style="background-color: #9068ff;"></div>
+        </div>
+      </div>
+
+      <div class=" d-flex justify-content-evenly flex-wrap gap-3">
+        <div class="p-3 rounded-3 shadow" style="border-bottom: #f13800 solid 2px;">
+          <p class="text-center">DESCUENTOS</p>
+          <p class="text-center">${{detallesventas2!.descuentos | number : '1.2-2'}}</p>
+          <p class="text-center">{{compararvsventas(detallesventas2!.descuentos) | number : '1.2-2' }}%</p>
+        </div>
+        <div class="p-3 rounded-3 shadow" style="border-bottom: #00c5a4 solid 2px;">
+          <p class="text-center">MERMAS</p>
+          <p class="text-center">${{detallesventas2!.mermas | number : '1.2-2'}}</p>
+          <p class="text-center">{{compararvsventas(detallesventas2!.mermas) | number : '1.2-2' }}%</p>
+        </div>
+        <div class="p-3 rounded-3 shadow" style="border-bottom: #0650da solid 2px;">
+          <p class="text-center">CANCELACIONES</p>
+          <p class="text-center">${{detallesventas2!.cancelaciones | number : '1.2-2'}}</p>
+          <p class="text-center">{{compararvsventas(detallesventas2!.cancelaciones) | number : '1.2-2' }}%</p>
+        </div>
+        <div class="p-3 rounded-3 shadow" style="border-bottom: #ff3ee5 solid 2px;">
+          <p class="text-center">INVITACIONES</p>
+          <p class="text-center">${{detallesventas2!.invitaciones | number : '1.2-2'}}</p>
+          <p class="text-center">{{compararvsventas(detallesventas2!.invitaciones) | number : '1.2-2' }}%</p>
+        </div>
+        <div class="p-3 rounded-3 shadow"  style="border-bottom: #9068ff solid 2px;">
+          <p class="text-center">CONSUMOS INTERNOS</p>
+          <p class="text-center">${{detallesventas2!.consumoInterno | number : '1.2-2'}}</p>
+          <p class="text-center">{{compararvsventas(detallesventas2!.consumoInterno) | number : '1.2-2' }}%</p>
+        </div>
+        </div>
+
+     </div>
+    }   
+
+    <div *ngIf="arrdetalles.length>0" class="mt-3">
+      <div class="rounded-3 p-3" style="min-width: 90%; min-height: 10rem;">
+        <p class="fw-bold fs-5">VENTA TOTAL</p>
+        <ngx-charts-advanced-pie-chart
+        [scheme]="colorSchemedet"
+        [results]="arrdetalles">
+      </ngx-charts-advanced-pie-chart>
+      </div>
+      <div style="overflow: hidden; position: relative; bottom: 0; z-index: 2;">
+        <svg
+          preserveAspectRatio="none"
+          viewBox="0 0 1200 120"
+          xmlns="http://www.w3.org/2000/svg"
+          style="fill: #000000; width: 100%; height: 10rem; transform: rotate(180deg) scaleX(-1);"
+        >
+          <path
+          d="M0 0v46.29c47.79 22.2 103.59 32.17 158 28 70.36-5.37 136.33-33.31 206.8-37.5 73.84-4.36 147.54 16.88 218.2 35.26 69.27 18 138.3 24.88 209.4 13.08 36.15-6 69.85-17.84 104.45-29.34C989.49 25 1113-14.29 1200 52.47V0z"
+          opacity=".25"
+        />
+          <path
+            d="M0 0v15.81c13 21.11 27.64 41.05 47.69 56.24C99.41 111.27 165 111 224.58 91.58c31.15-10.15 60.09-26.07 89.67-39.8 40.92-19 84.73-46 130.83-49.67 36.26-2.85 70.9 9.42 98.6 31.56 31.77 25.39 62.32 62 103.63 73 40.44 10.79 81.35-6.69 119.13-24.28s75.16-39 116.92-43.05c59.73-5.85 113.28 22.88 168.9 38.84 30.2 8.66 59 6.17 87.09-7.5 22.43-10.89 48-26.93 60.65-49.24V0z"
+            opacity=".5"
+          />
+          <path d="M0 0v5.63C149.93 59 314.09 71.32 475.83 42.57c43-7.64 84.23-20.12 127.61-26.46 59-8.63 112.48 12.24 165.56 35.4C827.93 77.22 886 95.24 951.2 90c86.53-7 172.46-45.71 248.8-84.81V0z" />
+        </svg>
+      </div>
+    </div>
+
+   <div *ngIf="arrdetalles.length>0">
+    <div class="mt-3 rounded-3 p-3" style="min-width: 90%; min-height: 10rem; background-color: #00000078;">
+      <p class="fw-bold fs-5" style="color: #c7ffbc;">UBER</p>
+      <ngx-charts-advanced-pie-chart
+          [scheme]="colorSchemedetApp"
+          [results]="arrdetallesUber"
+          *ngIf="arrdetallesUber.length>0"
+          >
+        </ngx-charts-advanced-pie-chart>
+    </div>
+
+    <div class="mt-3 rounded-3 p-3" style="min-width: 90%; min-height: 10rem; background-color: #00000078;">
+      <p class="fw-bold fs-5" style="color: #aff0ff;">RAPPI</p>
+      <ngx-charts-advanced-pie-chart
+      [scheme]="colorSchemedetApp"
+      [results]="arrdetallesRappi"
+      *ngIf="arrdetallesRappi.length>0">
+    </ngx-charts-advanced-pie-chart>
+    </div>
+    <div class="mt-3 rounded-3 p-3" style="min-width: 90%; min-height: 10rem; background-color: #00000078;">
+      <p class="fw-bold fs-5" style="color: #ffd6b4;">DIDI</p>
+      <ngx-charts-advanced-pie-chart
+      [scheme]="colorSchemedetApp"
+      [results]="arrdetallesDidi"
+      *ngIf="arrdetallesDidi.length>0"
+      >
+    </ngx-charts-advanced-pie-chart>
+    </div>
+    <P></P>
+   </div>
+
+
+   <!-- @if(loadingdetv3)
+   {
+    <div class="d-flex justify-content-center mt-3">
+      <app-loader></app-loader>
+     </div>
+   }@else 
+   {
+      <div class="w-100" *ngIf="detalles3 != undefined">
+          <div class="mt-3 rounded-3 p-3" style="min-width: 90%; min-height: 10rem; background-color: #00000078;">
+            <p class="fw-bold fs-5 text-center">VENTA PROMEDIO DIARIA</p>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="bg-cont p-3">
+                  <p class="text-center">PRESUPUESTADA</p>
+                  <p class="text-center">${{(itemdetalles.meta/detalles3.diasdelmes) | number : '1.2-2'}}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="bg-cont p-3">
+                  <p class="text-center">REAL</p>
+                  <p class="text-center" >${{(detalles3.ventareal/detalles3.diaactual) | number : '1.2-2'}}</p>
+                </div>
+              </div>
+              <p class="text-center m-0 mt-3">{{((detalles3.ventareal/detalles3.diaactual) / (itemdetalles.meta/detalles3.diasdelmes) * 100) | number : '1.2-2'}}%</p>
+            </div>
+
+            <div class="progress text-light mt-3" role="progressbar" style="height: 35px; background-color: #575658;">
+              <div class="fw-bold"  [style]="{'width':((detalles3.ventareal/detalles3.diaactual) / (itemdetalles.meta/detalles3.diasdelmes) * 100)+'%','background-color':getbgdet(((detalles3.ventareal/detalles3.diaactual) / (itemdetalles.meta/detalles3.diasdelmes) * 100))}"></div>
+              <div class="reference-line-25">25%</div>
+              <div class="reference-line-50">50%</div>
+              <div class="reference-line-75">75%</div>
+              <div class="reference-line-100">100%</div>
+            </div>
+
+          </div>
+
+          <div class="mt-3 rounded-3 p-3" style="min-width: 90%; min-height: 10rem; background-color: #00000078;">
+            <p class="fw-bold fs-5 text-center">COSTO</p>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="bg-cont p-3">
+                  <p class="text-center">PRESUPUESTADO</p>
+                  <p class="text-center">${{ ((detalles3.ventareal)*(detalles3.costopresupuestado/100)) | number : '1.2-2'}}</p>
+                  <p class="text-center">{{detalles3.costopresupuestado | number : '1.2-2'}}%</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="bg-cont p-3">
+                  <p class="text-center">REAL</p>
+                  <p class="text-center" >${{ ((detalles3.ventareal)*(detalles3.costoreal/100)) | number : '1.2-2'}}</p>
+                  <p class="text-center">{{detalles3.costoreal | number : '1.2-2'}}%</p>
+                </div>
+              </div>
+              <p class="text-center m-0 mt-3">{{((detalles3.costoreal) / (detalles3.costopresupuestado) * 100) | number : '1.2-2'}}%</p>
+            </div>
+
+            <div class="progress text-light mt-3" role="progressbar" style="height: 35px; background-color: #575658;">
+              <div class="fw-bold progress-bar-p"  [style]="{'width':((detalles3.costoreal) / (detalles3.costopresupuestado) * 100)+'%','background-color':getbgdeti(((detalles3.costoreal) / (detalles3.costopresupuestado) * 100))}"></div>
+              <div class="reference-line-25">25%</div>
+              <div class="reference-line-50">50%</div>
+              <div class="reference-line-75">75%</div>
+              <div class="reference-line-100">100%</div>
+            </div>
+
+          </div>
+
+
+          <div class="mt-3 rounded-3 p-3" style="min-width: 90%; min-height: 10rem; background-color: #00000078;">
+            <p class="fw-bold fs-5 text-center">TICKET PROMEDIO</p>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="bg-cont p-3">
+                  <p class="text-center">PRESUPUESTADO</p>
+                  <p class="text-center">${{ detalles3.ticketpromediopresupuestado | number : '1.2-2'}}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="bg-cont p-3">
+                  <p class="text-center">REAL</p>
+                  <p class="text-center" >${{ detalles3.ticketpromedioreal | number : '1.2-2'}}</p>
+                </div>
+              </div>
+              <p class="text-center m-0 mt-3">{{((detalles3.ticketpromedioreal) / (detalles3.ticketpromediopresupuestado) * 100) | number : '1.2-2'}}%</p>
+            </div>
+
+            <div class="progress text-light mt-3" role="progressbar" style="height: 35px; background-color: #575658;">
+              <div class="fw-bold progress-bar-p"  [style]="{'width':((detalles3.ticketpromedioreal) / (detalles3.ticketpromediopresupuestado) * 100)+'%','background-color':getbgdet(((detalles3.ticketpromedioreal) / (detalles3.ticketpromediopresupuestado) * 100))}"></div>
+              <div class="reference-line-25">25%</div>
+              <div class="reference-line-50">50%</div>
+              <div class="reference-line-75">75%</div>
+              <div class="reference-line-100">100%</div>
+            </div>
+
+          </div>
+
+          <div class="mt-3 rounded-3 p-3" style="min-width: 90%; min-height: 10rem; background-color: #00000078;">
+            <p class="fw-bold fs-5 text-center">ROTACIÓN</p>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="bg-cont p-3">
+                  <p class="text-center">PRESUPUESTADA</p>
+                  <p class="text-center">{{ detalles3.rotacionpresupuestada | number : '1.2-2'}}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="bg-cont p-3">
+                  <p class="text-center">REAL</p>
+                  <p class="text-center" >{{ detalles3.rotacionreal | number : '1.2-2'}}</p>
+                </div>
+              </div>
+              <p class="text-center m-0 mt-3">{{((detalles3.rotacionreal) / (detalles3.rotacionpresupuestada) * 100) | number : '1.2-2'}}%</p>
+            </div>
+
+            <div class="progress text-light mt-3" role="progressbar" style="height: 35px; background-color: #575658;">
+              <div class="fw-bold progress-bar-p"  [style]="{'width':((detalles3.rotacionreal) / (detalles3.rotacionpresupuestada)  * 100)+'%','background-color':getbgdet(((detalles3.rotacionreal) / (detalles3.rotacionpresupuestada)  * 100))}"></div>
+              <div class="reference-line-25">25%</div>
+              <div class="reference-line-50">50%</div>
+              <div class="reference-line-75">75%</div>
+              <div class="reference-line-100">100%</div>
+            </div>
+
+          </div>
+
+          <div class="mt-3 rounded-3 p-3" style="min-width: 90%; min-height: 10rem; background-color: #00000078;">
+            <p class="fw-bold fs-5 text-center">COMPRAS DEL PERIODO</p>
+            <div class="bg-cont p-3">
+              <p class="text-center" >${{ detalles3.comprasdelperiodo | number : '1.2-2'}}</p>
+            </div>
+          </div>
+
+
+      </div>
+   } -->
+
+   </div>

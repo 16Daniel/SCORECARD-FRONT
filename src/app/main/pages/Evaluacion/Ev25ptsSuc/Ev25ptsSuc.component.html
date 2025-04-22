@@ -3,7 +3,7 @@
     <div class="mt-5"></div>
   
       <div class="row m-0 mb-5">
-          <div class="col-md-6">
+          <div class="col-md-3">
              <div class="row m-0">
               <!-- <div class="col-md-6">
                   <p>FECHA INICIAL</p>
@@ -38,6 +38,19 @@
             (onChange)="changesuc()"
             />
         </div>
+        <div class="col-md-3">
+          <p>&nbsp;</p>
+          <p-dropdown 
+          [options]="agrupadores" 
+          [(ngModel)]="groupSel" 
+          [filter]="true"
+          filterBy="nombre"
+          optionLabel="nombre" 
+          placeholder="GRUPO" 
+          [style]="{'width':'100%'}"
+          (onChange)="changeGroup()"
+          />
+      </div>
           <div class="col-md-2">
               <p>&nbsp;</p>
               <button class="btn btn-grad rounded-3 bx-burst-hover" (click)="consultar25ptsSucursales()"><i class='bx bx-search'></i></button>
@@ -59,6 +72,18 @@
   
       <div *ngIf="dataInicioaycSucursales != undefined">
         <app-inicio-aychb [data]="dataInicioaycSucursales"></app-inicio-aychb>
+      </div>
+
+      <div *ngIf="dataPbebidas != undefined">
+        <app-ev-porcentaje-bebidas [data]="dataPbebidas"></app-ev-porcentaje-bebidas>
+      </div>
+
+      <div *ngIf="dataDiferencias != undefined">
+        <app-ev-diferencias [data]="dataDiferencias"></app-ev-diferencias>
+      </div>
+
+      <div *ngIf="dataMermasOperativas != undefined">
+        <app-ev-mermas-operativas [data]="dataMermasOperativas"></app-ev-mermas-operativas>
       </div>
 
   

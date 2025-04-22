@@ -5,7 +5,7 @@
     </h3>
 
     <div class="row m-0 mt-3">
-        <div class="col-md-5">
+        <div class="col-md-4">
             <p-calendar 
             [(ngModel)]="mes"
             view="month"
@@ -16,14 +16,26 @@
             />
 
         </div>
-        <div class="col-md-5">
+        <div class="col-md-3">
             <p-multiSelect 
             [options]="catsucursales" 
             [(ngModel)]="selectedSuc" 
             optionLabel="name" 
-            placeholder="Seleccione una o mas sucursales"  [disabled]="catsucursales.length==0"
-           [classList]="'form-control p-0'"
-           [style]="{'width':'100%'}"
+            placeholder="SUCURSALES" 
+            [style]="{'width':'100%'}"
+            (onChange)="changeSuc()"
+            />
+        </div>
+        <div class="col-md-3">
+            <p-dropdown 
+            [options]="agrupadores" 
+            [(ngModel)]="groupSel" 
+            [filter]="true"
+            filterBy="nombre"
+            optionLabel="nombre" 
+            placeholder="GRUPO" 
+            [style]="{'width':'100%'}"
+            (onChange)="changeGroup()"
             />
         </div>
         <div class="col-md-2">
@@ -156,7 +168,7 @@
                 <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">{{item.totalayc | number : '1.2-2'}}</td>
                 <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">{{item.inicioaychdb| number : '1.2-2'}}</td>
                 <td class="text-center" [ngClass]="{'bg-danger':item.porcentajehdb<=25,'bg-success':item.porcentajehdb>25}" style="border: 1px solid black;">{{item.porcentajehdb | number : '1.2-2'}}%</td>
-                <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">{{item.difAla | number : '1.2-2'}}KG</td>
+                <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">{{item.difAla | number : '1.2-2'}}&nbsp;KG</td>
                 <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">{{item.comprasAla | number : '1.2-2'}}&nbsp;KG</td>
                 <td class="text-center" [ngClass]="getClassColor(item.pdifAla)" style="border: 1px solid black;">{{item.pdifAla | number : '1.2-2'}}%</td>
                 <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">{{item.difBoneless | number : '1.2-2'}}&nbsp;KG</td>

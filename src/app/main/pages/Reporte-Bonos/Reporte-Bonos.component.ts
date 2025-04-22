@@ -11,6 +11,8 @@ import { LoaderComponent } from "../../../Shared/Loader/Loader.component";
 import { BonoData, MatrizBono } from '../../../Interfaces/BonoData';
 import { Table, TableModule } from 'primeng/table';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { Agrupador } from '../../../Interfaces/Agrupador';
+import { DropdownModule } from 'primeng/dropdown';
 @Component({
   selector: 'app-reporte-bonos',
   standalone: true,
@@ -21,7 +23,8 @@ import { InputSwitchModule } from 'primeng/inputswitch';
   ToastModule,
   LoaderComponent,
   TableModule,
-  InputSwitchModule
+  InputSwitchModule,
+  DropdownModule
 ],
   providers:[MessageService],
   templateUrl: './Reporte-Bonos.component.html',
@@ -36,6 +39,10 @@ public bonodata:BonoData[] = [];
 public matrizBono:MatrizBono[]= []
 public simplificado:boolean = true; 
 public encabezadoTabla:string[] = [];
+
+ public groupSel:Agrupador|undefined; 
+public agrupadores:Agrupador[] = [];
+
 constructor(public apiserv:ApiService,public cdr:ChangeDetectorRef,private messageService: MessageService)
 {
   this.encabezadoTabla = ['Sucursal','$ Meta','$ Venta','Alcance','$ Compras','Costo','$ Alimentos Salón','$ Bebidas Salón','% Bebidas',
@@ -64,6 +71,7 @@ constructor(public apiserv:ApiService,public cdr:ChangeDetectorRef,private messa
       next: data => {
          this.catsucursales=data;
          this.loading = false;
+         this.getAgrupadores();
          this.cdr.detectChanges();
       },
       error: error => {
@@ -73,6 +81,23 @@ constructor(public apiserv:ApiService,public cdr:ChangeDetectorRef,private messa
       }
   });
 
+  }
+
+  getAgrupadores()
+  {
+    this.loading= true;
+    this.apiserv.getAgrupadores().subscribe({
+     next: data => {
+        this.agrupadores=data;
+        this.loading = false;
+        this.cdr.detectChanges();
+     },
+     error: error => {
+        console.log(error);
+        this.loading = false;
+        this.showMessage('error',"Error","Error al procesar la solicitud");
+     }
+  });
   }
 
   Consultar()
@@ -230,6 +255,28 @@ constructor(public apiserv:ApiService,public cdr:ChangeDetectorRef,private messa
           clase = 'bg-danger'
       }
     return clase;
+  }
+
+  changeSuc()
+  {
+    this.bonodata = []; 
+  }
+  
+  changeGroup()
+  {  
+  
+     if(this.groupSel != undefined)
+       {
+         this.selectedSuc = []; 
+         let obj = JSON.parse(this.groupSel.jdata); 
+  
+         for(let item of obj)
+           {
+             let suc = this.catsucursales.filter(x=>x.cod == item); 
+             if(suc.length>0){ this.selectedSuc.push(suc[0]); }
+           }
+           
+       }
   }
 
 }

@@ -11,6 +11,8 @@ import { LoaderComponent } from '../../../Shared/Loader/Loader.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MixSucComponent } from './MixSuc/MixSuc.component';
 import { MixVenta } from '../../../Interfaces/Venta';
+import { Agrupador } from '../../../Interfaces/Agrupador';
+import { DropdownModule } from 'primeng/dropdown';
 
 
 @Component({
@@ -24,7 +26,8 @@ import { MixVenta } from '../../../Interfaces/Venta';
     CalendarModule,
     LoaderComponent,
     NgxChartsModule,
-    MixSucComponent
+    MixSucComponent,
+    DropdownModule,
   ],
   providers:[MessageService],
   templateUrl: './MixDeVenta.component.html',
@@ -44,6 +47,9 @@ export default class MixDeVentaComponent implements OnInit {
   public datagd:any[] = []; 
   public datagp:any[] = []; 
 
+  public serieProm_s:any[] = []; 
+  public serieProm_d:any[] = []; 
+  public serieProm_p:any[] = []; 
       // options
   showXAxis: boolean = true;
   showYAxis: boolean = true;
@@ -55,7 +61,9 @@ export default class MixDeVentaComponent implements OnInit {
   yAxisLabel: string = 'IMPORTE';
   animations: boolean = true;
 
-  
+    public groupSel:Agrupador|undefined; 
+    public agrupadores:Agrupador[] = [];
+
     colorScheme:any = {
       domain: ['#00f7ff', '#ff00f7 ', '#a8385d', '#aae3f5']
     };
@@ -81,6 +89,7 @@ export default class MixDeVentaComponent implements OnInit {
       next: data => {
          this.catsucursales=data;
          this.loading = false;
+         this.getAgrupadores();
          this.cdr.detectChanges();
       },
       error: error => {
@@ -91,6 +100,24 @@ export default class MixDeVentaComponent implements OnInit {
   });
   
   }
+
+  getAgrupadores()
+  {
+    this.loading= true;
+    this.apiserv.getAgrupadores().subscribe({
+     next: data => {
+        this.agrupadores=data;
+        this.loading = false;
+        this.cdr.detectChanges();
+     },
+     error: error => {
+        console.log(error);
+        this.loading = false;
+        this.showMessage('error',"Error","Error al procesar la solicitud");
+     }
+  });
+  }
+  
 
  getMixData()
  {
@@ -152,6 +179,29 @@ export default class MixDeVentaComponent implements OnInit {
         this.datag.push({name:"Salón",series:this.datags});
         this.datag.push({name:"Delivery",series:this.datagd});
         this.datag.push({name:"Pickup",series:this.datagp});
+     
+        this.serieProm_s = [];
+        this.serieProm_d = [];
+        this.serieProm_p = []; 
+
+        let prom_a_s:number = t_a_s/this.arr_data.filter(x=>x.alimentosSalon >=0).length;
+        let prom_a_d:number = t_a_d/this.arr_data.filter(x=>x.alimentosDelivery >=0).length;
+        let prom_a_p:number = t_a_p/this.arr_data.filter(x=>x.alimentosPickup >=0).length;
+        
+        let prom_b_s:number = t_b_s/this.arr_data.filter(x=>x.bebidasSalon >=0).length;
+        let prom_b_d:number = t_b_d/this.arr_data.filter(x=>x.bebidasDelivery >=0).length;
+        let prom_b_p:number = t_b_p/this.arr_data.filter(x=>x.bebidasPickup >=0).length;
+
+
+
+        this.serieProm_s.push({name:'Alimentos',value:prom_a_s}); 
+        this.serieProm_s.push({name:'Bebidas',value:prom_b_s}); 
+
+        this.serieProm_d.push({name:'Alimentos',value:prom_a_d}); 
+        this.serieProm_d.push({name:'Bebidas',value:prom_b_d}); 
+
+        this.serieProm_p.push({name:'Alimentos',value:prom_a_p}); 
+        this.serieProm_p.push({name:'Bebidas',value:prom_b_p}); 
 
       this.cdr.detectChanges();
    },
@@ -196,5 +246,27 @@ limpiardata()
   this.arr_data = []; 
 }
 
+
+changeSuc()
+{
+  this.arr_data = []; 
+}
+
+changeGroup()
+{  
+
+   if(this.groupSel != undefined)
+     {
+       this.sucursalesSel = []; 
+       let obj = JSON.parse(this.groupSel.jdata); 
+
+       for(let item of obj)
+         {
+           let suc = this.catsucursales.filter(x=>x.cod == item); 
+           if(suc.length>0){ this.sucursalesSel.push(suc[0]); }
+         }
+         
+     }
+}
 
 }

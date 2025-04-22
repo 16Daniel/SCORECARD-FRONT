@@ -10,6 +10,9 @@ import { VentaBebida } from '../Interfaces/VentaBebida.';
 import { Diferencia } from '../Interfaces/Diferencia';
 import { It25pts } from '../Interfaces/25Pts';
 import { Usuario, UsuarioLogin } from '../Interfaces/Usuario';
+import { Agrupador } from '../Interfaces/Agrupador';
+import { Rol } from '../Interfaces/Rol';
+import { Ruta } from '../Interfaces/Ruta';
 
 @Injectable({
   providedIn: 'root'
@@ -220,6 +223,23 @@ export class ApiService {
     return this.http.get<any>(this.url+`Dashboard/getPorcentajeInicioAYC/${sucursales}/${fechafin}`,{headers:this.headers})
    }
   
+   getPbebidasRegional(sucursales:string, fechafin:string):Observable<any>
+   {
+    return this.http.get<any>(this.url+`Dashboard/getPorcentajeBebidasRegional/${sucursales}/${fechafin}`,{headers:this.headers})
+   }
+  
+    
+   getPDiferenciasRegional(sucursales:string, fechafin:string):Observable<any>
+   {
+    return this.http.get<any>(this.url+`Dashboard/getDiferenciasRegional/${sucursales}/${fechafin}`,{headers:this.headers})
+   }
+  
+   getMermaOperativaRegional(sucursales:string, fechafin:string):Observable<any>
+   {
+    return this.http.get<any>(this.url+`Dashboard/getMermaOperativaRegional/${sucursales}/${fechafin}`,{headers:this.headers})
+   }
+  
+
    getBonosData(sucursales:string,mes:Date):Observable<any>
    {
     let formdata = new FormData();
@@ -234,6 +254,79 @@ export class ApiService {
     formdata.append("data",data);
     formdata.append('headers',encabezado); 
     return this.http.post<any>(this.url+'Bonos/getExcelBonos',formdata,{headers:this.headers})
+   }
+
+   ExcelDiferencias(data:string,fechafin:string):Observable<any>
+   {
+    let formdata = new FormData();
+    formdata.append("data",data);
+    formdata.append("fechafin",fechafin);
+    return this.http.post<any>(this.url+'Diferencias/getExcelDiferencias',formdata,{headers:this.headers})
+   }
+
+   getAgrupadores():Observable<Agrupador[]>
+   {
+    return this.http.get<Agrupador[]>(this.url+`Grupos/getGrupos`,{headers:this.headers})
+   }
+  
+   AgregarAgrupador(nombre:string,jdata:string):Observable<any>
+   {
+    let formdata = new FormData();
+    formdata.append("nombre",nombre);
+    formdata.append("jdata",jdata);
+    return this.http.post<any>(this.url+'Grupos/Agregar',formdata,{headers:this.headers})
+   }
+   
+   ActualizarAgrupador(id:number,nombre:string,jdata:string):Observable<any>
+   {
+    let formdata = new FormData();
+    formdata.append("id",id.toString());
+    formdata.append("nombre",nombre);
+    formdata.append("jdata",jdata);
+    return this.http.post<any>(this.url+'Grupos/Actualizar',formdata,{headers:this.headers})
+   }
+
+   eliminarAgrupador(id:number):Observable<any>
+   {
+    return this.http.delete<any>(this.url+`Grupos/eliminar/`+id,{headers:this.headers})
+   }
+  
+   getRoles():Observable<Rol[]>
+   {
+      return this.http.get<Rol[]>(this.url+`Roles/getRoles`,{headers:this.headers})
+   }
+
+   createRol(data:any):Observable<any>
+   {
+      return this.http.post<any>(this.url+'Roles/createRol',data,{headers:this.headers})
+   }
+
+   deleteRol(id:number):Observable<any>
+   {
+      return this.http.get<any>(this.url+`Roles/deleteRol/${id}`,{headers:this.headers})
+   }
+
+   updateRol(data:Rol):Observable<any>
+   {
+      return this.http.post<any>(this.url+`Roles/updateRol`,data,{headers:this.headers})
+   }
+
+   getRutas():Observable<Ruta[]>
+   {
+      return this.http.get<Ruta[]>(this.url+`Roles/getRutas`,{headers:this.headers})
+   }
+
+   guardaraccesos(jdata:string,idr:number):Observable<any>
+   {
+      let formdata = new FormData();
+      formdata.append("jdata",jdata);
+      formdata.append("idr",idr.toString());
+      return this.http.post<any>(this.url+`Roles/saveAccesos`,formdata,{headers:this.headers})
+   }
+
+   getRutasRol(idr:number):Observable<Ruta[]>
+   {
+      return this.http.get<Ruta[]>(this.url+`Roles/getRutasRol/${idr}`,{headers:this.headers})
    }
 
 }

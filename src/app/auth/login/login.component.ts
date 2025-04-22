@@ -75,7 +75,7 @@ login()
           let user:UsuarioLogin = data; 
           localStorage.setItem("rwuserdataDash",JSON.stringify(user));
            this.loading = false; 
-           this.router.navigate(["/main/inicio"]);
+           this.getRutas(user.idRol);
         },
         error: error => {
            console.log(error);
@@ -97,6 +97,23 @@ login()
     });
 
 
+}
+
+getRutas(id:number)
+{
+ this.loading = true; 
+ this.apiserv.getRutasRol(id).subscribe({
+   next: data => {
+    localStorage.setItem("catRutas",JSON.stringify(data));
+     this.loading = false; 
+     this.router.navigate(["/main/inicio"]);
+    this.cdr.detectChanges();
+   },
+   error: error => {
+     this.loading = false; 
+      console.log(error);
+   }
+});
 }
 
 }

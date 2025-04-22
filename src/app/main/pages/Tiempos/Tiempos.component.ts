@@ -12,6 +12,8 @@ import { CalendarModule } from 'primeng/calendar';
 import { TiemposSucursalComponent } from './TiemposSucursal/TiemposSucursal.component';
 import { TiemposSuc } from '../../../Interfaces/Tiempos.';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { DropdownModule } from 'primeng/dropdown';
+import { Agrupador } from '../../../Interfaces/Agrupador';
 @Component({
   selector: 'app-tiempos',
   standalone: true,
@@ -23,7 +25,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     CalendarModule,
     LoaderComponent,
     TiemposSucursalComponent,
-    NgxChartsModule
+    NgxChartsModule,
+     DropdownModule,
 ],
   providers:[MessageService],
   templateUrl: './Tiempos.component.html',
@@ -42,6 +45,10 @@ export default class TiemposComponent implements OnInit {
   public datag:any[] = [];
   public datag2:any[] = []; 
   public rangosemanas:string = ""; 
+  public seriePromedio:any[] = []; 
+
+   public groupSel:Agrupador|undefined; 
+      public agrupadores:Agrupador[] = []
 
   showXAxis: boolean = true;
     showYAxis: boolean = true;
@@ -86,6 +93,7 @@ export default class TiemposComponent implements OnInit {
       next: data => {
          this.catsucursales=data;
          this.loading = false;
+         this.getAgrupadores();
          this.cdr.detectChanges();
       },
       error: error => {
@@ -96,6 +104,24 @@ export default class TiemposComponent implements OnInit {
   });
   
   }
+
+  getAgrupadores()
+  {
+    this.loading= true;
+    this.apiserv.getAgrupadores().subscribe({
+     next: data => {
+        this.agrupadores=data;
+        this.loading = false;
+        this.cdr.detectChanges();
+     },
+     error: error => {
+        console.log(error);
+        this.loading = false;
+        this.showMessage('error',"Error","Error al procesar la solicitud");
+     }
+  });
+  }
+  
   
   getPreviousSunday(date: Date): Date {
     const dayOfWeek = date.getDay(); // 0 es domingo
@@ -133,7 +159,8 @@ export default class TiemposComponent implements OnInit {
   this.apiserv.getTiempos(JSON.stringify(sucursales),this.formatDate(this.getPreviousSunday(this.fechaini)),this.formatDate(this.getNextSaturday(this.fechafin)),this.formatDate(this.fechaini),this.formatDate(this.fechafin)).subscribe({
    next: data => {
       this.arr_data = data; 
-       
+      
+      let serie1 = 0; let serie2 = 0; let serie3 = 0; let serie4= 0; 
       let domaintiempos:string[] = [];
       for(let item of this.arr_data)
         {
@@ -201,13 +228,22 @@ export default class TiemposComponent implements OnInit {
             series.push({name:"16-30",value:pr3+pr4+pr5}); 
             series.push({name:"SIN CONEXION",value:psc}); 
             
+            serie1 = serie1 + pr1;
+            serie2 = serie2 + pr2; 
+            serie3 = serie3 + pr3+pr4+pr5; 
+            serie4 = serie4 + psc; 
+
             this.datag.push({name:item.sucursal,series:series});
             this.datag2.push({name:item.sucursal,value:item.promedio});
         }
 
+        this.seriePromedio.push({name:"0-10",value:(serie1/this.arr_data.length)}); 
+        this.seriePromedio.push({name:"11-15",value:(serie2/this.arr_data.length)}); 
+        this.seriePromedio.push({name:"16-30",value:(serie3/this.arr_data.length)}); 
+        this.seriePromedio.push({name:"SIN CONEXION",value:(serie4/this.arr_data.length)}); 
         
         this.datag.sort((a, b) => b.series[0].value - a.series[0].value);
-        this.datag2.sort((a, b) => a.value - b.value); 
+        this.datag2.sort((a, b) => a.value - b.value);  
 
         let semanasordenadas = this.arr_data[0].rangos.sort((a,b)=> a.semana - b.semana); 
 
@@ -219,6 +255,16 @@ export default class TiemposComponent implements OnInit {
             this.rangosemanas = semanasordenadas[0].semana.toString(); 
           }
         
+          debugger
+          let promedioDelGrupo:number = 0;
+          let acumuladodelgrupo:number = 0; 
+          for(let item of this.datag2)
+            {
+              acumuladodelgrupo = acumuladodelgrupo + item.value; 
+            }
+       
+          promedioDelGrupo = acumuladodelgrupo / this.datag2.length;
+          this.datag2.push({name:'PROMEDIO DEL GRUPO',value:promedioDelGrupo});  
 
         for(let item of this.datag2)
           {
@@ -307,6 +353,26 @@ exportarExcel()
 });
 }
 
+changeSuc()
+{
+  this.arr_data = []; 
+}
 
+changeGroup()
+{  
+
+   if(this.groupSel != undefined)
+     {
+       this.sucursalesSel = []; 
+       let obj = JSON.parse(this.groupSel.jdata); 
+
+       for(let item of obj)
+         {
+           let suc = this.catsucursales.filter(x=>x.cod == item); 
+           if(suc.length>0){ this.sucursalesSel.push(suc[0]); }
+         }
+         
+     }
+}
 
 }

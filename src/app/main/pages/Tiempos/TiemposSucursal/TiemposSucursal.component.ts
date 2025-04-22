@@ -14,6 +14,7 @@ import { ChangeDetectorRef } from '@angular/core';
 })
 export class TiemposSucursalComponent implements OnInit {
   @Input() data:TiemposSuc|undefined;
+  @Input() seriepromedio:any[] = []; 
   public semanas:number = 0; 
     // options
     showXAxis: boolean = true;
@@ -43,6 +44,7 @@ export class TiemposSucursalComponent implements OnInit {
 
   ngOnInit(): void 
   {
+    debugger
     const semanas = this.data!.rangos.map(item => item.semana);
     const semanasUnicas:number[] = Array.from(new Set(semanas));
     this.semanas = semanasUnicas.length; 
@@ -109,7 +111,8 @@ export class TiemposSucursalComponent implements OnInit {
 
         this.multi.push({name:numsem.toString(),series:series});
         
-      }   
+      }
+       this.multi.push({name:'PROMEDIO DEL GRUPO',series:this.seriepromedio})   
       //this.multi.sort((a, b) => b.series[0].value - a.series[0].value);
       this.cdr.detectChanges(); 
 

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, type OnInit } from '@angular/core';
+import { Component, input, Input, type OnInit } from '@angular/core';
 import { InicioAYC } from '../../Interfaces/InicioAYC.';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ChangeDetectorRef } from '@angular/core';
@@ -16,6 +16,10 @@ import { ChangeDetectorRef } from '@angular/core';
 export class SucursalInicioAYCComponent implements OnInit {
   @Input() arr_iniciosayc:InicioAYC[] = [];
   @Input() parametrosjdata:string = "";
+  @Input() promedioAla:number = 0;
+  @Input() promedioboneless:number = 0;
+  @Input() promedioHotdogBurguer:number = 0; 
+  @Input() seriepromedio:any[] = []; 
 
 public iniwings:number = 0;
 public iniboneless:number = 0; 
@@ -151,6 +155,15 @@ public semanas:number=0;
 
       }
 
+      this.mgd.push({name:'PROMEDIO DEL GRUPO',series:this.seriepromedio});
+
+      this.gtpw.push({name:'PROMEDIO DEL GRUPO',value:this.promedioAla});
+      this.gtpb.push({name:'PROMEDIO DEL GRUPO',value:this.promedioboneless});
+      this.gtphb.push({name:'PROMEDIO DEL GRUPO',value:this.promedioHotdogBurguer});
+
+      this.mgpw.push({name:'PROMEDIO DEL GRUPO',value:this.promedioAla});
+      this.mgpb.push({name:'PROMEDIO DEL GRUPO',value:this.promedioboneless});
+      this.mgphb.push({name:'PROMEDIO DEL GRUPO',value:this.promedioHotdogBurguer});
       
       this.cdr.detectChanges();
 
@@ -212,6 +225,11 @@ public semanas:number=0;
           color = '#dc0000'; // Rojo
         }
 
+        if(item.name == 'PROMEDIO DEL GRUPO')
+          {
+            color = '#bebebe'; 
+          }
+
         colores.push(color);
       }
 
@@ -233,7 +251,10 @@ public semanas:number=0;
         } else {
           color = '#d40000'; // Rojo
         }
-
+        if(item.name == 'PROMEDIO DEL GRUPO')
+          {
+            color = '#bebebe'; 
+          }
         colores.push(color);
       }
 
@@ -255,7 +276,10 @@ public semanas:number=0;
         } else {
           color = '#39df18'; // Verde
         }
-
+        if(item.name == 'PROMEDIO DEL GRUPO')
+          {
+            color = '#bebebe'; 
+          }
         colores.push(color);
       }
 

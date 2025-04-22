@@ -14,6 +14,8 @@ import { Dialog, DialogModule } from 'primeng/dialog';
 import { MultimesProgressComponent } from '../../../Shared/MultimesProgress/MultimesProgress.component';
 import { Router, withDebugTracing } from '@angular/router';
 import { CalendarModule } from 'primeng/calendar';
+import { Agrupador } from '../../../Interfaces/Agrupador';
+import { DropdownModule } from 'primeng/dropdown';
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -27,7 +29,8 @@ import { CalendarModule } from 'primeng/calendar';
     LoaderComponent,
     DialogModule,
     MultimesProgressComponent,
-    CalendarModule
+    CalendarModule,
+    DropdownModule
 ],
   providers:[MessageService],
   templateUrl: './Home.component.html',
@@ -74,6 +77,10 @@ export default class HomeComponent {
   selectedMonths:Date[] = []; 
   public modalfecha:boolean = false; 
   public sucursalesdistintas:number[] = [];
+
+      public groupSel:Agrupador|undefined; 
+      public agrupadores:Agrupador[] = [];
+
   public colorScale:any[] = [
     {color1:'#d9003e',color2:'#ffbcbc'}, // 0% (Rojo)
     {color1:'#e53e11',color2:'#ffcec0'}, // 30 naranja
@@ -168,6 +175,7 @@ export default class HomeComponent {
       next: data => {
          this.catsucursales=data;
          this.loading = false;
+         this.getAgrupadores(); 
          this.cdr.detectChanges();
       },
       error: error => {
@@ -178,6 +186,24 @@ export default class HomeComponent {
   });
 
   }
+
+  getAgrupadores()
+  {
+    this.loading= true;
+    this.apiserv.getAgrupadores().subscribe({
+     next: data => {
+        this.agrupadores=data;
+        this.loading = false;
+        this.cdr.detectChanges();
+     },
+     error: error => {
+        console.log(error);
+        this.loading = false;
+        this.showMessage('error',"Error","Error al procesar la solicitud");
+     }
+  });
+  }
+  
 
   consultarDash()
   {
@@ -802,5 +828,23 @@ formatDates() {
     return `${year}-${month}`;
   });
 }
+
+changeGroup()
+{  
+
+   if(this.groupSel != undefined)
+     {
+       this.selectedSuc= []; 
+       let obj = JSON.parse(this.groupSel.jdata); 
+
+       for(let item of obj)
+         {
+           let suc = this.catsucursales.filter(x=>x.cod == item); 
+           if(suc.length>0){ this.selectedSuc.push(suc[0]); }
+         }
+         
+     }
+}
+
 
  }

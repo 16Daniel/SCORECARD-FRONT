@@ -41,19 +41,34 @@ public items:MenuItem[] = [];
   public contador:number = 1;
   public showmenu:boolean = false; 
   public userdata:UsuarioLogin|undefined;
-  public catroles:Rol[] = [{id:1,descripcion:'DIRECCIÓN'},{id:2,descripcion:'REGIONAL'},{id:3,descripcion:'SUPERVISOR'},{id:4,descripcion:'ADMINISTRADOR'}];
+  public catroles:Rol[] = [];
 
   constructor(public cdr:ChangeDetectorRef,private router: Router,public apiserv:ApiService)
   {
     let jsondata:string|null = localStorage.getItem("rwuserdataDash");
     this.userdata = JSON.parse(jsondata!);
+    this.getRoles();
   }
+
+  getRoles()
+{
+  this.apiserv.getRoles().subscribe({
+    next: data => {
+       this.catroles =data;
+     this.cdr.detectChanges();
+    },
+    error: error => {
+       console.log(error);
+    }
+});
+
+}
 
   ngOnInit(): void 
   {
     this.items = [
       {
-        label: 'Inicio',
+        label: 'INICIO',
         icon: 'bx bx-home-alt bx-sm',
         command: () => {
             this.router.navigate(['main/inicio']);
@@ -70,6 +85,13 @@ public items:MenuItem[] = [];
                 route: '/main/mermas'
             }
         ]
+    },
+    {
+      label: 'SEGURIDAD',
+      icon: 'bx bx-shield bx-sm',
+      command: () => {
+          this.router.navigate(['/']);
+      }
     },
     {
         label: 'EFICIENCIA OPERATIVA',
@@ -93,7 +115,7 @@ public items:MenuItem[] = [];
         {
           label: '25 puntos',
           icon: 'bx bx-food-menu',
-          route: '/installation'
+          route: '/inicio'
           },
           {
             label: 'Diferencias',
@@ -115,7 +137,7 @@ public items:MenuItem[] = [];
         {
             label: 'Rotación',
             icon: 'bx bx-trash-alt',
-            route: '/installation'
+            route: '/inicio'
         }
     ]
   },
@@ -131,40 +153,47 @@ public items:MenuItem[] = [];
       {
         label: 'Costo',
         icon: 'bx bx-trash-alt',
-        route: '/installation'
+        route: '/inicio'
     }
   ]
-},
-{
-  label: 'SEGURIDAD',
-  icon: 'bx bx-shield bx-sm',
-  command: () => {
-      this.router.navigate(['/']);
-  }
 },
 {
 label: 'SCORECARD',
 icon: 'bx bxs-dashboard bx-sm',
 command: () => {
     this.router.navigate(['main/25pts']);
+    this.closemenu();
 }
 },
 {
 label: 'REGIONALES',
 icon: 'bx bxs-report bx-sm',
-items: [
+command: () => 
   {
-      label: 'Tendencia 25 puntos',
-      icon: 'bx bx-trash-alt',
-      route: '/main/ev25pts-sucursales'
-  },
-]
+    this.router.navigate(['/main/ev25pts-sucursales']);
+    this.closemenu();
+  }
 },
 {
-  label: 'Reporte Bonos',
+  label: 'REPORTE BONOS',
   icon: 'bx bxs-report bx-sm',
   route: '/main/reporte-bonos'
   },
+  {
+    label: 'GRUPOS',
+    icon: 'bx bxs-group bx-sm',
+    route: '/main/agrupadores'
+    },
+    {
+      label: 'USUARIOS',
+      icon: 'bx bx-user bx-sm',
+      route: '/main/usuarios'
+      },
+      {
+        label: 'ROLES',
+        icon: 'bx bx-objects-horizontal-left bx-sm',
+        route: '/main/roles'
+        },
 ];
 
    }

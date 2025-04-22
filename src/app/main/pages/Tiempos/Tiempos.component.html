@@ -3,7 +3,7 @@
     <h3 class="text-center mt-5 mb-3">TIEMPOS EN COCINA</h3>    
     
     <div class="row m-0 mb-5">
-        <div class="col-md-6">
+        <div class="col-md-4">
            <div class="row m-0">
             <div class="col-md-6">
                 <p>FECHA INICIAL</p>
@@ -27,7 +27,7 @@
             </div>
            </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <p>&nbsp;</p>
             <p-multiSelect 
             [options]="catsucursales" 
@@ -35,6 +35,20 @@
             optionLabel="name" 
             placeholder="SUCURSALES" 
             [style]="{'width':'100%'}"
+            (onChange)="changeSuc()"
+            />
+        </div>
+        <div class="col-md-3">
+            <p>&nbsp;</p>
+            <p-dropdown 
+            [options]="agrupadores" 
+            [(ngModel)]="groupSel" 
+            [filter]="true"
+            filterBy="nombre"
+            optionLabel="nombre" 
+            placeholder="GRUPO" 
+            [style]="{'width':'100%'}"
+            (onChange)="changeGroup()"
             />
         </div>
         <div class="col-md-2">
@@ -42,6 +56,7 @@
             <button class="btn btn-grad rounded-3 bx-burst-hover" (click)="consultarTiempos()"><i class='bx bx-search'></i></button>
         </div>
     </div>
+    
     
     <app-loader *ngIf="loading"></app-loader>
    
@@ -95,7 +110,7 @@
 
     <div *ngIf="arr_data.length>0">
     <div *ngFor="let item of sucursalesSel" class="p-3">
-       <app-tiempos-sucursal [data]="getDataSuc(item.name)"></app-tiempos-sucursal>
+       <app-tiempos-sucursal [data]="getDataSuc(item.name)" [seriepromedio]="seriePromedio"></app-tiempos-sucursal>
     </div>
     </div>
     

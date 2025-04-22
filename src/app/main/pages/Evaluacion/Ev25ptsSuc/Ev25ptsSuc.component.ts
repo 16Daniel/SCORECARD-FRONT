@@ -10,7 +10,7 @@ import { LoaderComponent } from '../../../../Shared/Loader/Loader.component';
 import { CalendarModule } from 'primeng/calendar';
 import { LegendPosition, NgxChartsModule } from '@swimlane/ngx-charts';
 import { Sucursal } from '../../../../Interfaces/Sucursal';
-import { generaldata25ptssuc, It25pts } from '../../../../Interfaces/25Pts';
+import { DiferenciasRegionalGeneral, generaldata25ptssuc, It25pts, MermasOperativasRegional, MermasOperativasRegionalGeneral, PbebidasSucRegional, PbebidasSucRegionalGeneral } from '../../../../Interfaces/25Pts';
 import { DropdownModule } from 'primeng/dropdown';
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
@@ -20,6 +20,10 @@ import { DashSucComponent } from '../../It25pts/DashSuc/DashSuc.component';
 import { debounceTime, fromEvent, Subscription } from 'rxjs';
 import Indicador25PtsSucursalesComponent from "../../It25pts/Indicador25PtsSucursales/Indicador25PtsSucursales.component";
 import { InicioAYCHBComponent } from "../InicioAYCHB/InicioAYCHB.component";
+import { EvPorcentajeBebidasComponent } from "../EvPorcentajeBebidas/EvPorcentajeBebidas.component";
+import { EvDiferenciasComponent } from "../EvDiferencias/EvDiferencias.component";
+import { EvMermasOperativasComponent } from "../evMermasOperativas/evMermasOperativas.component";
+import { Agrupador } from '../../../../Interfaces/Agrupador';
 @Component({
   selector: 'app-ev25pts-suc',
   standalone: true,
@@ -34,7 +38,11 @@ import { InicioAYCHBComponent } from "../InicioAYCHB/InicioAYCHB.component";
     DropdownModule,
     RouterModule,
     Indicador25PtsSucursalesComponent,
-    InicioAYCHBComponent
+    InicioAYCHBComponent,
+    EvPorcentajeBebidasComponent,
+    EvDiferenciasComponent,
+    EvMermasOperativasComponent,
+    DropdownModule
 ],
   providers:[MessageService],
   templateUrl: './Ev25ptsSuc.component.html',
@@ -52,7 +60,13 @@ export default class Ev25ptsSucComponent implements OnInit {
   datadash:Dashboardsuc[] = []; 
   data25ptsSucursales:generaldata25ptssuc|undefined; 
   dataInicioaycSucursales:generaldata25ptssuc|undefined; 
-  
+  dataPbebidas:PbebidasSucRegionalGeneral|undefined;  
+  dataDiferencias:DiferenciasRegionalGeneral|undefined;  
+  dataMermasOperativas:MermasOperativasRegionalGeneral|undefined;  
+
+      public groupSel:Agrupador|undefined; 
+      public agrupadores:Agrupador[] = [];
+
   constructor(private messageService: MessageService,public cdr:ChangeDetectorRef, public apiserv:ApiService,private router: Router)
   {
     this.getSucursales(); 
@@ -74,6 +88,7 @@ getSucursales()
     next: data => {
        this.catsucursales=data;
        this.loading = false;
+       this.getAgrupadores();
        this.cdr.detectChanges();
     },
     error: error => {
@@ -85,6 +100,22 @@ getSucursales()
 
 }
 
+getAgrupadores()
+{
+  this.loading= true;
+  this.apiserv.getAgrupadores().subscribe({
+   next: data => {
+      this.agrupadores=data;
+      this.loading = false;
+      this.cdr.detectChanges();
+   },
+   error: error => {
+      console.log(error);
+      this.loading = false;
+      this.showMessage('error',"Error","Error al procesar la solicitud");
+   }
+});
+}
 
 consultar25ptsSucursales()
 {
@@ -129,7 +160,7 @@ consultarinicioaycSucursales()
   
     console.log(data); 
     this.dataInicioaycSucursales = data; 
-      this.loading = false;
+      this.consultarPbebidasRegional();
       this.cdr.detectChanges();
    },
    error: error => {
@@ -140,6 +171,80 @@ consultarinicioaycSucursales()
 });
 
 }
+
+consultarPbebidasRegional()
+{
+  let sucursales:number[] = []; 
+  for(let item of this.sucursalesSel)
+   {
+     sucursales.push(item.cod); 
+   }
+
+ this.loading= true;
+ this.apiserv.getPbebidasRegional(JSON.stringify(sucursales),this.formatDate(this.fechafin)).subscribe({
+  next: data => {
+ 
+   console.log(data); 
+   this.dataPbebidas = data; 
+   this.consultarDiferenciasRegional();
+     this.cdr.detectChanges();
+  },
+  error: error => {
+     console.log(error);
+     this.loading = false;
+     this.showMessage('error',"Error","Error al procesar la solicitud");
+  }
+});
+}
+
+consultarDiferenciasRegional()
+{
+  let sucursales:number[] = []; 
+  for(let item of this.sucursalesSel)
+   {
+     sucursales.push(item.cod); 
+   }
+
+ this.loading= true;
+ this.apiserv.getPDiferenciasRegional(JSON.stringify(sucursales),this.formatDate(this.fechafin)).subscribe({
+  next: data => {
+ 
+   console.log(data); 
+   this.dataDiferencias = data; 
+    this.consultarMermasOperativasRegional()
+     this.cdr.detectChanges();
+  },
+  error: error => {
+     console.log(error);
+     this.loading = false;
+     this.showMessage('error',"Error","Error al procesar la solicitud");
+  }
+});
+}
+
+consultarMermasOperativasRegional()
+{
+  let sucursales:number[] = []; 
+  for(let item of this.sucursalesSel)
+   {
+     sucursales.push(item.cod); 
+   }
+
+ this.loading= true;
+ this.apiserv.getMermaOperativaRegional(JSON.stringify(sucursales),this.formatDate(this.fechafin)).subscribe({
+  next: data => {
+   this.dataMermasOperativas = data; 
+     this.loading = false;
+     this.cdr.detectChanges();
+  },
+  error: error => {
+     console.log(error);
+     this.loading = false;
+     this.showMessage('error',"Error","Error al procesar la solicitud");
+  }
+});
+}
+
 
   getPreviousSunday(date: Date): Date {
     const dayOfWeek = date.getDay(); // 0 es domingo
@@ -236,5 +341,21 @@ getdatasuc(idsuc:number):Dashboardsuc
   return data[0]
 }
 
+changeGroup()
+{  
+
+   if(this.groupSel != undefined)
+     {
+       this.sucursalesSel = []; 
+       let obj = JSON.parse(this.groupSel.jdata); 
+
+       for(let item of obj)
+         {
+           let suc = this.catsucursales.filter(x=>x.cod == item); 
+           if(suc.length>0){ this.sucursalesSel.push(suc[0]); }
+         }
+         
+     }
+}
 
 }

@@ -13,6 +13,8 @@ import { ApiService } from '../../../Services/api.service';
 import { Diferencia } from '../../../Interfaces/Diferencia';
 import { TableModule } from 'primeng/table';
 import { DiferenciasSucComponent } from "./DiferenciasSuc/DiferenciasSuc.component";
+import { Agrupador } from '../../../Interfaces/Agrupador';
+import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-diferencias',
@@ -26,7 +28,8 @@ import { DiferenciasSucComponent } from "./DiferenciasSuc/DiferenciasSuc.compone
     LoaderComponent,
     NgxChartsModule,
     TableModule,
-    DiferenciasSucComponent
+    DiferenciasSucComponent,
+     DropdownModule,
 ],
   providers:[MessageService],
   templateUrl: './Diferencias.component.html',
@@ -45,7 +48,10 @@ export default class DiferenciasComponent implements OnInit {
   public finventario:string=''; 
   public itemsel:Diferencia | undefined; 
 
-    // options
+  public promedioAla:number = 0; 
+  public promedioBoneless:number = 0; 
+  public promedioPapa:number = 0; 
+  // options
     showXAxis: boolean = true;
     showYAxis: boolean = true;
     gradient: boolean = false;
@@ -61,7 +67,9 @@ export default class DiferenciasComponent implements OnInit {
     public dataga:any[] = [];
     public datagb:any[] = [];
     public datagp:any[] = [];
-  
+
+      public groupSel:Agrupador|undefined; 
+      public agrupadores:Agrupador[] = [];
 
   ngOnInit(): void { }
 
@@ -75,6 +83,24 @@ export default class DiferenciasComponent implements OnInit {
   showMessage(sev:string,summ:string,det:string) {
     this.messageService.add({ severity: sev, summary: summ, detail: det }); 
 }
+
+getAgrupadores()
+{
+  this.loading= true;
+  this.apiserv.getAgrupadores().subscribe({
+   next: data => {
+      this.agrupadores=data;
+      this.loading = false;
+      this.cdr.detectChanges();
+   },
+   error: error => {
+      console.log(error);
+      this.loading = false;
+      this.showMessage('error',"Error","Error al procesar la solicitud");
+   }
+});
+}
+
 
 getdata()
 {
@@ -134,7 +160,45 @@ getdata()
           
                 }
               
-         console.log(data);
+                let t_d_a = this.arr_data.reduce((acumulador:number, elemento) => {
+                  if(elemento.codart == 158)
+                    {
+                      return acumulador + parseFloat(elemento.diferencia.toString());
+                    } else 
+                    {
+                      return acumulador; 
+                    }
+              }, 0);
+
+              let t_d_b = this.arr_data.reduce((acumulador:number, elemento) => {
+                if(elemento.codart == 10183)
+                  {
+                    return acumulador + parseFloat(elemento.diferencia.toString());
+                  } else 
+                  {
+                    return acumulador; 
+                  }
+            }, 0);
+
+            let t_d_p = this.arr_data.reduce((acumulador:number, elemento) => {
+              if(elemento.codart == 10193)
+                {
+                  return acumulador + parseFloat(elemento.diferencia.toString());
+                } else 
+                {
+                  return acumulador; 
+                }
+          }, 0);
+
+          this.promedioAla = t_d_a/this.sucursalesSel.length;
+          this.promedioBoneless = t_d_b/this.sucursalesSel.length; 
+          this.promedioPapa = t_d_p/this.sucursalesSel.length; 
+
+          this.dataga.push({name:'PROMEDIO DEL GRUPO',value:t_d_a/this.sucursalesSel.length});
+          this.datagb.push({name:'PROMEDIO DEL GRUPO',value:t_d_b/this.sucursalesSel.length});
+          this.datagp.push({name:'PROMEDIO DEL GRUPO',value:t_d_p/this.sucursalesSel.length});
+      
+
          this.cdr.detectChanges();
       },
       error: error => {
@@ -152,6 +216,7 @@ getdata()
       next: data => {
          this.catsucursales=data;
          this.loading = false;
+         this.getAgrupadores();
          this.cdr.detectChanges();
       },
       error: error => {
@@ -201,5 +266,96 @@ getDataSuc(ids:number):Diferencia[]
   let data = this.arr_data.filter(x=> x.idsuc == ids); 
   return data; 
 }
+
+
+  // Función para exportar a Excel
+  exportToExcel() {
+
+    this.loading = true;
+    this.apiserv.ExcelDiferencias(JSON.stringify(this.arr_data),this.formatDate(this.fechafin)).subscribe({
+      next: data => {
+        this.loading = false;
+        this.cdr.detectChanges();
+        const base64String = data.base64File; // Aquí debes colocar tu cadena base64 del archivo Excel
+  
+        // Decodificar la cadena base64
+        const binaryString = window.atob(base64String);
+    
+        // Convertir a un array de bytes
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+    
+        // Crear un Blob con los datos binarios
+        const blob = new Blob([bytes], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    
+        // Crear una URL para el Blob
+        const url = window.URL.createObjectURL(blob);
+    
+        // Crear un enlace para la descarga
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'REPORTE DIFERENCIAS.xlsx'; // Establecer el nombre del archivo
+        document.body.appendChild(link);
+    
+        // Hacer clic en el enlace para iniciar la descarga
+        link.click();
+    
+        // Limpiar la URL y el enlace después de la descarga
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(link);
+      },
+      error: error => {
+        this.loading = false; 
+        this.showMessage('error','Error','Error al generar el archivo de excel');
+        console.log(error);
+       
+      }
+  });
+
+}
+
+
+customColors():any {
+  let colores:string[] = [];
+
+  for(let item of this.dataga)
+    {
+      let color = '#00ffb2';
+      if(item.name == 'PROMEDIO DEL GRUPO')
+        {
+          color = '#bebebe'; 
+        }
+      colores.push(color);
+    }
+
+    return {
+      domain:colores
+    }
+}
+
+changeSuc()
+{
+  this.arr_data = []; 
+}
+
+changeGroup()
+{  
+
+   if(this.groupSel != undefined)
+     {
+       this.sucursalesSel = []; 
+       let obj = JSON.parse(this.groupSel.jdata); 
+
+       for(let item of obj)
+         {
+           let suc = this.catsucursales.filter(x=>x.cod == item); 
+           if(suc.length>0){ this.sucursalesSel.push(suc[0]); }
+         }
+         
+     }
+}
+
 
 }
