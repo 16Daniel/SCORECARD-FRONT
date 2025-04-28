@@ -7,6 +7,7 @@ import { LoaderComponent } from "../Loader/Loader.component";
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { CommonModule } from '@angular/common';
 import { DetallesVenta2, DetallesVentas3, VentaMeta } from '../../Interfaces/Venta';
+import { ProgressBarCComponent } from "../ProgressBarC/ProgressBarC.component";
 
 @Component({
   selector: 'app-detalles-ventas-suc',
@@ -15,7 +16,8 @@ import { DetallesVenta2, DetallesVentas3, VentaMeta } from '../../Interfaces/Ven
     LoaderComponent,
     CommonModule,
     NgxChartsModule,
-  ],
+    ProgressBarCComponent
+],
   providers:[MessageService],
   templateUrl: './DetallesVentasSuc.component.html',
 })
@@ -165,7 +167,7 @@ public itemdetalles:VentaMeta | undefined;
            }
  
          this.loadingdetv2 = false; 
-        //  this.getdetallesventas3(ids); 
+         this.getdetallesventas3(ids); 
           this.cdr.detectChanges();
        },
        error: error => {
@@ -276,6 +278,47 @@ getNameMonth(number:number):string
   }
 
   return name; 
+}
+
+getbgdet(porcentaje:number)
+{
+  let color = '';
+    if(porcentaje<75)
+      {
+        color ='#d9003e';  
+      }
+
+    if(porcentaje<100 && porcentaje>=75)
+          {
+            color = '#ffc500';
+          }
+
+    if(porcentaje>=100)
+      {
+        color = '#39df18';
+      }
+    return color; 
+}
+
+getbgdeti(porcentaje:number)
+{
+  let color = '';
+    if(porcentaje<75)
+      {
+        color = '#39df18';
+      }
+
+    if(porcentaje<100 && porcentaje>=75)
+          {
+            color = '#ffc500';
+          }
+
+    if(porcentaje>=100)
+      {
+      
+        color ='#d9003e';  
+      }
+    return color; 
 }
 
 

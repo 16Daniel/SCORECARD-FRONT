@@ -45,12 +45,12 @@ public colorespersonalizados:any[] = [];
   
 
       let color = '#6D28D9'; 
-      if(porcentaje<40)
+      if(porcentaje<2)
         {
           color = '#d9003e';
         }
   
-      if(porcentaje>=40)
+      if(porcentaje>=2)
         {
           color = '#39df18';
         }
@@ -84,7 +84,7 @@ public colorespersonalizados:any[] = [];
         let esmayor:boolean = false;  
         if(item.alimentos >0)
           {
-            porcentaje = (item.bebidas/item.alimentos)*100;
+            porcentaje = (item.bebidas/(item.totalayc*55));
           }
          this.datag.push({name:"W"+item.semana,value:porcentaje}); 
           // let temp = this.promedios.filter(x => x.semana == item.semana); 
@@ -124,7 +124,7 @@ public colorespersonalizados:any[] = [];
 
   formatDataLabel(value: number, label: string, series: any) {
     // value = Math.round(value); 
-     return `${value.toFixed(2)}%`;
+     return `${value.toFixed(2)}`;
    }
 
 

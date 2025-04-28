@@ -102,9 +102,13 @@ export class DiferenciasSucComponent implements OnInit {
                   }
         }
 
-        this.dataga.push({name:'PROMEDIO DEL GRUPO',value:this.promAla});
-        this.datagb.push({name:'PROMEDIO DEL GRUPO',value:this.promBoneless});
-        this.datagp.push({name:'PROMEDIO DEL GRUPO',value:this.promPapa});
+        const semanas = this.data.map(item => item.fecha);
+        const fechaUnicas:Date[] = Array.from(new Set(semanas));
+
+
+        this.dataga.push({name:'PROMEDIO DEL GRUPO',value:this.promAla/fechaUnicas.length});
+        this.datagb.push({name:'PROMEDIO DEL GRUPO',value:this.promBoneless/fechaUnicas.length});
+        this.datagp.push({name:'PROMEDIO DEL GRUPO',value:this.promPapa/fechaUnicas.length});
     }
 
    }

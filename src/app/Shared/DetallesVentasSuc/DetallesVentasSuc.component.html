@@ -1,5 +1,5 @@
 <div *ngIf="itemdetalles!=undefined" style="width: calc(100% - 40px);">
-    <h3 class="text-center mb-5">{{dataSuc?.name }} <span class="text-p fw-bold">{{this.getNameMonth(fechaSel!.getMonth()+1)+' '+fechaSel.getFullYear()}}</span></h3>
+    <h3 class="text-center mb-5" style="color: #ff85fb;">ALCANCE DE VENTAS <span class="fw-bold" style="color: #ff85fb;">{{this.getNameMonth(fechaSel!.getMonth()+1)+' '+fechaSel.getFullYear()}}</span></h3>
     <app-loader *ngIf="loadingdet"></app-loader>
 
     @if(loadingdetv2)
@@ -9,7 +9,21 @@
     </div>
     }@else 
     {
-    
+      
+      <div *ngIf="itemdetalles != undefined" class="d-flex justify-content-center">
+        <div style="width: auto; max-width: 50rem;">
+          <app-progress-bar-c [nombresuc]="itemdetalles.nombreSucursal" 
+      [idpbc]="'cpb-'+itemdetalles.ids" [progressEndValue]="itemdetalles.cumplimiento" 
+      [metav]="itemdetalles.meta"
+      [totalv]="itemdetalles.ventaTotal"
+      [cumplimientoesp]="itemdetalles.cumplimientoesperado"
+      [proyeccion]="itemdetalles.proyeccion"
+      />
+        </div>
+      </div>
+
+      <div class="mt-3"></div>
+
      <div  *ngIf="detallesventas2 != undefined && detallesventa2G.length>0">
 
       <div class="progress-stacked mt-1 mb-3">
@@ -121,7 +135,7 @@
    </div>
 
 
-   <!-- @if(loadingdetv3)
+   @if(loadingdetv3)
    {
     <div class="d-flex justify-content-center mt-3">
       <app-loader></app-loader>
@@ -253,6 +267,6 @@
 
 
       </div>
-   } -->
+   }
 
    </div>

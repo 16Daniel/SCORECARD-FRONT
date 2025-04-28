@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 })
 export class EvPorcentajeBebidasComponent implements OnInit {
 @Input() data:PbebidasSucRegionalGeneral|undefined;
+@Input() scorecard:boolean = false; 
 public arr_data:PbebidasSucRegional[] = []; 
 public dataTable:any[] = [];
 public sucursalesdistintas:number[] = [];

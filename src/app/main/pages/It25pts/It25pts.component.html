@@ -57,6 +57,23 @@
         </div>
     </div>
     
+    <div class="d-flex justify-content-center gap-3" *ngIf="datadash.length>0">
+      <div class="d-flex justify-content-center gap-3">
+        <div class="p-3" style="border-radius: 100%; background-color: rgb(255, 181, 154); width: 20px; height: 20px;">&nbsp;</div>
+        <div>8 SEMANAS</div>
+      </div>
+
+      <div class="d-flex justify-content-center gap-3">
+        <div class="p-3" style="border-radius: 100%; background-color: rgb(146, 189, 255); width: 20px; height: 20px;">&nbsp;</div>
+        <div>4 SEMANAS</div>
+      </div>
+
+      <div class="d-flex justify-content-center gap-3">
+        <div class="p-3" style="border-radius: 100%; background-color: #ff85fb; width: 20px; height: 20px;">&nbsp;</div>
+        <div>ACUMULADO DEL MES</div>
+      </div>
+    </div>
+
     <app-loader *ngIf="loading" class="mt-3 mb-3" ></app-loader>
 
     <div class="mt-3 mb-3" *ngIf="loading2">

@@ -7,16 +7,175 @@
       <p></p>
       <h2>DASHBOARD SUPERVISORES</h2>
       <p class="fs-3" style="color: #ffee00;" *ngIf="datasuc != undefined">{{datasuc.name}}</p>
+      <p class="text-center">{{fechainicial| date}} - {{fechafinal|date}}</p>
     </div>
   </div>
 
   <div *ngIf="arr_data.length>0">
 
-    <p class="text-center">{{fechainicial| date}} - {{fechafinal|date}}</p>
-    <h3 class="text-center mt-5 mb-3">25 PUNTOS</h3>   
+    <div *ngIf="datamermalisto">
+      <h3 class="text-center mt-5 mb-3" style="color: rgb(146, 189, 255);">MERMAS</h3>   
+      
+      <h5 class="m-3" style="color: rgb(146, 189, 255);">ALA DE POLLO</h5>
+
+      <table class="table table-bordered text-center" data-bs-theme="dark">
+        <thead>
+            <tr>
+                <th style="background-color: black; color: white;"></th>
+                <th scope="col" colspan="4"  style="background-color: black; color: white;">SEMANAS</th>
+              </tr>
+              <tr>
+                <th scope="col" rowspan="2"  style="background-color: black; color: white;">MERMA</th>
+                
+                <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[4]}} Y W{{data!.numsemanau[3]}}</th>
+                <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[3]}} Y W{{data!.numsemanau[2]}}</th>
+                <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[2]}} Y W{{data!.numsemanau[1]}}</th>
+                <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[1]}} Y W{{data!.numsemanau[0]}}</th>
+                
+              </tr>
+        </thead>
+        <tbody>
+          <tr>
+          <th>OPERATIVA</th>
+          <td>{{datamermas[6].mermaAla | number : '1.2-2'}}&nbsp;KG</td>
+          <td>{{datamermas[4].mermaAla | number : '1.2-2'}}&nbsp;KG</td>
+          <td>{{datamermas[2].mermaAla | number : '1.2-2'}}&nbsp;KG</td>
+          <td>{{datamermas[0].mermaAla | number : '1.2-2'}}&nbsp;KG</td>
+          
+          </tr>
+          <tr>
+            <th>PROVEEDOR</th>
+            <td>{{datamermas[7].mermaAla | number : '1.2-2'}}&nbsp;KG</td>
+            <td>{{datamermas[5].mermaAla | number : '1.2-2'}}&nbsp;KG</td>
+            <td>{{datamermas[3].mermaAla | number : '1.2-2'}}&nbsp;KG</td>
+            <td>{{datamermas[1].mermaAla | number : '1.2-2'}}&nbsp;KG</td>
+            </tr>
+            <tr>
+              <th>TOTAL</th>
+              <td>{{(datamermas[6].mermaAla + datamermas[7].mermaAla) | number : '1.2-2'}}&nbsp;KG</td>
+              <td>{{(datamermas[4].mermaAla + datamermas[5].mermaAla) | number : '1.2-2'}}&nbsp;KG</td>
+              <td>{{(datamermas[2].mermaAla + datamermas[3].mermaAla) | number : '1.2-2'}}&nbsp;KG</td>
+              <td>{{(datamermas[0].mermaAla + datamermas[1].mermaAla) | number : '1.2-2'}}&nbsp;KG</td>
+              </tr>
+        </tbody>
+      </table>
+
+      <div [style]="{'height':(8*40)+'px', 'min-height':'200px'}">
+        <ngx-charts-bar-horizontal-2d
+        [scheme]="colorSchemeGM"
+        [results]="datagmermasA"
+        [gradient]="gradient"
+        [xAxis]="showXAxis"
+        [yAxis]="showYAxis"
+        [legend]="true"
+        [legendTitle]="'SEMANAS'"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showYAxisLabel"
+        [xAxisLabel]="xAxisLabel"
+        [yAxisLabel]="yAxisLabel"
+        [showDataLabel]="true"
+        [dataLabelFormatting]="formatDataLabel"
+        [legendPosition]="legendPosition"
+        >
+      </ngx-charts-bar-horizontal-2d>  
+    </div>
+   <div style="margin-top: 50px;">&nbsp;</div>
+    <h5 class="m-3" style="color: rgb(146, 189, 255);">BONELESS</h5>
+
+    <table class="table table-bordered text-center" data-bs-theme="dark">
+      <thead>
+          <tr>
+              <th style="background-color: black; color: white;"></th>
+              <th scope="col" colspan="4"  style="background-color: black; color: white;">SEMANAS</th>
+            </tr>
+        <tr>
+          <th scope="col" rowspan="2"  style="background-color: black; color: white;">MERMA</th>
+          <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[4]}} Y W{{data!.numsemanau[3]}}</th>
+          <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[3]}} Y W{{data!.numsemanau[2]}}</th>
+          <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[2]}} Y W{{data!.numsemanau[1]}}</th>
+          <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[1]}} Y W{{data!.numsemanau[0]}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+        <th>OPERATIVA</th>
+        <td>{{datamermas[6].mermaBoneless | number : '1.2-2'}}&nbsp;KG</td>
+        <td>{{datamermas[4].mermaBoneless | number : '1.2-2'}}&nbsp;KG</td>
+        <td>{{datamermas[2].mermaBoneless | number : '1.2-2'}}&nbsp;KG</td>
+        <td>{{datamermas[0].mermaBoneless | number : '1.2-2'}}&nbsp;KG</td>
+        </tr>
+        <tr>
+          <th>PROVEEDOR</th>
+          <td>{{datamermas[7].mermaBoneless | number : '1.2-2'}}&nbsp;KG</td>
+          <td>{{datamermas[5].mermaBoneless | number : '1.2-2'}}&nbsp;KG</td> 
+          <td>{{datamermas[3].mermaBoneless | number : '1.2-2'}}&nbsp;KG</td>
+          <td>{{datamermas[1].mermaBoneless | number : '1.2-2'}}&nbsp;KG</td>
+          </tr>
+          <tr>
+            <th>TOTAL</th>
+            <td>{{(datamermas[6].mermaBoneless + datamermas[7].mermaBoneless) | number : '1.2-2'}}&nbsp;KG</td>
+            <td>{{(datamermas[4].mermaBoneless + datamermas[5].mermaBoneless) | number : '1.2-2'}}&nbsp;KG</td>
+            <td>{{(datamermas[2].mermaBoneless + datamermas[3].mermaBoneless) | number : '1.2-2'}}&nbsp;KG</td>
+            <td>{{(datamermas[0].mermaBoneless + datamermas[1].mermaBoneless) | number : '1.2-2'}}&nbsp;KG</td>
+            </tr>
+      </tbody>
+    </table>
+
+    <div [style]="{'height':(8*40)+'px', 'min-height':'200px'}">
+      <ngx-charts-bar-horizontal-2d
+      [scheme]="colorSchemeGM"
+      [results]="datagmermasB"
+      [gradient]="gradient"
+      [xAxis]="showXAxis"
+      [yAxis]="showYAxis"
+      [legend]="true"
+      [legendTitle]="'SEMANAS'"
+      [showXAxisLabel]="showXAxisLabel"
+      [showYAxisLabel]="showYAxisLabel"
+      [xAxisLabel]="xAxisLabel"
+      [yAxisLabel]="yAxisLabel"
+      [showDataLabel]="true"
+      [dataLabelFormatting]="formatDataLabel"
+      [legendPosition]="legendPosition"
+      >
+    </ngx-charts-bar-horizontal-2d>  
+  </div>
+    </div>
+
+    <div style="margin-top: 80px;"></div>
+    <div style="overflow: hidden;" *ngIf="arr_data.length >0">
+      <svg
+        preserveAspectRatio="none"
+        viewBox="0 0 1200 120"
+        xmlns="http://www.w3.org/2000/svg"
+        style="fill: #ff0000; width: 100%; height: 32px; transform: rotate(180deg) scaleX(-1);"
+      >
+        <path
+        d="M0 0v46.29c47.79 22.2 103.59 32.17 158 28 70.36-5.37 136.33-33.31 206.8-37.5 73.84-4.36 147.54 16.88 218.2 35.26 69.27 18 138.3 24.88 209.4 13.08 36.15-6 69.85-17.84 104.45-29.34C989.49 25 1113-14.29 1200 52.47V0z"
+        opacity=".25"
+      />
+        <path
+          d="M0 0v15.81c13 21.11 27.64 41.05 47.69 56.24C99.41 111.27 165 111 224.58 91.58c31.15-10.15 60.09-26.07 89.67-39.8 40.92-19 84.73-46 130.83-49.67 36.26-2.85 70.9 9.42 98.6 31.56 31.77 25.39 62.32 62 103.63 73 40.44 10.79 81.35-6.69 119.13-24.28s75.16-39 116.92-43.05c59.73-5.85 113.28 22.88 168.9 38.84 30.2 8.66 59 6.17 87.09-7.5 22.43-10.89 48-26.93 60.65-49.24V0z"
+          opacity=".5"
+        />
+        <path d="M0 0v5.63C149.93 59 314.09 71.32 475.83 42.57c43-7.64 84.23-20.12 127.61-26.46 59-8.63 112.48 12.24 165.56 35.4C827.93 77.22 886 95.24 951.2 90c86.53-7 172.46-45.71 248.8-84.81V0z" />
+      </svg>
+    </div>
+
+    <div class="mt-3">
+      <div *ngIf="dataPbebidas != undefined">
+        <app-ev-porcentaje-bebidas [data]="dataPbebidas" [scorecard]="true"></app-ev-porcentaje-bebidas>
+      </div>
+    </div>
+
+    <div class="mt-3" *ngIf="dataInicioaycSucursales != undefined">
+      <app-inicio-aychb [data]="dataInicioaycSucursales" [scorecard]="true"></app-inicio-aychb>
+    </div>
+
+    <h3 class="text-center mt-5 mb-3" style="color: rgb(255, 181, 154);">25 PUNTOS</h3>   
 
     <div style="overflow: auto;" class="p-3 mb-3">
-      <h5 class="m-3" style="color: #ff9d2d;">DETALLES 25 PTS</h5>
+      <h5 class="m-3" style="color: rgb(255, 181, 154);">DETALLES 25 PTS</h5>
         <table class="table table-bordered text-center" data-bs-theme="dark">
             <thead>
                 <tr>
@@ -81,7 +240,7 @@
 
 
     <div style="overflow: auto;" class="p-3 mb-3">
-      <h5 class="m-3" style="color: #ff9d2d;">25 PTS POR VENDEDOR</h5>
+      <h5 class="m-3" style="color: rgb(255, 181, 154);">25 PTS POR VENDEDOR</h5>
         <table class="table table-bordered text-center" data-bs-theme="dark">
             <thead>
               <tr>
@@ -134,7 +293,7 @@
     </div> -->
 </div>
 
-<h5 class="m-3" style="color: #ff9d2d;" *ngIf="arr_data.length >0">25 PTS POR VENDEDOR</h5>
+<h5 class="m-3" style="color:rgb(255, 181, 154);" *ngIf="arr_data.length >0">25 PTS POR VENDEDOR</h5>
 
 <div class="mt-3 d-flex justify-content-center gap-3 flex-wrap p-3 rounded-3 ">
     <div *ngFor="let item of datavend let i = index" class="bg-cont p-3 rounded-3" style="width: 30%;">
@@ -159,155 +318,7 @@
     </div>
 
     </div>
-
-    <div style="overflow: hidden;" *ngIf="arr_data.length >0">
-      <svg
-        preserveAspectRatio="none"
-        viewBox="0 0 1200 120"
-        xmlns="http://www.w3.org/2000/svg"
-        style="fill: #ff0000; width: 100%; height: 32px; transform: rotate(180deg) scaleX(-1);"
-      >
-        <path
-        d="M0 0v46.29c47.79 22.2 103.59 32.17 158 28 70.36-5.37 136.33-33.31 206.8-37.5 73.84-4.36 147.54 16.88 218.2 35.26 69.27 18 138.3 24.88 209.4 13.08 36.15-6 69.85-17.84 104.45-29.34C989.49 25 1113-14.29 1200 52.47V0z"
-        opacity=".25"
-      />
-        <path
-          d="M0 0v15.81c13 21.11 27.64 41.05 47.69 56.24C99.41 111.27 165 111 224.58 91.58c31.15-10.15 60.09-26.07 89.67-39.8 40.92-19 84.73-46 130.83-49.67 36.26-2.85 70.9 9.42 98.6 31.56 31.77 25.39 62.32 62 103.63 73 40.44 10.79 81.35-6.69 119.13-24.28s75.16-39 116.92-43.05c59.73-5.85 113.28 22.88 168.9 38.84 30.2 8.66 59 6.17 87.09-7.5 22.43-10.89 48-26.93 60.65-49.24V0z"
-          opacity=".5"
-        />
-        <path d="M0 0v5.63C149.93 59 314.09 71.32 475.83 42.57c43-7.64 84.23-20.12 127.61-26.46 59-8.63 112.48 12.24 165.56 35.4C827.93 77.22 886 95.24 951.2 90c86.53-7 172.46-45.71 248.8-84.81V0z" />
-      </svg>
-    </div>
-
-   
-    <div *ngIf="datamermalisto">
-      <h3 class="text-center mt-5 mb-3">MERMAS</h3>   
-      
-      <h5 class="m-3" style="color: #ff9d2d;">ALA DE POLLO</h5>
-
-      <table class="table table-bordered text-center" data-bs-theme="dark">
-        <thead>
-            <tr>
-                <th style="background-color: black; color: white;"></th>
-                <th scope="col" colspan="4"  style="background-color: black; color: white;">SEMANAS</th>
-              </tr>
-              <tr>
-                <th scope="col" rowspan="2"  style="background-color: black; color: white;">MERMA</th>
-                
-                <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[4]}} Y W{{data!.numsemanau[3]}}</th>
-                <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[3]}} Y W{{data!.numsemanau[2]}}</th>
-                <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[2]}} Y W{{data!.numsemanau[1]}}</th>
-                <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[1]}} Y W{{data!.numsemanau[0]}}</th>
-                
-              </tr>
-        </thead>
-        <tbody>
-          <tr>
-          <th>OPERATIVA</th>
-          <td>{{datamermas[6].mermaAla | number : '1.2-2'}}&nbsp;KG</td>
-          <td>{{datamermas[4].mermaAla | number : '1.2-2'}}&nbsp;KG</td>
-          <td>{{datamermas[2].mermaAla | number : '1.2-2'}}&nbsp;KG</td>
-          <td>{{datamermas[0].mermaAla | number : '1.2-2'}}&nbsp;KG</td>
-          
-          </tr>
-          <tr>
-            <th>PROVEEDOR</th>
-            <td>{{datamermas[7].mermaAla | number : '1.2-2'}}&nbsp;KG</td>
-            <td>{{datamermas[5].mermaAla | number : '1.2-2'}}&nbsp;KG</td>
-            <td>{{datamermas[3].mermaAla | number : '1.2-2'}}&nbsp;KG</td>
-            <td>{{datamermas[1].mermaAla | number : '1.2-2'}}&nbsp;KG</td>
-            </tr>
-            <tr>
-              <th>TOTAL</th>
-              <td>{{(datamermas[6].mermaAla + datamermas[7].mermaAla) | number : '1.2-2'}}&nbsp;KG</td>
-              <td>{{(datamermas[4].mermaAla + datamermas[5].mermaAla) | number : '1.2-2'}}&nbsp;KG</td>
-              <td>{{(datamermas[2].mermaAla + datamermas[3].mermaAla) | number : '1.2-2'}}&nbsp;KG</td>
-              <td>{{(datamermas[0].mermaAla + datamermas[1].mermaAla) | number : '1.2-2'}}&nbsp;KG</td>
-              </tr>
-        </tbody>
-      </table>
-
-      <div [style]="{'height':(8*40)+'px', 'min-height':'200px'}">
-        <ngx-charts-bar-horizontal-2d
-        [scheme]="colorSchemeGM"
-        [results]="datagmermasA"
-        [gradient]="gradient"
-        [xAxis]="showXAxis"
-        [yAxis]="showYAxis"
-        [legend]="true"
-        [legendTitle]="'SEMANAS'"
-        [showXAxisLabel]="showXAxisLabel"
-        [showYAxisLabel]="showYAxisLabel"
-        [xAxisLabel]="xAxisLabel"
-        [yAxisLabel]="yAxisLabel"
-        [showDataLabel]="true"
-        [dataLabelFormatting]="formatDataLabel"
-        [legendPosition]="legendPosition"
-        >
-      </ngx-charts-bar-horizontal-2d>  
-    </div>
-   <div style="margin-top: 50px;">&nbsp;</div>
-    <h5 class="m-3" style="color: #ff9d2d;">BONELESS</h5>
-
-    <table class="table table-bordered text-center" data-bs-theme="dark">
-      <thead>
-          <tr>
-              <th style="background-color: black; color: white;"></th>
-              <th scope="col" colspan="4"  style="background-color: black; color: white;">SEMANAS</th>
-            </tr>
-        <tr>
-          <th scope="col" rowspan="2"  style="background-color: black; color: white;">MERMA</th>
-          <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[4]}} Y W{{data!.numsemanau[3]}}</th>
-          <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[3]}} Y W{{data!.numsemanau[2]}}</th>
-          <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[2]}} Y W{{data!.numsemanau[1]}}</th>
-          <th scope="col"  style="background-color: black; color: white;">W{{data!.numsemanau[1]}} Y W{{data!.numsemanau[0]}}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-        <th>OPERATIVA</th>
-        <td>{{datamermas[6].mermaBoneless | number : '1.2-2'}}&nbsp;KG</td>
-        <td>{{datamermas[4].mermaBoneless | number : '1.2-2'}}&nbsp;KG</td>
-        <td>{{datamermas[2].mermaBoneless | number : '1.2-2'}}&nbsp;KG</td>
-        <td>{{datamermas[0].mermaBoneless | number : '1.2-2'}}&nbsp;KG</td>
-        </tr>
-        <tr>
-          <th>PROVEEDOR</th>
-          <td>{{datamermas[7].mermaBoneless | number : '1.2-2'}}&nbsp;KG</td>
-          <td>{{datamermas[5].mermaBoneless | number : '1.2-2'}}&nbsp;KG</td> 
-          <td>{{datamermas[3].mermaBoneless | number : '1.2-2'}}&nbsp;KG</td>
-          <td>{{datamermas[1].mermaBoneless | number : '1.2-2'}}&nbsp;KG</td>
-          </tr>
-          <tr>
-            <th>TOTAL</th>
-            <td>{{(datamermas[6].mermaBoneless + datamermas[7].mermaBoneless) | number : '1.2-2'}}&nbsp;KG</td>
-            <td>{{(datamermas[4].mermaBoneless + datamermas[5].mermaBoneless) | number : '1.2-2'}}&nbsp;KG</td>
-            <td>{{(datamermas[2].mermaBoneless + datamermas[3].mermaBoneless) | number : '1.2-2'}}&nbsp;KG</td>
-            <td>{{(datamermas[0].mermaBoneless + datamermas[1].mermaBoneless) | number : '1.2-2'}}&nbsp;KG</td>
-            </tr>
-      </tbody>
-    </table>
-
-    <div [style]="{'height':(8*40)+'px', 'min-height':'200px'}">
-      <ngx-charts-bar-horizontal-2d
-      [scheme]="colorSchemeGM"
-      [results]="datagmermasB"
-      [gradient]="gradient"
-      [xAxis]="showXAxis"
-      [yAxis]="showYAxis"
-      [legend]="true"
-      [legendTitle]="'SEMANAS'"
-      [showXAxisLabel]="showXAxisLabel"
-      [showYAxisLabel]="showYAxisLabel"
-      [xAxisLabel]="xAxisLabel"
-      [yAxisLabel]="yAxisLabel"
-      [showDataLabel]="true"
-      [dataLabelFormatting]="formatDataLabel"
-      [legendPosition]="legendPosition"
-      >
-    </ngx-charts-bar-horizontal-2d>  
-  </div>
-    </div>
+  
     <div style="margin-top: 50px;">&nbsp;</div>
 
     <div style="overflow: hidden;" *ngIf="diferenciaslisto">
@@ -330,43 +341,11 @@
     </div>
 
 
-    <div *ngIf="diferenciaslisto">
-      <h3 class="text-center mt-5 mb-3">DIFERENCIAS</h3>   
+    <app-diferencias-suc [data]="data!.datadiferencias" [dataSemana]="true">
+    </app-diferencias-suc>
 
-      <app-diferencias-suc [data]="data!.datadiferencias" [dataSemana]="true">
-      </app-diferencias-suc>
-    </div>
-
-    <div style="overflow: hidden;" *ngIf="diferenciaslisto">
-      <svg
-        preserveAspectRatio="none"
-        viewBox="0 0 1200 120"
-        xmlns="http://www.w3.org/2000/svg"
-        style="fill: #ff0000; width: 100%; height: 32px; transform: rotate(180deg) scaleX(-1);"
-      >
-        <path
-        d="M0 0v46.29c47.79 22.2 103.59 32.17 158 28 70.36-5.37 136.33-33.31 206.8-37.5 73.84-4.36 147.54 16.88 218.2 35.26 69.27 18 138.3 24.88 209.4 13.08 36.15-6 69.85-17.84 104.45-29.34C989.49 25 1113-14.29 1200 52.47V0z"
-        opacity=".25"
-      />
-        <path
-          d="M0 0v15.81c13 21.11 27.64 41.05 47.69 56.24C99.41 111.27 165 111 224.58 91.58c31.15-10.15 60.09-26.07 89.67-39.8 40.92-19 84.73-46 130.83-49.67 36.26-2.85 70.9 9.42 98.6 31.56 31.77 25.39 62.32 62 103.63 73 40.44 10.79 81.35-6.69 119.13-24.28s75.16-39 116.92-43.05c59.73-5.85 113.28 22.88 168.9 38.84 30.2 8.66 59 6.17 87.09-7.5 22.43-10.89 48-26.93 60.65-49.24V0z"
-          opacity=".5"
-        />
-        <path d="M0 0v5.63C149.93 59 314.09 71.32 475.83 42.57c43-7.64 84.23-20.12 127.61-26.46 59-8.63 112.48 12.24 165.56 35.4C827.93 77.22 886 95.24 951.2 90c86.53-7 172.46-45.71 248.8-84.81V0z" />
-      </svg>
-    </div>
-
-
-    <div class="mt-3">
-      <div *ngIf="dataPbebidas != undefined">
-        <app-ev-porcentaje-bebidas [data]="dataPbebidas"></app-ev-porcentaje-bebidas>
-      </div>
-    </div>
-
-    <div class="mt-3" *ngIf="dataInicioaycSucursales != undefined">
-      <app-inicio-aychb [data]="dataInicioaycSucursales"></app-inicio-aychb>
-    </div>
-
+  <div class="mt-3"></div> 
   <div class="mt-3 d-flex justify-content-center">
     <app-detalles-ventas-suc [dataSuc]="datasuc"></app-detalles-ventas-suc>
   </div>
+

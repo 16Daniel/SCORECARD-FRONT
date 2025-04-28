@@ -45,7 +45,7 @@ public agrupadores:Agrupador[] = [];
 
 constructor(public apiserv:ApiService,public cdr:ChangeDetectorRef,private messageService: MessageService)
 {
-  this.encabezadoTabla = ['Sucursal','$ Meta','$ Venta','Alcance','$ Compras','Costo','$ Alimentos Salón','$ Bebidas Salón','% Bebidas',
+  this.encabezadoTabla = ['Sucursal','$ Meta','$ Venta','Alcance','$ Compras','Costo','$ Alimentos Salón','$ Bebidas Salón','Bebidas / AYC vendidos',
     'Total AYC','AYC Hot-Dor / Burguer','% AYC Hot-Dog / Burguer','Diferencias Ala','Compras Ala','% Diferencias Ala','Diferencias Boneless','Compras Boneless',
     '% Diferencias Boneless','Diferencias Papa','Compras Papa','% Diferencias Papa','Mermas Ala','% Mermas Ala','Mermas Boneless','% Mermas Boneless',
     'Mermas Papa','% Mermas Papa','% Tareas'

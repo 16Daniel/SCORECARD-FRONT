@@ -1,6 +1,6 @@
 <div class="pt-5">
 
-    <h3 class="text-center mt-5 mb-3">VENTA DE BEBIDAS SALÓN VS ALIMENTOS SALÓN</h3>    
+    <h3 class="text-center mt-5 mb-3">BEBIDAS / AYC VENDIDOS</h3>    
     
     <div class="row m-0 mb-5">
         <div class="col-md-4">
@@ -61,7 +61,6 @@
 
    
     <div *ngIf="arr_data.length>0">
-        <h3 class="text-center">%BEBIDAS</h3>
 
         <div class="d-flex justify-content-center gap-3 mt-3 mb-3" *ngIf="arr_data.length>0">
             <button class="btn btn-outline-success p-2" style="min-width: 10rem;" [disabled]="loading" (click)="exportarExcel()"><img width="48" height="48" src="https://img.icons8.com/fluency/40/microsoft-excel-2019.png" alt="microsoft-excel-2019"/> EXCEL</button>    

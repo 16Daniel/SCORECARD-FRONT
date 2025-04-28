@@ -76,6 +76,13 @@ public items:MenuItem[] = [];
         }
       },
       {
+        label: 'SEGURIDAD',
+        icon: 'bx bx-shield bx-sm',
+        command: () => {
+            this.router.navigate(['/']);
+        }
+      },
+      {
         label: 'CALIDAD',
         icon: 'bx bxs-star bx-sm',
         items: [
@@ -87,18 +94,11 @@ public items:MenuItem[] = [];
         ]
     },
     {
-      label: 'SEGURIDAD',
-      icon: 'bx bx-shield bx-sm',
-      command: () => {
-          this.router.navigate(['/']);
-      }
-    },
-    {
         label: 'EFICIENCIA OPERATIVA',
         icon: 'bx bxs-bar-chart-alt-2 bx-sm',
         items: [
           {
-              label: '% Bebidas',
+              label: 'Bebidas/ AYC vendidos',
               icon: 'bx bx-beer',
               route: '/main/ventas-bebidas'
           },
@@ -194,6 +194,15 @@ command: () =>
         icon: 'bx bx-objects-horizontal-left bx-sm',
         route: '/main/roles'
         },
+        {
+          label: 'METAS',
+          icon: 'bx bx-target-lock bx-sm',
+          command: () => 
+            {
+              this.router.navigate(['/main/metas']);
+              this.closemenu();
+            }
+          },
 ];
 
    }

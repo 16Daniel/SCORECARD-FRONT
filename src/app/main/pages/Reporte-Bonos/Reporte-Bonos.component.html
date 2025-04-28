@@ -92,7 +92,7 @@
                 <th class="text-center" pSortableColumn="ventaBebidasSalon" style="background-color: black;" *ngIf="!simplificado">$ Bebidas Salón
                     <p-sortIcon field="ventaBebidasSalon"/>
                 </th>
-                <th class="text-center" pSortableColumn="porcentajeBebidas" style="background-color: black;">% Bebidas
+                <th class="text-center" pSortableColumn="porcentajeBebidas" style="background-color: black;">BEBIDAS / AYC VENDIDOS
                     <p-sortIcon field="porcentajeBebidas"/>
                 </th>
                 <th class="text-center" pSortableColumn="totalayc" style="background-color: black;" *ngIf="!simplificado">Total AYC
@@ -164,7 +164,7 @@
                 <td class="text-center" style="border: 1px solid black;">{{item.costo | number : '1.2-2'}}%</td> 
                 <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">${{item.ventaAlimentosSalon | number : '1.2-2'}}</td>
                 <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">${{item.ventaBebidasSalon | number : '1.2-2'}}</td>
-                <td class="text-center" [ngClass]="{'bg-danger':item.porcentajeBebidas<40,'bg-success':item.porcentajeBebidas>=40}" style="border: 1px solid black;">{{item.porcentajeBebidas | number : '1.2-2'}}%</td>
+                <td class="text-center" [ngClass]="{'bg-danger':item.porcentajeBebidas<2,'bg-success':item.porcentajeBebidas>=2}" style="border: 1px solid black;">{{item.porcentajeBebidas | number : '1.2-2'}}</td>
                 <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">{{item.totalayc | number : '1.2-2'}}</td>
                 <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">{{item.inicioaychdb| number : '1.2-2'}}</td>
                 <td class="text-center" [ngClass]="{'bg-danger':item.porcentajehdb<=25,'bg-success':item.porcentajehdb>25}" style="border: 1px solid black;">{{item.porcentajehdb | number : '1.2-2'}}%</td>

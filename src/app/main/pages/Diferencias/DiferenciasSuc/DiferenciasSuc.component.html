@@ -1,7 +1,7 @@
 <div class="bg-cont p-3 rounded-3 mb-3">
-    <h3 *ngIf="dataSemana == false" class="text-center">{{data[0].sucursal}}</h3>
+    <h3 *ngIf="dataSemana == false" class="text-center" style="color: rgb(255, 181, 154);">{{data[0].sucursal}}</h3>
     
-        <h4 class="text-center mt-3">ALA DE POLLO</h4>
+        <h4 class="text-center mt-3" style="color: rgb(255, 181, 154);">ALA DE POLLO</h4>
         <div [style]="{'height':(dataga.length*40)+'px', 'min-height':'200px'}">
             <ngx-charts-bar-horizontal
             [scheme]="colorScheme"
@@ -19,7 +19,7 @@
           
         </div>
 
-        <h4 class="text-center mt-3">BONELESS</h4>
+        <h4 class="text-center mt-3" style="color: rgb(255, 181, 154);">BONELESS</h4>
         <div [style]="{'height':(dataga.length*40)+'px', 'min-height':'200px'}">
             <ngx-charts-bar-horizontal
             [scheme]="colorScheme"
@@ -37,7 +37,7 @@
           
         </div>
 
-        <h4 class="text-center mt-3">PAPAS</h4>
+        <h4 class="text-center mt-3" style="color: rgb(255, 181, 154);">PAPAS</h4>
         <div [style]="{'height':(dataga.length*40)+'px', 'min-height':'200px'}">
             <ngx-charts-bar-horizontal
             [scheme]="colorScheme"

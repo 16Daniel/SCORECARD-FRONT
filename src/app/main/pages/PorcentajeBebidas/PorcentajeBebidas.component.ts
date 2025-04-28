@@ -137,7 +137,7 @@ export default class PorcentajeBebidasComponent implements OnInit {
   this.apiserv.getPBebidas(JSON.stringify(sucursales),this.formatDate(this.getMonday(this.fechaini)),this.formatDate(this.getNextSunday(this.fechafin))).subscribe({
    next: data => {
       this.arr_data = data; 
-
+    console.log(this.arr_data);
       const semanas = this.arr_data.map(item => item.semana);
       const semanasUnicas:number[] = Array.from(new Set(semanas));
       let acumulado:number = 0; 
@@ -148,7 +148,7 @@ export default class PorcentajeBebidasComponent implements OnInit {
             {
               for(var item of datasemana)
                 {
-                  acumulado = acumulado + ((item.bebidas/item.alimentos)*100); 
+                  acumulado = acumulado + (item.bebidas/(item.totalayc*55)); 
                 }
             }
         }
@@ -225,7 +225,7 @@ getdataSuc(ids:number):any[]
          // Crear un enlace para la descarga
          const link = document.createElement('a');
          link.href = url;
-         link.download = 'PORCENTAJE DE BEBIDAS.xlsx'; // Establecer el nombre del archivo
+         link.download = 'BEBIDAS / AYC VENDIDOS.xlsx'; // Establecer el nombre del archivo
          document.body.appendChild(link);
      
          // Hacer clic en el enlace para iniciar la descarga

@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 })
 export class InicioAYCHBComponent implements OnInit {
 @Input() data:generaldata25ptssuc | undefined;
+@Input() scorecard:boolean = false; 
 public arr_data:any[] = []; 
 public dataTable:any[] = [];
 public sucursalesdistintas:number[] = [];
