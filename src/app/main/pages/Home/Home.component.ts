@@ -16,6 +16,7 @@ import { Router, withDebugTracing } from '@angular/router';
 import { CalendarModule } from 'primeng/calendar';
 import { Agrupador } from '../../../Interfaces/Agrupador';
 import { DropdownModule } from 'primeng/dropdown';
+import { InputSwitchModule } from 'primeng/inputswitch';
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -30,13 +31,15 @@ import { DropdownModule } from 'primeng/dropdown';
     DialogModule,
     MultimesProgressComponent,
     CalendarModule,
-    DropdownModule
+    DropdownModule,
+    InputSwitchModule
 ],
   providers:[MessageService],
   templateUrl: './Home.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class HomeComponent {
+  public metaSalon:boolean = false;  
   @ViewChild('myDialog') myDialog: Dialog | undefined;
   public catsucursales:Sucursal[] = [];
   public selectedSuc:Sucursal[] = [];
@@ -231,7 +234,7 @@ export default class HomeComponent {
 
     if(this.fechas.length==1)
       {
-        this.apiserv.getDash(this.fechas[0],jdata).subscribe({
+        this.apiserv.getDash(this.fechas[0],jdata,this.metaSalon).subscribe({
           next: data => {
              this.ventasmetas = data; 
              this.loading = false; 
@@ -271,7 +274,7 @@ export default class HomeComponent {
       } else
       {
         this.sucursalesdistintas = []; 
-        this.apiserv.getDashMeses(JSON.stringify(this.fechas),jdata).subscribe({
+        this.apiserv.getDashMeses(JSON.stringify(this.fechas),jdata,this.metaSalon).subscribe({
           next: data => {
              this.ventasmetas = data; 
              this.loading = false; 

@@ -55,7 +55,7 @@ constructor(public apiserv:ApiService,public cdr:ChangeDetectorRef,private messa
   ngOnInit(): void 
   {
     const now = new Date();
-    this.maxDate = new Date(now.getFullYear(), now.getMonth(), 0);
+    this.maxDate = new Date(now.getFullYear(), now.getMonth()+1, 0);
     this.mes = this.maxDate;
     this.getSucursales(); 
    }

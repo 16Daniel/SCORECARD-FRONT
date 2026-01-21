@@ -10,14 +10,26 @@
     }@else 
     {
       
-      <div *ngIf="itemdetalles != undefined" class="d-flex justify-content-center">
+      <div *ngIf="itemdetalles != undefined" class="d-flex justify-content-center gap-3">
         <div style="width: auto; max-width: 50rem;">
+          <p class="text-center">TOTALES</p>
           <app-progress-bar-c [nombresuc]="itemdetalles.nombreSucursal" 
       [idpbc]="'cpb-'+itemdetalles.ids" [progressEndValue]="itemdetalles.cumplimiento" 
       [metav]="itemdetalles.meta"
       [totalv]="itemdetalles.ventaTotal"
       [cumplimientoesp]="itemdetalles.cumplimientoesperado"
       [proyeccion]="itemdetalles.proyeccion"
+      />
+        </div>
+
+         <div style="width: auto; max-width: 50rem;" *ngIf="itemdetallesSalon">
+          <p class="text-center">SALÓN</p>
+          <app-progress-bar-c [nombresuc]="itemdetallesSalon.nombreSucursal" 
+      [idpbc]="'cpbs-'+itemdetallesSalon.ids" [progressEndValue]="itemdetallesSalon.cumplimiento" 
+      [metav]="itemdetallesSalon.meta"
+      [totalv]="itemdetallesSalon.ventaTotal"
+      [cumplimientoesp]="itemdetallesSalon.cumplimientoesperado"
+      [proyeccion]="itemdetallesSalon.proyeccion"
       />
         </div>
       </div>

@@ -42,6 +42,7 @@ fechastr:string = '';
   public arrdetallesRappi:any[] = [];
   public arrdetallesDidi:any[] = [];
 public itemdetalles:VentaMeta | undefined; 
+public itemdetallesSalon:VentaMeta | undefined; 
   
   colorSchemedet:any = {
     domain: [
@@ -89,9 +90,8 @@ public itemdetalles:VentaMeta | undefined;
      arr_suc_id.push(this.dataSuc!); 
      let jdata = JSON.stringify(arr_suc_id);  
 
-    this.apiserv.getDash(this.fechastr,jdata).subscribe({
+    this.apiserv.getDash(this.fechastr,jdata,false).subscribe({
       next: data => {
-        debugger
          this.itemdetalles = data[0]; 
          this.loading = false; 
          this.single = [];           
@@ -104,7 +104,18 @@ public itemdetalles:VentaMeta | undefined;
       }
   });
 
-
+  this.apiserv.getDash(this.fechastr,jdata,true).subscribe({
+      next: data => {
+         this.itemdetallesSalon = data[0]; 
+         this.loading = false;       
+         this.cdr.detectChanges();
+      },
+      error: error => {
+         console.log(error);
+         this.loading = false; 
+         this.showMessage('error',"Error","Error al procesar la solicitud");
+      }
+  });
 
     this.apiserv.getDetallesVentas(this.dataSuc!.cod,this.fechastr).subscribe({
       next: data => {

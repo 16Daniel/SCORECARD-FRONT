@@ -55,19 +55,24 @@ export class ApiService {
       return this.http.get<Sucursal[]>(this.url+'Catalogos/getSucursales',{headers:this.headers})
    }
 
-   getDash(fecha:string, jdata:string):Observable<any>
+   getDash(fecha:string, jdata:string,metaSalon:boolean):Observable<any>
    {
+      debugger
     let formdata = new FormData();
     formdata.append("jdsucursales",jdata);
     formdata.append("fecha",fecha);
+    let val = metaSalon == true ? 'true':'false'
+    formdata.append("metaSalon",val); 
     return this.http.post<any>(this.url+'Dashboard/ConsultaDashboard',formdata,{headers:this.headers})
    }
 
-   getDashMeses(fechas:string, jdata:string):Observable<any>
+   getDashMeses(fechas:string, jdata:string, metaSalon:boolean):Observable<any>
    {
     let formdata = new FormData();
     formdata.append("jdsucursales",jdata);
     formdata.append("fechas",fechas);
+     let val = metaSalon == true ? 'true':'false'
+    formdata.append("metaSalon",val); 
     return this.http.post<any>(this.url+'Dashboard/ConsultaDashboardMeses',formdata,{headers:this.headers})
    }
 
