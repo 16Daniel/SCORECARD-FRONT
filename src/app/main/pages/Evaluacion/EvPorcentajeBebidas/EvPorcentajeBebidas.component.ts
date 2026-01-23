@@ -1,19 +1,17 @@
-import { Component, Input, type OnInit } from '@angular/core';
-import { generaldata25ptssuc } from '../../../../Interfaces/25Pts';
+import { Component, input, Input, type OnInit } from '@angular/core';
+import { PbebidasSucRegional, PbebidasSucRegionalGeneral } from '../../../../Interfaces/25Pts';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
 @Component({
-  selector: 'app-inicio-aychb',
+  selector: 'app-ev-porcentaje-bebidas',
   standalone: true,
-  imports: [
-    CommonModule
-  ],
-  templateUrl: './InicioAYCHB.component.html',
+  imports: [CommonModule,FormsModule],
+  templateUrl: './EvPorcentajeBebidas.component.html',
 })
-export class InicioAYCHBComponent implements OnInit {
-@Input() data:generaldata25ptssuc | undefined;
+export class EvPorcentajeBebidasComponent implements OnInit {
+@Input() data:PbebidasSucRegionalGeneral|undefined;
 @Input() scorecard:boolean = false; 
-public arr_data:any[] = []; 
+public arr_data:PbebidasSucRegional[] = []; 
 public dataTable:any[] = [];
 public sucursalesdistintas:number[] = [];
   ngOnInit(): void 
@@ -39,14 +37,14 @@ public sucursalesdistintas:number[] = [];
 
    getdatacell(ids:number,numsemana:number):number
    {
-    debugger
     let porcentaje = 0; 
       let data = this.arr_data.filter(x=>x.idf == ids && x.numsemana == numsemana);
       if(data.length>0)
         {
-          porcentaje = (data[0].incioshb/data[0].totalayc) * 100;
+          porcentaje = data[0].porcentaje;
         } 
 
         return porcentaje
    }
+
 }

@@ -1,24 +1,33 @@
-import { Component, Input, type OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, type OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Dashboardsuc } from '../../../../Interfaces/Dashboardsuc';
 import { CompraArt, MermasDS } from '../../../../Interfaces/Merma';
-import { It25pts } from '../../../../Interfaces/25Pts';
+import { generaldata25ptssuc, It25pts, PbebidasSucRegionalGeneral } from '../../../../Interfaces/25Pts';
 import { LegendPosition } from '@swimlane/ngx-charts';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { Sucursal } from '../../../../Interfaces/Sucursal';
 import { DiferenciasSucComponent } from "../../Diferencias/DiferenciasSuc/DiferenciasSuc.component";
 import { Diferencia } from '../../../../Interfaces/Diferencia';
+import { EvPorcentajeBebidasComponent } from "../../Evaluacion/EvPorcentajeBebidas/EvPorcentajeBebidas.component";
+import { DetallesVentasSucComponent } from "../../../../Shared/DetallesVentasSuc/DetallesVentasSuc.component";
+import { ApiService } from '../../../../Services/api.service';
+import { InicioAYCHBComponent } from "../../Evaluacion/InicioAYCHB/InicioAYCHB.component";
 @Component({
   selector: 'app-dash-suc',
   standalone: true,
   imports: [
     CommonModule,
     NgxChartsModule,
-    DiferenciasSucComponent
+    DiferenciasSucComponent,
+    EvPorcentajeBebidasComponent,
+    DetallesVentasSucComponent,
+    InicioAYCHBComponent
 ],
   templateUrl: './DashSuc.component.html',
 })
 export class DashSucComponent implements OnInit {
+  public dataPbebidas:PbebidasSucRegionalGeneral|undefined;
+  public dataInicioaycSucursales:generaldata25ptssuc|undefined; 
   @Input() data:Dashboardsuc|undefined;
   @Input() datasuc:Sucursal|undefined;
     
@@ -88,11 +97,13 @@ export class DashSucComponent implements OnInit {
     ]
   };
 
-
+  constructor(public cdr:ChangeDetectorRef, public apiserv:ApiService)
+  {
+  }
 
   ngOnInit(): void 
   {
-
+    this.consultarPbebidasRegional();
     this.arr_data = this.data!.data25pts; 
     this.datavend = this.data!.datav;
     this.fechainicial = this.data!.fechaini;
@@ -126,7 +137,7 @@ export class DashSucComponent implements OnInit {
 
            let totali:number= regv1+regv2+regv3+regv4+regv5+regv6+regv7+regv8; 
             let prop = item.venta * 0.05; 
-              this.dataT.push({name:item.vendedor,s1:regv1,s2:regv2,s3:regv3,s4:regv4,s5:regv5,s6:regv6,s7:regv7,s8:regv8,total:totali,totalv:item.venta,propina: prop,aycsc: item.aycsc, totalaycv: item.totalaycv});
+              this.dataT.push({name:item.vendedor,s1:regv1,s2:regv2,s3:regv3,s4:regv4,s5:regv5,s6:regv6,s7:regv7,s8:regv8,total:totali,totalv:item.venta,propina: prop,aycsc: item.aycsc, totalaycv: item.totalaycv,aycsctr: item.aycSinCobroTiempoReal});
         }  
 
         let s1 = this.dataT.reduce((acumulador:number, elemento) => {
@@ -175,7 +186,11 @@ export class DashSucComponent implements OnInit {
           return acumulador + parseInt(elemento.aycsc.toString());
         }, 0);
 
-        this.itemt.push({name:'TOTAL',s1:s1,s2:s2,s3:s3,s4:s4,s5:s5,s6:s6,s7:s7,s8:s8,total:totali,totalv:totalv,propina: prop, aycsc : totaycsc});
+        let totalaycsctr = this.dataT.reduce((acumulador:number, elemento) => {
+          return acumulador + parseInt(elemento.aycsctr.toString());
+        }, 0);
+
+        this.itemt.push({name:'TOTAL',s1:s1,s2:s2,s3:s3,s4:s4,s5:s5,s6:s6,s7:s7,s8:s8,total:totali,totalv:totalv,propina: prop, aycsc : totaycsc, totaycsctr: totalaycsctr});
     
          this.datamermas = this.data!.datamermas; 
         let datacomprasm:CompraArt[] = this.data!.comprasdata;
@@ -259,6 +274,44 @@ getPorcentajeV(incidencias:number, totalayc:number):number
       porcentaje = (incidencias / totalayc)*100; 
     }
   return porcentaje;
+}
+
+
+
+consultarPbebidasRegional()
+{
+  let sucursales:number[] = []; 
+  sucursales.push(this.datasuc!.cod);
+
+ this.apiserv.getPbebidasRegional(JSON.stringify(sucursales),this.data!.fechafin.toString().split('T')[0]).subscribe({
+  next: data => {
+   this.dataPbebidas = data; 
+   this.consultarinicioaycSucursales();
+  },
+  error: error => {
+     console.log(error);
+  }
+});
+}
+
+consultarinicioaycSucursales()
+{
+
+  let sucursales:number[] = []; 
+  sucursales.push(this.datasuc!.cod);
+
+  this.apiserv.getIniciosAYCSucursales(JSON.stringify(sucursales),this.data!.fechafin.toString().split('T')[0]).subscribe({
+   next: data => {
+  
+    console.log(data); 
+    this.dataInicioaycSucursales = data; 
+      this.cdr.detectChanges();
+   },
+   error: error => {
+      console.log(error);
+   }
+});
+
 }
 
 }

@@ -1,3 +1,5 @@
+import { PmermasModel } from "./BonoData";
+
 export interface It25pts {
     id: number;
     fechaini: string; // o Date si decides convertir la fecha
@@ -27,4 +29,54 @@ export interface It25pts {
   {
     semanas:number[]; 
     data:It25ptsSuc[];
+  }
+
+  export interface PbebidasSucRegionalGeneral
+  {
+    semanas:number[]; 
+    data:PbebidasSucRegional[];
+  }
+
+  export interface PbebidasSucRegional
+  {
+    idf:number;
+    nombresuc:string; 
+    numsemana:number; 
+    porcentaje:number; 
+  }
+
+  export interface DiferenciasRegionalGeneral
+  {
+    semanas:number[]; 
+    data:DiferenciasRegional[];
+  }
+  export interface DiferenciasRegional
+  {
+    idf:number;
+    nombresuc:string; 
+    numsemana:number; 
+    pdifAla:number;
+    pdifBoneless:number;
+    pdifPapa:number;  
+    alldata:any;
+    fechaini:Date; 
+    fechafin:Date;
+  }
+
+  export interface MermasOperativasRegionalGeneral
+  {
+    semanas:number[]; 
+    data:MermasOperativasRegional[];
+  }
+  export interface MermasOperativasRegional
+  {
+    idf:number;
+    nombresuc:string; 
+    numsemana:number; 
+    pmAla:number;
+    pmBoneless:number;
+    pmPapa:number;  
+    alldata:PmermasModel;
+    fechaini:Date; 
+    fechafin:Date;
   }

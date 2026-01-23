@@ -39,6 +39,7 @@
             <th scope="col" class="tdR">AÑO</th>
             <th scope="col" class="tdR">DIAS</th>
             <th scope="col" class="tdR">META</th>
+            <th scope="col" class="tdR">META SALÓN</th>
             <th scope="col" class="tdR">ROTACIÓN</th>
             <th scope="col" class="tdR">PORCENTAJE</th>
             <th scope="col" class="tdR">GRUPO</th>
@@ -52,6 +53,7 @@
             <th class="tdR bg-opacity-25" [ngClass]="{'': campovalido(item.anio,2),'bg-danger':campovalido(item.anio,2)==false}">{{item.anio}}</th>
             <th class="tdR bg-opacity-25" [ngClass]="{'': campovalido(item.dias,2),'bg-danger':campovalido(item.dias,2)==false}">{{item.dias}}</th>
             <th class="tdR bg-opacity-25" [ngClass]="{'': campovalido(item.meta,2),'bg-danger':campovalido(item.meta,2)==false}">{{item.meta}}</th>
+            <th class="tdR bg-opacity-25" [ngClass]="{'': campovalido(item.metaSalon,2),'bg-danger':campovalido(item.metaSalon,2)==false}">{{item.metaSalon}}</th>
             <th class="tdR bg-opacity-25" [ngClass]="{'': campovalido(item.rotacion,2),'bg-danger':campovalido(item.rotacion,2)==false}">{{item.rotacion}}</th>
             <th class="tdR bg-opacity-25" [ngClass]="{'': campovalido(item.porcentaje,2),'bg-danger':campovalido(item.porcentaje,2)==false}">{{item.porcentaje}}</th>
             <th class="tdR bg-opacity-25" [ngClass]="{'': campovalido(item.grupo,1),'bg-danger':campovalido(item.grupo,1)==false}">{{item.grupo}}</th>

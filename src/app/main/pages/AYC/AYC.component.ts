@@ -13,6 +13,8 @@ import { CalendarModule } from 'primeng/calendar';
 import { LoaderComponent } from '../../../Shared/Loader/Loader.component';
 import { InicioAYC } from '../../../Interfaces/InicioAYC.';
 import { SucursalInicioAYCComponent } from '../../../Shared/SucursalInicioAYC/SucursalInicioAYC.component';
+import { Agrupador } from '../../../Interfaces/Agrupador';
+import { DropdownModule } from 'primeng/dropdown';
 @Component({
   selector: 'app-ayc',
   standalone: true,
@@ -23,7 +25,8 @@ import { SucursalInicioAYCComponent } from '../../../Shared/SucursalInicioAYC/Su
     FormsModule,
     CalendarModule,
     LoaderComponent,
-    SucursalInicioAYCComponent
+    SucursalInicioAYCComponent,
+    DropdownModule,
 ],
   providers:[MessageService,ConfirmationService],
   templateUrl: './AYC.component.html',
@@ -40,6 +43,16 @@ public fechafin:Date = new Date();
 public arr_inicioayc:InicioAYC[] = []; 
 
 public parametrosjdata:string = "";
+
+public promedioala:number = 0; 
+public promedioboneless:number = 0; 
+public promediohotdogburguer:number = 0; 
+
+public seriePromedio:any[] = [];  
+
+ public groupSel:Agrupador|undefined; 
+public agrupadores:Agrupador[] = [];
+
 
   constructor(private messageService: MessageService,public cdr:ChangeDetectorRef, public apiserv:ApiService,private confirmationService: ConfirmationService)
 {
@@ -58,6 +71,7 @@ getSucursales()
     next: data => {
        this.catsucursales=data;
        this.loading = false;
+       this.getAgrupadores()
        this.cdr.detectChanges();
     },
     error: error => {
@@ -68,6 +82,24 @@ getSucursales()
 });
 
 }
+
+getAgrupadores()
+{
+  this.loading= true;
+  this.apiserv.getAgrupadores().subscribe({
+   next: data => {
+      this.agrupadores=data;
+      this.loading = false;
+      this.cdr.detectChanges();
+   },
+   error: error => {
+      console.log(error);
+      this.loading = false;
+      this.showMessage('error',"Error","Error al procesar la solicitud");
+   }
+});
+}
+
 
 getMonday(date: Date): Date {
   const day = date.getDay(); // Obtiene el día de la semana (0 es Domingo, 1 es Lunes, etc.)
@@ -102,7 +134,55 @@ consultaYAC()
   this.apiserv.getIniciosAYC(JSON.stringify(sucursales),this.formatDate(this.getMonday(this.fechaini)),this.formatDate(this.getNextSunday(this.fechafin))).subscribe({
    next: data => {
       this.arr_inicioayc = data; 
-      console.log(data); 
+      
+      let wings = this.arr_inicioayc.reduce((acumulador, elemento) => {
+        if (elemento.orden == 1) {
+          return acumulador + elemento.udsTotales;
+        } else {
+          return acumulador;
+        }
+      }, 0);
+
+      let boneless = this.arr_inicioayc.reduce((acumulador, elemento) => {
+        if (elemento.orden == 2) {
+          return acumulador + elemento.udsTotales;
+        } else {
+          return acumulador;
+        }
+      }, 0);
+
+    let hotdogs = this.arr_inicioayc.reduce((acumulador, elemento) => {
+        if (elemento.orden == 4) {
+          return acumulador + elemento.udsTotales;
+        } else {
+          return acumulador;
+        }
+      }, 0);
+
+    let burgers = this.arr_inicioayc.reduce((acumulador, elemento) => {
+        if (elemento.orden == 3) {
+          return acumulador + elemento.udsTotales;
+        } else {
+          return acumulador;
+        }
+      }, 0);
+      
+      let totalayc = this.arr_inicioayc.reduce((acumulador, elemento) => {
+          return acumulador + elemento.udsTotales;
+      }, 0);
+
+      this.promedioala = (wings/totalayc)*100; 
+      this.promedioboneless = (boneless/totalayc)*100; 
+      this.promediohotdogburguer = ((hotdogs+burgers)/totalayc)*100; 
+    
+      let totalpromedioala = wings/this.sucursalesSel.length; 
+      let totalpromedioboneless = boneless/this.sucursalesSel.length; 
+      let totalpromedioHotdogsBurguer = (hotdogs+burgers)/this.sucursalesSel.length; 
+
+      this.seriePromedio.push({name:"WINGS",value:totalpromedioala});
+        this.seriePromedio.push({name:"BONELESS",value:totalpromedioboneless});
+        this.seriePromedio.push({name:"HOT-DOG/BURGER",value:totalpromedioHotdogsBurguer});
+
       this.loading = false;
       this.cdr.detectChanges();
    },
@@ -149,5 +229,26 @@ getparametros()
   });
 }
 
+changeSuc()
+{
+  this.arr_inicioayc= []; 
+}
+
+changeGroup()
+{  
+
+   if(this.groupSel != undefined)
+     {
+       this.sucursalesSel = []; 
+       let obj = JSON.parse(this.groupSel.jdata); 
+
+       for(let item of obj)
+         {
+           let suc = this.catsucursales.filter(x=>x.cod == item); 
+           if(suc.length>0){ this.sucursalesSel.push(suc[0]); }
+         }
+         
+     }
+}
 
 }

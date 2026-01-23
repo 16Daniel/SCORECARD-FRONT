@@ -9,4 +9,5 @@ export interface VentaBebida
     semana:number; 
     fi:Date;
     ff:Date; 
+    totalayc:number;
  }

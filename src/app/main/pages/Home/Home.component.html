@@ -22,8 +22,26 @@
    [style]="{'width':'20rem'}"
     />
   </div>
+  <div>
+    <p-dropdown 
+    [options]="agrupadores" 
+    [(ngModel)]="groupSel" 
+    [filter]="true"
+    filterBy="nombre"
+    optionLabel="nombre" 
+    placeholder="GRUPO" 
+    [style]="{'width':'20rem'}"
+    (onChange)="changeGroup()"
+    />
+</div>
   <button class="btn btn-grad rounded-3 bx-burst-hover" (click)="consultarDash()"><i class='bx bx-search'></i></button>
-  </div>
+ <div class="d-flex flex-column align-items-center" style=" position: fixed;
+    top: 70px;
+    right: 10px;
+    z-index: 999;">
+  <p-inputSwitch [(ngModel)]="metaSalon" (onChange)="cambiodemeta()"/> META SALÓN</div>
+  
+</div>
 
     <app-loader *ngIf="loading" class="mt-5"></app-loader>
 
@@ -31,7 +49,7 @@
   <div class="d-flex justify-content-center align-items-center flex-column" *ngIf="tipoconsulta == 1">
   
     <div class="p-3 rounded-3 bg-opacity-25" style="min-width: 50%;" *ngIf="loading == false && ventasmetas.length>0 && fechas.length==1">
-      <h3 class="text-center w-100" >VENTAS</h3>
+      <h3 class="text-center w-100" >VENTAS @if(metaSalon){<span>SALÓN</span>} @else {<span>TOTALES</span>}</h3>
       <h5 class="text-center"><span style="color: rgb(201, 214, 255);">META GLOBAL:</span> ${{metageneral | number : '1.2-2'}}</h5>
       <h5 class="text-center"><span style="color: rgb(201, 214, 255);">VENTA GLOBAL:</span> ${{ventatotal | number : '1.2-2'}}</h5>
       @if(ventatotal>=metageneral)
@@ -93,7 +111,20 @@
 
       <h4 class="w-100 text-center">Proyección: <span class="fw-bold text-p">{{ventasmetas[0].cumplimientoesperado | number : '1.2-2' }}%</span></h4>
 
-  <div class="d-flex justify-content-center gap-3 p-3 flex-wrap">
+  <div class="d-flex justify-content-center gap-3 p-3 flex-wrap" *ngIf="metaSalon">
+    @for (item of ventasmetas; track $index) {
+      <app-progress-bar-c [nombresuc]="item.nombreSucursal" 
+      [idpbc]="'cpb-s'+$index" [progressEndValue]="item.cumplimientoS" 
+      [metav]="item.metaS"
+      [totalv]="item.ventaTotalS"
+      [cumplimientoesp]="item.cumplimientoesperado"
+      [proyeccion]="item.proyeccionS"
+      (click)="verdetalles(item)"
+      />
+    }
+  </div>
+
+   <div class="d-flex justify-content-center gap-3 p-3 flex-wrap" *ngIf="!metaSalon">
     @for (item of ventasmetas; track $index) {
       <app-progress-bar-c [nombresuc]="item.nombreSucursal" 
       [idpbc]="'cpb-'+$index" [progressEndValue]="item.cumplimiento" 
@@ -105,6 +136,7 @@
       />
     }
   </div>
+
 
     </div>
 

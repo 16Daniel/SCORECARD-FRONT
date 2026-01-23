@@ -1,7 +1,11 @@
 <div style="overflow: auto;">
     <table class="table-c">
         <thead>
-            <tr>
+          <tr *ngIf="scorecard">
+            <th scope="col" colspan="9" class="text-center"  style="background-color: #000000; color: rgb(255, 181, 154)"><h4>AYC HOT-DOG/BURGER</h4></th>
+          </tr>
+
+            <tr *ngIf="!scorecard">
                 <th scope="col" colspan="9" class="text-center"  style="background-color: #000000; color: white;"><h4>AYC HOT-DOG/BURGER</h4></th>
               </tr>
           <tr>

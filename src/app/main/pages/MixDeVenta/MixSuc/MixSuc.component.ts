@@ -13,7 +13,9 @@ import { MixVenta } from '../../../../Interfaces/Venta';
 })
 export class MixSucComponent implements OnInit {
   @Input() data:MixVenta[] = [];
-
+  @Input() seriepromedio_s:any[] = [];
+  @Input() seriepromedio_d:any[] = [];
+  @Input() seriepromedio_p:any[] = [];
     // options
     showXAxis: boolean = true;
     showYAxis: boolean = true;
@@ -56,7 +58,12 @@ export class MixSucComponent implements OnInit {
         this.datagp.push({name:""+semana,series:series}); 
       }
 
+      this.datags.push({name:"PROMEDIO DEL GRUPO",series:this.seriepromedio_s}); 
+      this.datagd.push({name:"PROMEDIO DEL GRUPO",series:this.seriepromedio_d}); 
+      this.datagp.push({name:"PROMEDIO DEL GRUPO",series:this.seriepromedio_p}); 
 
    }
+
+
 
 }

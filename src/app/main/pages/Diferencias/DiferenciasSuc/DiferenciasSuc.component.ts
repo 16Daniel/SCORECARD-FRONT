@@ -1,5 +1,5 @@
 import { CommonModule,DatePipe } from '@angular/common';
-import { Component, Input, type OnInit } from '@angular/core';
+import { Component, input, Input, type OnInit } from '@angular/core';
 import { Diferencia } from '../../../../Interfaces/Diferencia';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
@@ -16,6 +16,10 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 export class DiferenciasSucComponent implements OnInit {
   @Input() data:Diferencia[] = [];
   @Input() dataSemana:boolean = false;
+  @Input() promAla:number = 0;
+  @Input() promBoneless:number = 0;
+  @Input() promPapa:number = 0;
+
   // options
   showXAxis: boolean = true;
   showYAxis: boolean = true;
@@ -78,8 +82,7 @@ export class DiferenciasSucComponent implements OnInit {
             this.dataga.push({name:'SEMANA '+numsemana,value:t_d_a});
             this.datagb.push({name:'SEMANA '+numsemana,value:t_d_b});
             this.datagp.push({name:'SEMANA '+numsemana,value:t_d_p});
-          }
-                    
+          }              
     } else
     {
       for(let item of this.data)
@@ -98,12 +101,20 @@ export class DiferenciasSucComponent implements OnInit {
                     this.datagp.push({name:this.datePipe.transform(item.fecha, 'dd-MM-yyyy'),value:parseFloat(item.diferencia.toString())});
                   }
         }
+
+        const semanas = this.data.map(item => item.fecha);
+        const fechaUnicas:Date[] = Array.from(new Set(semanas));
+
+
+        this.dataga.push({name:'PROMEDIO DEL GRUPO',value:this.promAla/fechaUnicas.length});
+        this.datagb.push({name:'PROMEDIO DEL GRUPO',value:this.promBoneless/fechaUnicas.length});
+        this.datagp.push({name:'PROMEDIO DEL GRUPO',value:this.promPapa/fechaUnicas.length});
     }
 
    }
 
 
-   customColorsa = (name:number): string => {
+   customColorsa = (name:string): string => {
     let Sucursal = this.dataga.filter(x=>x.name == name);
     let diferencia= Sucursal[0].value;
 
@@ -145,6 +156,12 @@ export class DiferenciasSucComponent implements OnInit {
               color = '#d9003e';
             }
         }
+
+        if(name == 'PROMEDIO DEL GRUPO')
+          {
+            color = '#bebebe'; 
+          }
+
       return color;
   };
 
@@ -172,7 +189,7 @@ export class DiferenciasSucComponent implements OnInit {
       return color;
   };
 
-  customColorsb = (name:number): string => {
+  customColorsb = (name:string): string => {
     let Sucursal = this.datagb.filter(x=>x.name == name);
     let diferencia= Sucursal[0].value;
 
@@ -192,10 +209,14 @@ export class DiferenciasSucComponent implements OnInit {
       {
         color = '#d9003e';
       }
+      if(name == 'PROMEDIO DEL GRUPO')
+        {
+          color = '#bebebe'; 
+        }
       return color;
   };
 
-  customColorsp = (name:number): string => {
+  customColorsp = (name:string): string => {
     let Sucursal = this.datagp.filter(x=>x.name == name);
     let diferencia= Sucursal[0].value;
 
@@ -215,6 +236,11 @@ export class DiferenciasSucComponent implements OnInit {
       {
         color = '#d9003e';
       }
+
+      if(name == 'PROMEDIO DEL GRUPO')
+        {
+          color = '#bebebe'; 
+        }
       return color;
   };
 

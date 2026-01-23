@@ -11,6 +11,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { DropdownModule } from 'primeng/dropdown';
 import { DetallesPorcentajeBebidasComponent } from "./DetallesPorcentajeBebidas/DetallesPorcentajeBebidas.component";
+import { Agrupador } from '../../../Interfaces/Agrupador';
 @Component({
   selector: 'app-porcentaje-bebidas',
   standalone: true,
@@ -30,6 +31,7 @@ import { DetallesPorcentajeBebidasComponent } from "./DetallesPorcentajeBebidas/
 })
 export default class PorcentajeBebidasComponent implements OnInit {
   public arr_data:any[] = []; 
+  public agrupadores:Agrupador[] = [];
   public catsucursales:Sucursal[] = [];
   public sucursalesSel:Sucursal[] = [];
   public loading:boolean = false; 
@@ -39,8 +41,10 @@ export default class PorcentajeBebidasComponent implements OnInit {
   public fechafin:Date = new Date(); 
 
   public parametrosjdata:string = "";
-  public datag:any[] = [];
   public rangosemanas:string = ""; 
+
+  public promedio:number = 0; ; 
+  public groupSel:Agrupador|undefined; 
 
   showXAxis: boolean = true;
     showYAxis: boolean = true;
@@ -61,23 +65,6 @@ export default class PorcentajeBebidasComponent implements OnInit {
       ]
     };
     
-    customColorsc = (name:number): string => {
-      let Sucursal = this.datag.filter(x=>x.name == name);
-      let porcentaje= Sucursal[0].value;
-  
-
-      let color = '#6D28D9'; 
-      if(porcentaje<40)
-        {
-          color = '#d9003e';
-        }
-  
-      if(porcentaje>=40)
-        {
-          color = '#39df18';
-        }
-        return color;
-    };
 
     constructor(private messageService: MessageService,public cdr:ChangeDetectorRef, public apiserv:ApiService)
   {
@@ -101,6 +88,7 @@ export default class PorcentajeBebidasComponent implements OnInit {
       next: data => {
          this.catsucursales=data;
          this.loading = false;
+         this.getAgrupadores();
          this.cdr.detectChanges();
       },
       error: error => {
@@ -112,6 +100,23 @@ export default class PorcentajeBebidasComponent implements OnInit {
   
   }
   
+  getAgrupadores()
+{
+  this.loading= true;
+  this.apiserv.getAgrupadores().subscribe({
+   next: data => {
+      this.agrupadores=data;
+      this.loading = false;
+      this.cdr.detectChanges();
+   },
+   error: error => {
+      console.log(error);
+      this.loading = false;
+      this.showMessage('error',"Error","Error al procesar la solicitud");
+   }
+});
+}
+
   
   formatDate(date: Date): string {
     return date.toISOString().split('T')[0];
@@ -121,7 +126,7 @@ export default class PorcentajeBebidasComponent implements OnInit {
   consultarVentasBebidas()
 {
     this.arr_data = []; 
-    this.datag = [];
+    this.promedio = 0; 
   this.loading= true;
   let sucursales:number[] = []; 
     for(let item of this.sucursalesSel)
@@ -132,20 +137,24 @@ export default class PorcentajeBebidasComponent implements OnInit {
   this.apiserv.getPBebidas(JSON.stringify(sucursales),this.formatDate(this.getMonday(this.fechaini)),this.formatDate(this.getNextSunday(this.fechafin))).subscribe({
    next: data => {
       this.arr_data = data; 
-      console.log(data); 
+    console.log(this.arr_data);
+      const semanas = this.arr_data.map(item => item.semana);
+      const semanasUnicas:number[] = Array.from(new Set(semanas));
+      let acumulado:number = 0; 
+      for(let semana of semanasUnicas)
+        {
+          let datasemana = this.arr_data.filter(x=>x.semana == semana);
+          if(datasemana.length>0)
+            {
+              for(var item of datasemana)
+                {
+                  acumulado = acumulado + (item.bebidas/(item.totalayc*55)); 
+                }
+            }
+        }
+         this.promedio = (acumulado / this.arr_data.length); 
       this.loading = false;
       
-      for(let item of this.arr_data)
-        {
-          let porcentaje = 0; 
-          if(item.alimentos >0)
-            {
-              porcentaje = (item.bebidas/item.alimentos)*100;
-            }
-          this.datag.push({name:"W"+item.semana,value:porcentaje}); 
-
-        }
-
       this.cdr.detectChanges();
    },
    error: error => {
@@ -182,7 +191,6 @@ getNextSunday(date: Date): Date {
 changeSuc()
 {
   this.arr_data = []; 
-  this.datag = []; 
 }
 
 getdataSuc(ids:number):any[]
@@ -217,7 +225,7 @@ getdataSuc(ids:number):any[]
          // Crear un enlace para la descarga
          const link = document.createElement('a');
          link.href = url;
-         link.download = 'PORCENTAJE DE BEBIDAS.xlsx'; // Establecer el nombre del archivo
+         link.download = 'BEBIDAS / AYC VENDIDOS.xlsx'; // Establecer el nombre del archivo
          document.body.appendChild(link);
      
          // Hacer clic en el enlace para iniciar la descarga
@@ -236,5 +244,21 @@ getdataSuc(ids:number):any[]
    });
    }
    
+   changeGroup()
+   {  
+   
+      if(this.groupSel != undefined)
+        {
+          this.sucursalesSel = []; 
+          let obj = JSON.parse(this.groupSel.jdata); 
+
+          for(let item of obj)
+            {
+              let suc = this.catsucursales.filter(x=>x.cod == item); 
+              if(suc.length>0){ this.sucursalesSel.push(suc[0]); }
+            }
+            
+        }
+   }
 
 }

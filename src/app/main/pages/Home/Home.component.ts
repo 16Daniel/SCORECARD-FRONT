@@ -9,11 +9,14 @@ import { ToastModule } from 'primeng/toast';
 import { FormsModule } from '@angular/forms';
 import { ProgressBarCComponent } from "../../../Shared/ProgressBarC/ProgressBarC.component";
 import { LoaderComponent } from '../../../Shared/Loader/Loader.component';
-import { DetallesArt, DetallesVenta2, DetallesVentas3, VentaMeta } from '../../../Interfaces/Venta';
+import { DetallesArt, DetallesVenta2, DetallesVentas3, VentaMeta, VentaMetaDoble } from '../../../Interfaces/Venta';
 import { Dialog, DialogModule } from 'primeng/dialog';
 import { MultimesProgressComponent } from '../../../Shared/MultimesProgress/MultimesProgress.component';
 import { Router, withDebugTracing } from '@angular/router';
 import { CalendarModule } from 'primeng/calendar';
+import { Agrupador } from '../../../Interfaces/Agrupador';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputSwitchModule } from 'primeng/inputswitch';
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -27,17 +30,20 @@ import { CalendarModule } from 'primeng/calendar';
     LoaderComponent,
     DialogModule,
     MultimesProgressComponent,
-    CalendarModule
+    CalendarModule,
+    DropdownModule,
+    InputSwitchModule
 ],
   providers:[MessageService],
   templateUrl: './Home.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class HomeComponent {
+  public metaSalon:boolean = false;  
   @ViewChild('myDialog') myDialog: Dialog | undefined;
   public catsucursales:Sucursal[] = [];
   public selectedSuc:Sucursal[] = [];
-  public ventasmetas:VentaMeta[] = [];
+  public ventasmetas:VentaMetaDoble[] = [];
   public mesSel:string = ''; 
   public loading:boolean = false; 
   public loadingdet:boolean = false; 
@@ -74,6 +80,10 @@ export default class HomeComponent {
   selectedMonths:Date[] = []; 
   public modalfecha:boolean = false; 
   public sucursalesdistintas:number[] = [];
+
+      public groupSel:Agrupador|undefined; 
+      public agrupadores:Agrupador[] = [];
+
   public colorScale:any[] = [
     {color1:'#d9003e',color2:'#ffbcbc'}, // 0% (Rojo)
     {color1:'#e53e11',color2:'#ffcec0'}, // 30 naranja
@@ -168,6 +178,7 @@ export default class HomeComponent {
       next: data => {
          this.catsucursales=data;
          this.loading = false;
+         this.getAgrupadores(); 
          this.cdr.detectChanges();
       },
       error: error => {
@@ -178,6 +189,24 @@ export default class HomeComponent {
   });
 
   }
+
+  getAgrupadores()
+  {
+    this.loading= true;
+    this.apiserv.getAgrupadores().subscribe({
+     next: data => {
+        this.agrupadores=data;
+        this.loading = false;
+        this.cdr.detectChanges();
+     },
+     error: error => {
+        console.log(error);
+        this.loading = false;
+        this.showMessage('error',"Error","Error al procesar la solicitud");
+     }
+  });
+  }
+  
 
   consultarDash()
   {
@@ -205,7 +234,8 @@ export default class HomeComponent {
 
     if(this.fechas.length==1)
       {
-        this.apiserv.getDash(this.fechas[0],jdata).subscribe({
+        this.metaSalon = false; 
+        this.apiserv.getDashDoble(this.fechas[0],jdata).subscribe({
           next: data => {
              this.ventasmetas = data; 
              this.loading = false; 
@@ -245,7 +275,7 @@ export default class HomeComponent {
       } else
       {
         this.sucursalesdistintas = []; 
-        this.apiserv.getDashMeses(JSON.stringify(this.fechas),jdata).subscribe({
+        this.apiserv.getDashMeses(JSON.stringify(this.fechas),jdata,this.metaSalon).subscribe({
           next: data => {
              this.ventasmetas = data; 
              this.loading = false; 
@@ -801,6 +831,84 @@ formatDates() {
     const year = date.getFullYear();
     return `${year}-${month}`;
   });
+}
+
+changeGroup()
+{  
+
+   if(this.groupSel != undefined)
+     {
+       this.selectedSuc= []; 
+       let obj = JSON.parse(this.groupSel.jdata); 
+
+       for(let item of obj)
+         {
+           let suc = this.catsucursales.filter(x=>x.cod == item); 
+           if(suc.length>0){ this.selectedSuc.push(suc[0]); }
+         }
+         
+     }
+}
+
+cambiodemeta()
+{
+  if(this.metaSalon)
+    {
+        // this.ventasmetas = data; 
+             this.loading = false; 
+             this.single = []; 
+             this.ventatotal=0;
+             this.metageneral = 0; 
+             this.porcentajegeneralv = 0;
+             this.sucursalesRojo = 0;
+             this.sucursalesAmarillo=0;
+             this.sucursalesVerde = 0; 
+             this.porcentajegeneralw =0;
+             for(let item of this.ventasmetas)
+              {
+                this.single.push({name:item.nombreSucursal,value:item.ventaTotalS,porcentaje:item.cumplimientoS});
+                this.contarD(item.ventaTotalS,item.metaS,item.cumplimientoS); 
+              }
+              this.ventasmetas.sort((a, b) => a.cumplimientoS - b.cumplimientoS);
+              this.single.sort((a, b) => a.porcentaje - b.porcentaje);
+    
+              if(this.metageneral>0)
+                {
+                  this.porcentajegeneralv = (this.ventatotal/this.metageneral)*100; 
+                  if(this.porcentajegeneralv>100)
+                    {
+                      this.porcentajegeneralw = 100; 
+                    }else { this.porcentajegeneralw = this.porcentajegeneralv;}
+                }
+    } else
+      {
+          // this.ventasmetas = data; 
+             this.loading = false; 
+             this.single = []; 
+             this.ventatotal=0;
+             this.metageneral = 0; 
+             this.porcentajegeneralv = 0;
+             this.sucursalesRojo = 0;
+             this.sucursalesAmarillo=0;
+             this.sucursalesVerde = 0; 
+             this.porcentajegeneralw =0;
+             for(let item of this.ventasmetas)
+              {
+                this.single.push({name:item.nombreSucursal,value:item.ventaTotal,porcentaje:item.cumplimiento});
+                this.contarD(item.ventaTotal,item.meta,item.cumplimiento); 
+              }
+              this.ventasmetas.sort((a, b) => a.cumplimiento - b.cumplimiento);
+              this.single.sort((a, b) => a.porcentaje - b.porcentaje);
+    
+              if(this.metageneral>0)
+                {
+                  this.porcentajegeneralv = (this.ventatotal/this.metageneral)*100; 
+                  if(this.porcentajegeneralv>100)
+                    {
+                      this.porcentajegeneralw = 100; 
+                    }else { this.porcentajegeneralw = this.porcentajegeneralv;}
+                }
+      }
 }
 
  }
