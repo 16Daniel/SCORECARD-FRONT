@@ -34,10 +34,14 @@
     (onChange)="changeGroup()"
     />
 </div>
-  <div class="d-flex flex-column align-items-center"><p-inputSwitch [(ngModel)]="metaSalon" /> META SALÓN</div>
   <button class="btn btn-grad rounded-3 bx-burst-hover" (click)="consultarDash()"><i class='bx bx-search'></i></button>
-
-  </div>
+ <div class="d-flex flex-column align-items-center" style=" position: fixed;
+    top: 70px;
+    right: 10px;
+    z-index: 999;">
+  <p-inputSwitch [(ngModel)]="metaSalon" (onChange)="cambiodemeta()"/> META SALÓN</div>
+  
+</div>
 
     <app-loader *ngIf="loading" class="mt-5"></app-loader>
 
@@ -107,7 +111,20 @@
 
       <h4 class="w-100 text-center">Proyección: <span class="fw-bold text-p">{{ventasmetas[0].cumplimientoesperado | number : '1.2-2' }}%</span></h4>
 
-  <div class="d-flex justify-content-center gap-3 p-3 flex-wrap">
+  <div class="d-flex justify-content-center gap-3 p-3 flex-wrap" *ngIf="metaSalon">
+    @for (item of ventasmetas; track $index) {
+      <app-progress-bar-c [nombresuc]="item.nombreSucursal" 
+      [idpbc]="'cpb-s'+$index" [progressEndValue]="item.cumplimientoS" 
+      [metav]="item.metaS"
+      [totalv]="item.ventaTotalS"
+      [cumplimientoesp]="item.cumplimientoesperado"
+      [proyeccion]="item.proyeccionS"
+      (click)="verdetalles(item)"
+      />
+    }
+  </div>
+
+   <div class="d-flex justify-content-center gap-3 p-3 flex-wrap" *ngIf="!metaSalon">
     @for (item of ventasmetas; track $index) {
       <app-progress-bar-c [nombresuc]="item.nombreSucursal" 
       [idpbc]="'cpb-'+$index" [progressEndValue]="item.cumplimiento" 
@@ -119,6 +136,7 @@
       />
     }
   </div>
+
 
     </div>
 

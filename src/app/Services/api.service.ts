@@ -66,6 +66,14 @@ export class ApiService {
     return this.http.post<any>(this.url+'Dashboard/ConsultaDashboard',formdata,{headers:this.headers})
    }
 
+    getDashDoble(fecha:string, jdata:string):Observable<any>
+   {
+    let formdata = new FormData();
+    formdata.append("jdsucursales",jdata);
+    formdata.append("fecha",fecha);
+    return this.http.post<any>(this.url+'Dashboard/ConsultaDashboardDoble',formdata,{headers:this.headers})
+   } 
+
    getDashMeses(fechas:string, jdata:string, metaSalon:boolean):Observable<any>
    {
     let formdata = new FormData();

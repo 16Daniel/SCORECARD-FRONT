@@ -11,6 +11,23 @@ cumplimientoesperado:number
 proyeccion:number
  }
 
+ export interface VentaMetaDoble
+{
+cumplimiento:number
+cumplimientoS:number
+ids:number
+meta:number
+metaS:number
+nombreSucursal:string;
+ventaTotal:number;
+ventaTotalS:number;
+month:number
+year:number
+cumplimientoesperado:number
+proyeccion:number
+proyeccionS:number
+}
+
  export interface DetallesVenta2
 {
     ids:number; 

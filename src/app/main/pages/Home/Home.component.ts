@@ -9,7 +9,7 @@ import { ToastModule } from 'primeng/toast';
 import { FormsModule } from '@angular/forms';
 import { ProgressBarCComponent } from "../../../Shared/ProgressBarC/ProgressBarC.component";
 import { LoaderComponent } from '../../../Shared/Loader/Loader.component';
-import { DetallesArt, DetallesVenta2, DetallesVentas3, VentaMeta } from '../../../Interfaces/Venta';
+import { DetallesArt, DetallesVenta2, DetallesVentas3, VentaMeta, VentaMetaDoble } from '../../../Interfaces/Venta';
 import { Dialog, DialogModule } from 'primeng/dialog';
 import { MultimesProgressComponent } from '../../../Shared/MultimesProgress/MultimesProgress.component';
 import { Router, withDebugTracing } from '@angular/router';
@@ -43,7 +43,7 @@ export default class HomeComponent {
   @ViewChild('myDialog') myDialog: Dialog | undefined;
   public catsucursales:Sucursal[] = [];
   public selectedSuc:Sucursal[] = [];
-  public ventasmetas:VentaMeta[] = [];
+  public ventasmetas:VentaMetaDoble[] = [];
   public mesSel:string = ''; 
   public loading:boolean = false; 
   public loadingdet:boolean = false; 
@@ -234,7 +234,8 @@ export default class HomeComponent {
 
     if(this.fechas.length==1)
       {
-        this.apiserv.getDash(this.fechas[0],jdata,this.metaSalon).subscribe({
+        this.metaSalon = false; 
+        this.apiserv.getDashDoble(this.fechas[0],jdata).subscribe({
           next: data => {
              this.ventasmetas = data; 
              this.loading = false; 
@@ -849,5 +850,65 @@ changeGroup()
      }
 }
 
+cambiodemeta()
+{
+  if(this.metaSalon)
+    {
+        // this.ventasmetas = data; 
+             this.loading = false; 
+             this.single = []; 
+             this.ventatotal=0;
+             this.metageneral = 0; 
+             this.porcentajegeneralv = 0;
+             this.sucursalesRojo = 0;
+             this.sucursalesAmarillo=0;
+             this.sucursalesVerde = 0; 
+             this.porcentajegeneralw =0;
+             for(let item of this.ventasmetas)
+              {
+                this.single.push({name:item.nombreSucursal,value:item.ventaTotalS,porcentaje:item.cumplimientoS});
+                this.contarD(item.ventaTotalS,item.metaS,item.cumplimientoS); 
+              }
+              this.ventasmetas.sort((a, b) => a.cumplimientoS - b.cumplimientoS);
+              this.single.sort((a, b) => a.porcentaje - b.porcentaje);
+    
+              if(this.metageneral>0)
+                {
+                  this.porcentajegeneralv = (this.ventatotal/this.metageneral)*100; 
+                  if(this.porcentajegeneralv>100)
+                    {
+                      this.porcentajegeneralw = 100; 
+                    }else { this.porcentajegeneralw = this.porcentajegeneralv;}
+                }
+    } else
+      {
+          // this.ventasmetas = data; 
+             this.loading = false; 
+             this.single = []; 
+             this.ventatotal=0;
+             this.metageneral = 0; 
+             this.porcentajegeneralv = 0;
+             this.sucursalesRojo = 0;
+             this.sucursalesAmarillo=0;
+             this.sucursalesVerde = 0; 
+             this.porcentajegeneralw =0;
+             for(let item of this.ventasmetas)
+              {
+                this.single.push({name:item.nombreSucursal,value:item.ventaTotal,porcentaje:item.cumplimiento});
+                this.contarD(item.ventaTotal,item.meta,item.cumplimiento); 
+              }
+              this.ventasmetas.sort((a, b) => a.cumplimiento - b.cumplimiento);
+              this.single.sort((a, b) => a.porcentaje - b.porcentaje);
+    
+              if(this.metageneral>0)
+                {
+                  this.porcentajegeneralv = (this.ventatotal/this.metageneral)*100; 
+                  if(this.porcentajegeneralv>100)
+                    {
+                      this.porcentajegeneralw = 100; 
+                    }else { this.porcentajegeneralw = this.porcentajegeneralv;}
+                }
+      }
+}
 
  }
