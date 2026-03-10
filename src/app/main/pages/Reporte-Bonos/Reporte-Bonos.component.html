@@ -80,6 +80,15 @@
                 <th class="text-center" pSortableColumn="alcance" style="background-color: black;">Alcance
                     <p-sortIcon field="alcance"/>
                 </th>
+                <th class="text-center" pSortableColumn="metaSalon" style="background-color: black;">$ Meta Salon
+                    <p-sortIcon field="metaSalon"/>
+                </th>
+                <th class="text-center" pSortableColumn="ventaSalon" style="background-color: black;">$ Venta Salón
+                    <p-sortIcon field="ventaSalon"/>
+                </th>
+                <th class="text-center" pSortableColumn="alcanceSalon" style="background-color: black;">Alcance Salón
+                    <p-sortIcon field="alcanceSalon"/>
+                </th>
                 <th class="text-center" pSortableColumn="compras" style="background-color: black;" *ngIf="!simplificado">$ Compras
                     <p-sortIcon field="compras"/>
                 </th>
@@ -92,7 +101,10 @@
                 <th class="text-center" pSortableColumn="ventaBebidasSalon" style="background-color: black;" *ngIf="!simplificado">$ Bebidas Salón
                     <p-sortIcon field="ventaBebidasSalon"/>
                 </th>
-                <th class="text-center" pSortableColumn="porcentajeBebidas" style="background-color: black;">BEBIDAS / AYC VENDIDOS
+                <th class="text-center" pSortableColumn="ventaPostres" style="background-color: black;" *ngIf="!simplificado">$ Postres Salón
+                    <p-sortIcon field="ventaPostres"/>
+                </th>
+                <th class="text-center" pSortableColumn="porcentajeBebidas" style="background-color: black;">VENTA SUGESTIVA /AYC
                     <p-sortIcon field="porcentajeBebidas"/>
                 </th>
                 <th class="text-center" pSortableColumn="totalayc" style="background-color: black;" *ngIf="!simplificado">Total AYC
@@ -159,12 +171,16 @@
                 <td pFrozenColumn class="text-center" style="border: 1px solid black; background-color: blueviolet; color: white;">{{item.sucursal}}</td>
                 <td class="text-center" style="border: 1px solid black;">${{item.metaVenta | number : '1.2-2'}}</td>
                 <td class="text-center" style="border: 1px solid black;">${{item.ventaReal | number : '1.2-2'}}</td>
-                <td class="text-center" [ngClass]="{'bg-success': item.alcance>=100,'bg-warning text-dark':item.alcance>=75 && item.alcance<100,'bg-danger':item.alcance<75}" style="border: 1px solid black;">{{item.alcance | number : '1.2-2'}}%</td>
+                <td class="text-center" [ngClass]="{'bg-success': item.alcance>=95,'bg-warning text-dark':item.alcance>=75 && item.alcance<95,'bg-danger':item.alcance<75}" style="border: 1px solid black;">{{item.alcance | number : '1.2-2'}}%</td>
+                <td class="text-center" style="border: 1px solid black;">${{item.metaSalon | number : '1.2-2'}}</td>
+                <td class="text-center" style="border: 1px solid black;">${{item.ventaSalon | number : '1.2-2'}}</td>
+                <td class="text-center" [ngClass]="{'bg-success': item.alcanceSalon>=100,'bg-warning text-dark':item.alcanceSalon>=75 && item.alcanceSalon<100,'bg-danger':item.alcanceSalon<75}" style="border: 1px solid black;">{{item.alcanceSalon | number : '1.2-2'}}%</td>
                 <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">${{item.compras | number : '1.2-2'}}</td>
-                <td class="text-center" style="border: 1px solid black;">{{item.costo | number : '1.2-2'}}%</td> 
+                <td class="text-center" style="border: 1px solid black;" [ngClass]="{'bg-danger': item.costo>43,'bg-success':item.costo<=43}">{{item.costo | number : '1.2-2'}}%</td> 
                 <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">${{item.ventaAlimentosSalon | number : '1.2-2'}}</td>
                 <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">${{item.ventaBebidasSalon | number : '1.2-2'}}</td>
-                <td class="text-center" [ngClass]="{'bg-danger':item.porcentajeBebidas<2,'bg-success':item.porcentajeBebidas>=2}" style="border: 1px solid black;">{{item.porcentajeBebidas | number : '1.2-2'}}</td>
+                 <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">${{item.ventaPostres | number : '1.2-2'}}</td>
+                <td class="text-center" [ngClass]="{'bg-danger':item.porcentajeBebidas<3,'bg-success':item.porcentajeBebidas>=3}" style="border: 1px solid black;">{{item.porcentajeBebidas | number : '1.2-2'}}</td>
                 <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">{{item.totalayc | number : '1.2-2'}}</td>
                 <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">{{item.inicioaychdb| number : '1.2-2'}}</td>
                 <td class="text-center" [ngClass]="{'bg-danger':item.porcentajehdb<=25,'bg-success':item.porcentajehdb>25}" style="border: 1px solid black;">{{item.porcentajehdb | number : '1.2-2'}}%</td>
