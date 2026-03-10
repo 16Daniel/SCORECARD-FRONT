@@ -45,7 +45,7 @@ public agrupadores:Agrupador[] = [];
 
 constructor(public apiserv:ApiService,public cdr:ChangeDetectorRef,private messageService: MessageService)
 {
-  this.encabezadoTabla = ['Sucursal','$ Meta','$ Venta','Alcance','$ Compras','Costo','$ Alimentos Salón','$ Bebidas Salón','Bebidas / AYC vendidos',
+  this.encabezadoTabla = ['Sucursal','$ Meta','$ Venta','Alcance','$ Meta Salón','$ Venta Salón','Alcance Salón','$ Compras','Costo','$ Alimentos Salón','$ Bebidas Salón','$ Postres Salón','Venta sugestiva /AYC',
     'Total AYC','AYC Hot-Dor / Burguer','% AYC Hot-Dog / Burguer','Diferencias Ala','Compras Ala','% Diferencias Ala','Diferencias Boneless','Compras Boneless',
     '% Diferencias Boneless','Diferencias Papa','Compras Papa','% Diferencias Papa','Mermas Ala','% Mermas Ala','Mermas Boneless','% Mermas Boneless',
     'Mermas Papa','% Mermas Papa','% Tareas'
@@ -128,10 +128,14 @@ constructor(public apiserv:ApiService,public cdr:ChangeDetectorRef,private messa
                 metaVenta: item.alcanceDeVentas.meta,
                 ventaReal: item.alcanceDeVentas.ventaTotal,
                 alcance: item.alcanceDeVentas.cumplimiento,
+                metaSalon:item.alcanceDeVentasSalon.meta,
+                ventaSalon:item.alcanceDeVentasSalon.ventaTotal,
+                alcanceSalon:item.alcanceDeVentasSalon.cumplimiento,
                 compras: item.costosSucursales.compras,
                 costo: item.costosSucursales.costo,
                 ventaAlimentosSalon: item.pBebidas.ventaAlimentosSalon,
                 ventaBebidasSalon: item.pBebidas.ventaBebidasSalon,
+                ventaPostres:item.pBebidas.ventaPostres, 
                 porcentajeBebidas: item.pBebidas.porcentaje,
                 totalayc: item.inicioayc.totalayc,
                 inicioaychdb: item.inicioayc.inicioHDB,

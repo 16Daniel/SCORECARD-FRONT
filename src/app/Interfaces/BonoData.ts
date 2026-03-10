@@ -3,6 +3,7 @@ import { VentaMeta } from "./Venta";
 export interface BonoData 
 {
     alcanceDeVentas:VentaMeta;
+    alcanceDeVentasSalon:VentaMeta; 
     costosSucursales:Costoucursal;
     pBebidas:PBebidas;
     inicioayc:InicioAYCHDB;
@@ -23,6 +24,7 @@ export interface BonoData
  {
     ventaAlimentosSalon:number;
     ventaBebidasSalon:number;
+    ventaPostres:number;
     porcentaje:number; 
  }
 
@@ -33,10 +35,14 @@ export interface BonoData
     metaVenta:number;
     ventaReal:number; 
     alcance:number;
+    metaSalon:number;
+    ventaSalon:number; 
+    alcanceSalon:number; 
     compras:number;
     costo:number; 
     ventaAlimentosSalon:number;
     ventaBebidasSalon:number;
+    ventaPostres:number; 
     porcentajeBebidas:number; 
     totalayc:number;
     inicioaychdb:number; 
