@@ -4,16 +4,15 @@ import { Router } from '@angular/router';
 import { Ruta } from './Interfaces/Ruta';
 export const authGuard: CanActivateFn = (route, state) => {
   let router:Router = inject(Router);
-  if(localStorage.getItem("catRutas") != null)
+  if(localStorage.getItem("catRutasDash") != null)
     {
-     
       if(route.url.toString() == "inicio")
         {
           return true
         }else
         {
-          let catrutas:Ruta[] = JSON.parse(localStorage.getItem("catRutas")!); 
-          let filtro = catrutas.filter(x => x.ruta == "/main/"+route.url.toString());
+          let catrutas:Ruta[] = JSON.parse(localStorage.getItem("catRutasDash")!); 
+          let filtro = catrutas.filter(x => x.ruta == "/main/"+route.url[0].path);
           if(filtro.length>0)
             {
               return true;
@@ -27,7 +26,7 @@ export const authGuard: CanActivateFn = (route, state) => {
     } else
     {
       localStorage.removeItem("rwuserdata");
-     localStorage.removeItem("catRutas");
+     localStorage.removeItem("catRutasDash");
      
      router.navigate(["/auth/login"]);
       return false; 
