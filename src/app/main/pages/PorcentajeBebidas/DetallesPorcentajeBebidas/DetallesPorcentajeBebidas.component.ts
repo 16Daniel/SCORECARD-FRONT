@@ -45,12 +45,12 @@ public colorespersonalizados:any[] = [];
   
 
       let color = '#6D28D9'; 
-      if(porcentaje<2)
+      if(porcentaje<3)
         {
           color = '#d9003e';
         }
   
-      if(porcentaje>=2)
+      if(porcentaje>=3)
         {
           color = '#39df18';
         }

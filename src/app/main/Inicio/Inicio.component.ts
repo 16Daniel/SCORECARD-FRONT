@@ -50,7 +50,7 @@ public items:MenuItem[] = [];
         icon: 'bx bxs-bar-chart-alt-2 bx-sm',
         items: [
           {
-              label: 'Bebidas/ AYC vendidos',
+              label: 'Venta sugestiva',
               icon: 'bx bx-beer',
               route: '/main/ventas-bebidas'
           },

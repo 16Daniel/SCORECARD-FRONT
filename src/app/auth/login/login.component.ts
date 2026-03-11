@@ -104,7 +104,7 @@ getRutas(id:number)
  this.loading = true; 
  this.apiserv.getRutasRol(id).subscribe({
    next: data => {
-    localStorage.setItem("catRutas",JSON.stringify(data));
+    localStorage.setItem("catRutasDash",JSON.stringify(data));
      this.loading = false; 
      this.router.navigate(["/main/inicio"]);
     this.cdr.detectChanges();

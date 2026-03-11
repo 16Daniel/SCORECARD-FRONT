@@ -225,7 +225,7 @@ getdataSuc(ids:number):any[]
          // Crear un enlace para la descarga
          const link = document.createElement('a');
          link.href = url;
-         link.download = 'BEBIDAS / AYC VENDIDOS.xlsx'; // Establecer el nombre del archivo
+         link.download = 'VENTA SUGESTIVA.xlsx'; // Establecer el nombre del archivo
          document.body.appendChild(link);
      
          // Hacer clic en el enlace para iniciar la descarga
