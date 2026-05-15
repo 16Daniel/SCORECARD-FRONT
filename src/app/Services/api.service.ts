@@ -342,5 +342,11 @@ export class ApiService {
       return this.http.get<Ruta[]>(this.url+`Roles/getRutasRol/${idr}`,{headers:this.headers})
    }
 
+   getDataTableroVentas(data:any):Observable<any>
+   {
+      return this.http.post<any>(this.url+`Dashboard/ConsultaReporteVentas`,data,{headers:this.headers})
+   }
+
+
 }
 

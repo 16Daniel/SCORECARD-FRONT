@@ -106,6 +106,11 @@ public items:MenuItem[] = [];
         label: 'Costo',
         icon: 'bx bx-trash-alt',
         route: '/inicio'
+    },
+    {
+        label: 'Reporte de ventas',
+        icon: 'bx bx-line-chart',
+        route: '/main/reporte-ventas'
     }
   ]
 },
