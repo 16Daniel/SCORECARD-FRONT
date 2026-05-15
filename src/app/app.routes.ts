@@ -105,6 +105,11 @@ export const routes: Routes = [
         loadComponent: () => import('./main/pages/Roles/Roles.component'),
       },
       {
+        path: 'reporte-ventas',
+        title: 'Reporte ventas',
+        loadComponent: () => import('./main/pages/tablero_ventas/tablero_ventas'),
+      },
+      {
         path: '',
         redirectTo: '/main/inicio',
         pathMatch: 'full',

@@ -70,3 +70,23 @@ export interface MixVenta {
     bebidasPickup: number;
     semana: number;
   }
+
+
+  // Interfaz para el reporte de ventas por sucursal
+export interface DataModelReporteVentasRespuesta {
+  idSucursal: number;
+  nombre: string;
+  meta1:number;
+  meta2:number;
+  metasalon:number; 
+  ventaFechas: VentaFecha[];
+}
+
+// Interfaz para detalle de venta por fecha
+export interface VentaFecha {
+  fecha: Date;   // O string si la fecha viene como texto desde la API
+  venta: number;
+  año: number;
+  ventaSalon:number;
+  ventaDelivery:number; 
+}
