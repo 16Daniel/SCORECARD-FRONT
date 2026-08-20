@@ -48,7 +48,8 @@ constructor(public apiserv:ApiService,public cdr:ChangeDetectorRef,private messa
   this.encabezadoTabla = ['Sucursal','$ Meta','$ Venta','Alcance','$ Meta Salón','$ Venta Salón','Alcance Salón','$ Compras','Costo','$ Alimentos Salón','$ Bebidas Salón','$ Postres Salón','Venta sugestiva /AYC',
     'Total AYC','AYC Hot-Dor / Burguer','% AYC Hot-Dog / Burguer','Diferencias Ala','Compras Ala','% Diferencias Ala','Diferencias Boneless','Compras Boneless',
     '% Diferencias Boneless','Diferencias Papa','Compras Papa','% Diferencias Papa','Mermas Ala','% Mermas Ala','Mermas Boneless','% Mermas Boneless',
-    'Mermas Papa','% Mermas Papa','% Tareas'
+    'Mermas Papa','% Mermas Papa','% Tareas','Comensales','Tickets','Ticket Promedio','Cervezas','Destilados','Bebidas sin alcohol','Venta Cervezas','Venta Destilados',
+    'Venta Bebidas sin alcohol','% Venta Cervezas','% Venta Destilados','% Venta Bebidas sin alcohol'
   ]; 
 }
 
@@ -155,7 +156,19 @@ constructor(public apiserv:ApiService,public cdr:ChangeDetectorRef,private messa
                 pmermasAla: item.mermasdata.pmermasAla,
                 pmermasBoneless: item.mermasdata.pmermasBoneless,
                 pmermasPapa: item.mermasdata.pmermasPapas,
-                porcentajeTareas: item.porcentajeTareas
+                porcentajeTareas: item.porcentajeTareas,
+                numcomensales: item.hitsventa.numcomensales,
+                numtickets: item.hitsventa.numtickets,
+                tikcetPromedio: item.hitsventa.tikcetsPromedio,
+                cervezas: item.hitsventa.cervezas,
+                destilados: item.hitsventa.destilados,
+                bsa: item.hitsventa.bsa,
+                ventacervezas: item.hitsventa.ventacervezas,
+                ventadestilados: item.hitsventa.ventadestilados,
+                ventabsa: item.hitsventa.ventabsa,
+                porcentajeventacervezas: item.hitsventa.porcentajeventacervezas,
+                porcentajeventadestilados: item.hitsventa.porcentajeventadestilados,
+                porcentajeventabsa: item.hitsventa.porcentajeventabsa
               });
           }
 

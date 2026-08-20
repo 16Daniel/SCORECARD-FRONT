@@ -10,8 +10,23 @@ export interface BonoData
     diferenciasData:PdiferenciasModel;
     mermasdata:PmermasModel;
     porcentajeTareas:number; 
+    hitsventa:HitsDeVentasModel
  }
 
+ export interface HitsDeVentasModel {
+  numcomensales: number;
+  numtickets: number;
+  tikcetsPromedio: number;
+  cervezas: number;
+  destilados: number;
+  bsa: number;
+  ventacervezas: number;
+  ventadestilados: number;
+  ventabsa: number;
+  porcentajeventacervezas: number;
+  porcentajeventadestilados: number;
+  porcentajeventabsa: number;
+}
 
  export interface Costoucursal
  {
@@ -63,6 +78,18 @@ export interface BonoData
     mermasPapa:number; 
     pmermasPapa:number; 
     porcentajeTareas:number; 
+    numcomensales:number; 
+    numtickets: number;
+    tikcetPromedio: number;
+    cervezas: number;
+    destilados: number;
+    bsa: number;
+    ventacervezas: number;
+    ventadestilados: number;
+    ventabsa: number;
+    porcentajeventacervezas: number;
+    porcentajeventadestilados: number;
+    porcentajeventabsa: number;
  }
 
  export interface InicioAYCHDB

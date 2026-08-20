@@ -164,6 +164,44 @@
                 <th class="text-center" pSortableColumn="porcentajeTareas" style="background-color: black;">% Tareas
                     <p-sortIcon field="porcentajeTareas"/>
                 </th>
+
+                <th class="text-center" pSortableColumn="numcomensales" style="background-color: black;">Comensales
+                <p-sortIcon field="numcomensales"/>
+                </th>
+                <th class="text-center" pSortableColumn="numtickets" style="background-color: black;">Tickets
+                <p-sortIcon field="numtickets"/>
+                </th>
+                <th class="text-center" pSortableColumn="tikcetPromedio" style="background-color: black;">Ticket Promedio
+                <p-sortIcon field="tikcetPromedio"/>
+                </th>
+                <th class="text-center" pSortableColumn="cervezas" style="background-color: black;">Cervezas
+                <p-sortIcon field="cervezas"/>
+                </th>
+                <th class="text-center" pSortableColumn="destilados" style="background-color: black;">Destilados
+                <p-sortIcon field="destilados"/>
+                </th>
+                <th class="text-center" pSortableColumn="bsa" style="background-color: black;">Bebidas sin alcohol
+                <p-sortIcon field="bsa"/>
+                </th>
+                <th *ngIf="!simplificado" class="text-center" pSortableColumn="ventacervezas" style="background-color: black;">Venta Cervezas
+                <p-sortIcon field="ventacervezas"/>
+                </th>
+                <th *ngIf="!simplificado" class="text-center" pSortableColumn="ventadestilados" style="background-color: black;">Venta Destilados
+                <p-sortIcon field="ventadestilados"/>
+                </th>
+                <th *ngIf="!simplificado" class="text-center" pSortableColumn="ventabsa" style="background-color: black;">Venta Bebidas sin alcohol
+                <p-sortIcon field="ventabsa"/>
+                </th>
+                <th class="text-center" pSortableColumn="porcentajeventacervezas" style="background-color: black;">% Venta Cervezas
+                <p-sortIcon field="porcentajeventacervezas"/>
+                </th>
+                <th class="text-center" pSortableColumn="porcentajeventadestilados" style="background-color: black;">% Venta Destilados
+                <p-sortIcon field="porcentajeventadestilados"/>
+                </th>
+                <th class="text-center" pSortableColumn="porcentajeventabsa" style="background-color: black;">% Venta Bebidas sin alcohol
+                <p-sortIcon field="porcentajeventabsa"/>
+                </th>
+
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-item>
@@ -200,6 +238,19 @@
                 <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">{{item.mermasPapa | number : '1.2-2'}}&nbsp;KG</td>
                 <td class="text-center" [ngClass]="getClassColor(item.pmermasPapa)" style="border: 1px solid black;">{{item.pmermasPapa | number : '1.2-2'}}%</td>
                 <td class="text-center" [ngClass]="getClassColoApps(item.porcentajeTareas)" style="border: 1px solid black;">{{item.porcentajeTareas | number : '1.2-2'}}%</td>
+                
+                <td class="text-center" style="border: 1px solid black;">{{ item.numcomensales }}</td>
+                <td class="text-center" style="border: 1px solid black;">{{ item.numtickets }}</td>
+                <td class="text-center" style="border: 1px solid black;">{{ item.tikcetPromedio | currency }}</td>
+                <td class="text-center" style="border: 1px solid black;">{{ item.cervezas }}</td>
+                <td class="text-center" style="border: 1px solid black;">{{ item.destilados }}</td>
+                <td class="text-center" style="border: 1px solid black;">{{ item.bsa }}</td>
+                <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">{{ item.ventacervezas | currency }}</td>
+                <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">{{ item.ventadestilados | currency }}</td>
+                <td *ngIf="!simplificado" class="text-center" style="border: 1px solid black;">{{ item.ventabsa | currency }}</td>
+                <td class="text-center" style="border: 1px solid black;">{{ item.porcentajeventacervezas | number:'1.2-2' }}%</td>
+                <td class="text-center" style="border: 1px solid black;">{{ item.porcentajeventadestilados | number:'1.2-2' }}%</td>
+                <td class="text-center" style="border: 1px solid black;">{{ item.porcentajeventabsa | number:'1.2-2' }}%</td>
             </tr>
         </ng-template>
     </p-table>
