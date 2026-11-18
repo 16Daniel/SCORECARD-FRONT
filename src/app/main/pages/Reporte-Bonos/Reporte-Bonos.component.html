@@ -51,6 +51,17 @@
 
 <div class="p-3" *ngIf="bonodata.length>0">
 
+    <div class="pending-transactions-alert mb-3" role="alert" *ngIf="hayTransaccionesPendientes">
+        <i class='bx bx-error-circle pending-transactions-alert__icon' aria-hidden="true"></i>
+        <div>
+            <strong>Información parcial</strong>
+            <span>
+                Al momento de generar el reporte había transacciones de ventas pendientes de enviarse al servidor.
+                La información se actualizará automáticamente al siguiente día.
+            </span>
+        </div>
+    </div>
+
     <div class="d-flex gap-3 mt-3 mb-3 align-items-end justify-content-between">
         <div class="d-flex align-items-center gap-3"><span>SIMPLIFICADO</span><p-inputSwitch [(ngModel)]="simplificado"/></div>
         <button class="btn btn-outline-success p-2" style="min-width: 10rem;" [disabled]="loading" (click)="exportToExcel()">

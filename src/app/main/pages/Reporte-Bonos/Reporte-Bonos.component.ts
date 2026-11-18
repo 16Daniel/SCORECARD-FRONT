@@ -40,6 +40,23 @@ public matrizBono:MatrizBono[]= []
 public simplificado:boolean = true; 
 public encabezadoTabla:string[] = [];
 
+get hayTransaccionesPendientes(): boolean {
+  return this.bonodata.some(item => {
+    const key = Object.keys(item).find(property =>
+      property.toLowerCase() === 'transcola'
+    );
+
+    if (!key) {
+      return false;
+    }
+
+    const value = (item as BonoData & Record<string, unknown>)[key];
+    return value === true ||
+      value === 1 ||
+      (typeof value === 'string' && value.toLowerCase() === 'true');
+  });
+}
+
  public groupSel:Agrupador|undefined; 
 public agrupadores:Agrupador[] = [];
 
@@ -118,6 +135,7 @@ constructor(public apiserv:ApiService,public cdr:ChangeDetectorRef,private messa
     this.loading= true;
      this.apiserv.getBonosData(JSON.stringify(jdata),this.mes).subscribe({
       next: data => {
+        debugger;
         this.bonodata = data; 
         console.log(this.bonodata);
         for(let item of this.bonodata)

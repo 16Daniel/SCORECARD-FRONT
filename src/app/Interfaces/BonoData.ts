@@ -10,7 +10,8 @@ export interface BonoData
     diferenciasData:PdiferenciasModel;
     mermasdata:PmermasModel;
     porcentajeTareas:number; 
-    hitsventa:HitsDeVentasModel
+    hitsventa:HitsDeVentasModel;
+    transcola:boolean | string;
  }
 
  export interface HitsDeVentasModel {
